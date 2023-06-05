@@ -9,7 +9,7 @@ export default function Page() {
       </nav>
       <main>
         <h1>Welcome to the Polling Web</h1>
-        <p>Get started by:</p>
+        <p>Эхлэх: </p>
         <ul>
           <li>
             <Link href="/register">Register</Link>
