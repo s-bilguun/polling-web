@@ -6,7 +6,7 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    //Login Logic:
+    //TODO: Login Logic:
 
 
     console.log('Login submitted:', { email, password });
