@@ -7,7 +7,9 @@ const Register = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    // Add your registration logic here
+    //TODO: Add your registration logic here
+
+
     console.log('Registration submitted:', { email, password, birthday });
     // Reset the form
     setEmail('');
