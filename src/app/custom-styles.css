@@ -12,9 +12,10 @@
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 43, 48, 59; /* Dark blue */
-    --background-end-rgb: 27, 31, 38; /* Lighter blue */
+    --background-end-rgb: 47, 54, 90; /* Lighter blue */
   }
 }
+
 
 body {
   color: rgb(var(--foreground-rgb));
@@ -97,4 +98,29 @@ button:hover {
 button:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+.card {
+  background-color: #232541a3;
+  display: inline-block;
+  padding: 3rem;
+  position: relative; /* Add position relative for line positioning */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add box shadow */
+}
+
+.card::before,
+.card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #1100ff; /* Set the color of the line */
+}
+
+.card::before {
+  top: 0; /* Position the top line */
+}
+
+.card::after {
+  bottom: 0; /* Position the bottom line */
 }
