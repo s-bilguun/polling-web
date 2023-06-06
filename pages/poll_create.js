@@ -40,7 +40,7 @@ const AddPoll = () => {
   };
 
   return (
-    <div>
+    <div class="card">
       <h1>Add Poll</h1>
       <form onSubmit={handlePollSubmit}>
         <label>
