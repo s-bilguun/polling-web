@@ -11,8 +11,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-start-rgb: 43, 48, 59; /* Dark blue */
+    --background-end-rgb: 27, 31, 38; /* Lighter blue */
   }
 }
 
@@ -66,6 +66,9 @@ input[type="date"] {
   margin-bottom: 1rem;
   border-radius: 0.25rem;
   border: 1px solid #d1d5db; /* Add a border for the input fields */
+  appearance: none; /* Added appearance property */
+  background-color: rgb(var(--background-start-rgb)); /* Set the background color of the input */
+  color: rgb(var(--foreground-rgb)); /* Set the color of the input text */
 }
 
 button {
@@ -74,12 +77,24 @@ button {
   color: white;
   border: none;
   cursor: pointer;
+  transition: background-color 0.3s ease-in-out; /* Add a transition for smoother color change */
 }
 
 button[type="submit"] {
-  background-color: #1a202c;
+  background-color: #1f3a71;
 }
 
 button[type="button"] {
   background-color: #6b7280;
+}
+
+/* Add a hover effect for the buttons */
+button:hover {
+  background-color: #718096;
+}
+
+/* Add a focus effect for the buttons */
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
 }
