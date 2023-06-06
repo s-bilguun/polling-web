@@ -1,0 +1,61 @@
+/* admin-page.css */
+
+.container {
+  width: 90%;
+  max-width: 1200px; /* Adjust the maximum width as needed */
+  margin: 0 auto;
+  padding: 2rem;
+  border-radius: 0.25rem;
+  background-color: rgb(0, 0, 50); /* Darker blue */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  color: white;
+}
+
+.container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.container h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.container li {
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.container li:hover {
+  color: #a8c5ff; /* Light blue */
+}
+
+.container ul.mb-4 li {
+  font-size: 1.25rem;
+}
+
+.container ul li::before {
+  content: '➜ ';
+  margin-right: 0.5rem;
+}
+
+.container ul li:last-child {
+  margin-bottom: 0;
+}
+
+.container ul li:nth-child(odd) {
+  color: #c8c8c8; /* Gray */
+}
+
+.container ul li:nth-child(even) {
+  color: #d1d1d1; /* Light gray */
+}
+
