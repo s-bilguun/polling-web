@@ -29,7 +29,7 @@ body {
 }
 
 .container {
-  max-width: 800px;
+  max-width: 400px; /* Adjust the max-width to your preference */
   margin: 0 auto; /* Center align the container */
   padding: 1rem; /* Added padding to the container */
 }
@@ -51,9 +51,11 @@ input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="date"] {
-  width: 100%;
+  width: 30%;
   padding: 0.5rem;
-  margin-bottom: 0.5rem; /* Added margin-bottom to inputs */
+  margin-bottom: 1rem; /* Added margin-bottom to inputs */
+  border-radius: 0.25rem; /* Added border-radius for rounded edges */
+  
 }
 
 button {
@@ -71,4 +73,3 @@ button[type="submit"] {
 button[type="button"] {
   background-color: #6b7280;
 }
-
