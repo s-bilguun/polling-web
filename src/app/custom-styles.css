@@ -125,3 +125,56 @@ button:focus {
 .card::after {
   bottom: 0;
 }
+
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.poll-question {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.poll-answer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.poll-answer input[type="radio"] {
+  margin-right: 0.5rem;
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid #d1d5db;
+  resize: vertical;
+}
+
+.comment-form button {
+  margin-top: 1rem;
+}
+
+.comment-list {
+  margin-top: 2rem;
+}
+
+.comment-item {
+  margin-bottom: 1rem;
+}
+
+.comment-item .username {
+  font-weight: bold;
+}
+
+.comment-item .date-posted {
+  font-size: 0.8rem;
+  color: #666;
+}
+  

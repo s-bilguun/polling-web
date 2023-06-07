@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Register = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [birthday, setBirthday] = useState('');
@@ -42,6 +43,15 @@ const Register = () => {
             required
           />
         </label>
+        <label>
+    Username:
+    <input
+      type="text"
+      value={username}
+      onChange={(e) => setUsername(e.target.value)}
+      required
+    />
+  </label>
         <label>
           Password:
           <input
