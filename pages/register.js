@@ -11,9 +11,11 @@ const Register = () => {
     e.preventDefault();
     // TODO: Add your registration logic here
 
-    console.log('Registration submitted:', { email, password, birthday });
+    console.log('Registration submitted:', { email,username,  password, birthday });
     // Reset the form
     setEmail('');
+    setUsername('');
+
     setPassword('');
     setBirthday('');
   };
