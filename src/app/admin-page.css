@@ -1,0 +1,135 @@
+/* admin-page.css */
+:root {
+  --foreground-color: #000000;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-color: #ffffff;
+    --background-start-rgb: 43, 48, 70; /* Dark blue */
+    --background-end-rgb: 47, 54, 150; /* Lighter blue */
+  }
+}
+
+.container {
+  width: 60vw;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  border-radius: 0.25rem;
+  background-color: rgb(198, 198, 243);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  color: rgb(0, 0, 0);
+  position: relative;
+}
+
+.manage-users-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 2rem;
+  margin-right: 2rem;
+}
+
+/* New styles for buttons */
+.container ul li {
+  position: relative;
+}
+
+.container ul li .remove-button {
+  position: absolute;
+  top: 0;
+  right: 45%; /* Adjust this value as needed */
+}
+
+.container ul li .disable-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    width: 60vw;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 0.25rem;
+    background-color: rgb(40, 40, 117);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    color: white;
+    position: relative;
+  }
+}
+
+.container ul li .remove-button:hover,
+.container ul li .disable-button:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.container h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.container li {
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.container li:hover {
+  color: #a8c5ff; /* Light blue */
+}
+
+.container ul.mb-4 li {
+  font-size: 1.25rem;
+}
+
+.container ul li::before {
+  content: '➜ ';
+  margin-right: 0.5rem;
+}
+
+.container ul li:last-child {
+  margin-bottom: 0;
+}
+
+.container ul li:nth-child(odd) {
+  color: #000000; /* Gray */
+}
+
+.container ul li:nth-child(even) {
+  color: #1b4aa1; /* Light gray */
+}
+
+@media (prefers-color-scheme: dark) {
+  .container ul li:nth-child(odd) {
+    color: #ffffff; /* Gray */
+  }
+  
+  .container ul li:nth-child(even) {
+    color: #ffffffc2; /* Light gray */
+  }
+
+  .container div.chartjs-render-monitor {
+    color: #ffffff; /* White */
+  }
+}
