@@ -63,7 +63,7 @@ const PollDetail = ({ id }) => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container">
       <h1 className="text-3xl font-bold mb-4">Poll Details</h1>
 
       <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>
@@ -103,10 +103,10 @@ const PollDetail = ({ id }) => {
           View results
         </button>
       </form>
-
+<div className="comment-container">
       <form onSubmit={handleCommentSubmit} className="comment-form">
         <div className="mb-4">
-          <label htmlFor="comment">Comment</label>
+          <label htmlFor="comment">Write comment</label>
           <textarea
             id="comment"
             className="text-input"
@@ -124,8 +124,8 @@ const PollDetail = ({ id }) => {
         </button>
       </form>
 
-      <div className="mt-8 comment-list">
-        <h3 className="text-lg font-bold mb-2">Comments</h3>
+      <div className="comment-list">
+        <h3 className="text-lg font-bold mb-2">Comments:</h3>
         {comments.map((comment, index) => (
           <div key={index} className="mb-4 comment-item">
             <div className="username font-bold">{comment.username}</div>
@@ -134,6 +134,7 @@ const PollDetail = ({ id }) => {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };
