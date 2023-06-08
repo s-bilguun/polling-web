@@ -1,0 +1,46 @@
+/* headerStyles.css */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px; /* Adjust the height as per your preference */
+  background-color: #b9bfef;
+  color: #97c6d6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  header {
+    background-color: #192165;
+    color: #fff;
+  }
+}
+
+.logo img {
+  height: 40px; /* Adjust the height as per your preference */
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li {
+  margin-left: 1rem;
+  margin-right: 2rem;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Header from './Header';
 
 const AddPoll = () => {
   const [question, setQuestion] = useState('');
@@ -41,6 +42,7 @@ const AddPoll = () => {
 
   return (
     <div class="card">
+      <Header/>
       <h1>Add Poll</h1>
       <form onSubmit={handlePollSubmit}>
         <label>

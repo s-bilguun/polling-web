@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import Header from './Header';
 
 const PollDetail = ({ id }) => {
   const router = useRouter();
@@ -64,6 +65,7 @@ const PollDetail = ({ id }) => {
 
   return (
     <div className="container">
+      <Header/>
       <h1 className="text-3xl font-bold mb-4">Poll Details</h1>
 
       <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>

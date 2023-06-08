@@ -1,4 +1,5 @@
   import React, { useState } from 'react';
+  import Header from './Header';
 
   const Login = () => {
     const [email, setEmail] = useState('');
@@ -17,6 +18,7 @@
 
     return (
       <div class="card">
+         <Header/>
         <h1>Login</h1>
         <form onSubmit={handleLogin}>
           <label>

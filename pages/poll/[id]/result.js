@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import Header from '../../Header';
 
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -91,6 +92,7 @@ const Result = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <Header/>
       <h1 className="text-3xl font-bold mb-4">Poll Result</h1>
 
       <h2 className="text-xl font-bold mb-2 poll-question">{pollResult.question}</h2>

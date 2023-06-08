@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Header from './Header';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -33,7 +34,9 @@ const Register = () => {
   };
 
   return (
+  
     <div class="card">
+       <Header/>
       <h1>Register</h1>
       <form onSubmit={handleRegister}>
         <label>
