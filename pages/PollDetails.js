@@ -15,6 +15,7 @@ const PollDetail = ({ id }) => {
     ],
   };
 
+  //replace with comment data logic
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([
