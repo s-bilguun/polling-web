@@ -11,16 +11,22 @@ const Header = () => {
           </div>
    
       </Link>
+      
       <nav>
         <ul>
+        <li>
+          <Link href="/poll_create"> Create poll</Link>
+        </li>
           <li>
             <Link href="/login">Login</Link>
           </li>
           <li>
             <Link href="/register">Register</Link>
           </li>
+
         </ul>
       </nav>
+      
     </header>
   );
 };
