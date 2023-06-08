@@ -160,12 +160,12 @@ button:focus {
 
 @media (prefers-color-scheme: dark) {
   .comment-form .text-input  {
-    color: #000000;
+    color: #030303;
   }
 }
 
 .comment-form button {
-  margin-top: 1rem;
+  margin-top: 0;
 }
 
 .comment-list {
@@ -184,4 +184,110 @@ button:focus {
   font-size: 0.8rem;
   color: #666;
 }
-  
+
+
+.result-buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.result-buttons button {
+  margin: 0 0.5rem;
+}
+
+.result-buttons button:first-child {
+  background-color: #4a5568;
+}
+
+.result-buttons button:first-child:hover {
+  background-color: #718096;
+}
+
+.result-buttons button:last-child {
+  background-color: #6b7280;
+}
+
+.result-buttons button:last-child:hover {
+  background-color: #718096;
+}
+/* Chart Styling */
+.apexcharts-canvas {
+  background-color: transparent;
+}
+
+.apexcharts-tooltip {
+  background-color: rgba(var(--background-start-rgb), 0.8);
+  color: rgb(var(--foreground-rgb));
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+
+
+.apexcharts-tooltip-title,
+.apexcharts-tooltip-series-group {
+  font-weight: bold;
+}
+
+.apexcharts-tooltip-y-group > .apexcharts-tooltip-series-group-value {
+  margin-left: 0.5rem;
+}
+
+.apexcharts-xaxistooltip {
+  background-color: rgba(var(--background-start-rgb), 0.8);
+  color: rgb(var(--foreground-rgb));
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.apexcharts-xaxistooltip-bottom-line {
+  background-color: rgba(var(--background-end-rgb), 0.8);
+}
+
+.apexcharts-legend {
+  background-color: rgba(var(--background-start-rgb), 0.8);
+  color: rgb(var(--foreground-rgb));
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.apexcharts-legend-text {
+  color: rgb(var(--foreground-rgb));
+}
+
+@media (prefers-color-scheme: dark) {
+  .apexcharts-legend-text {
+    color: white !important; /* Set the legend text color to white in dark mode */
+  }
+}
+
+.apexcharts-yaxis-label,
+.apexcharts-xaxis-label,
+.apexcharts-yaxis-text,
+.apexcharts-xaxis-text {
+  fill: rgb(var(--foreground-rgb));
+}
+
+.apexcharts-grid-line {
+  stroke: rgba(var(--background-end-rgb), 0.3);
+}
+
+.apexcharts-yaxistooltip {
+  background-color: rgba(var(--background-start-rgb), 0.8);
+  color: rgb(var(--foreground-rgb));
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.apexcharts-yaxistooltip-text {
+  fill: rgb(var(--foreground-rgb));
+}
+
+
+.chart-container {
+  display: flex;
+  justify-content: center;
+  gap: 5.5rem; /* Adjust the value to increase or decrease the spacing between the charts */
+}
+

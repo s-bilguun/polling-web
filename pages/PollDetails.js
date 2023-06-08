@@ -15,12 +15,12 @@ const PollDetail = ({ id }) => {
     ],
   };
 
-  //replace with comment data logic
+  // replace with comment data logic
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([
-    { username: 'John Doe', comment: 'Lorem ipsum dolor sit amet.', date_posted: '2023-06-05' },
-    { username: 'Jane Smith', comment: 'Fusce sagittis urna in diam luctus eleifend.', date_posted: '2023-06-06' },
+    { username: 'John Doe', comment: 'Lorem ipsum dolor sit amet.', datetime_posted: '2023-06-05 09:30:00' },
+    { username: 'Jane Smith', comment: 'Fusce sagittis urna in diam luctus eleifend.', datetime_posted: '2023-06-06 14:45:00' },
   ]);
 
   const handleAnswerSelection = (answerId) => {
@@ -48,7 +48,7 @@ const PollDetail = ({ id }) => {
     const newComment = {
       username: 'Current User', // Replace with the actual username of the logged-in user
       comment,
-      date_posted: new Date().toISOString().split('T')[0], // Get the current date
+      date_posted: new Date().toISOString(),
     };
 
     // Add the new comment to the comments array
@@ -61,7 +61,7 @@ const PollDetail = ({ id }) => {
   const handleViewResults = () => {
     router.push(`/poll/${id}/result`);
   };
-  
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Poll Details</h1>
@@ -95,14 +95,13 @@ const PollDetail = ({ id }) => {
           </button>
         )}
 
-         <button
-            type="button"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={handleViewResults}
-          >
-            View results
-          </button>
-
+        <button
+          type="button"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handleViewResults}
+        >
+          View results
+        </button>
       </form>
 
       <form onSubmit={handleCommentSubmit} className="comment-form">
@@ -131,7 +130,7 @@ const PollDetail = ({ id }) => {
           <div key={index} className="mb-4 comment-item">
             <div className="username font-bold">{comment.username}</div>
             <div>{comment.comment}</div>
-            <div className="date-posted text-sm text-gray-500">{comment.date_posted}</div>
+            <div className="datetime-posted text-sm text-gray-500">{comment.datetime_posted}</div>
           </div>
         ))}
       </div>
