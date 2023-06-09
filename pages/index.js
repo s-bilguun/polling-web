@@ -4,7 +4,7 @@
   import { useRouter } from 'next/router';
   import Header from './Header';
   import SearchBar from './SearchBar';
-import DropdownSort from './DropDownSort';
+  import DropdownSort from './DropdownSort';
 
   const Page = () => {
     const isLoggedIn = true; // Change this based on your authentication logic
@@ -63,11 +63,13 @@ import DropdownSort from './DropDownSort';
 
 
         <div className="poll-list">
-          <div className='second-header'>
-            <h2>Poll Feed</h2>
-            <SearchBar />
-            <p>Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} /></p>
-          </div>
+        <div className='second-header'>
+  <h2>Poll Feed</h2>
+  <SearchBar />
+  <div> {/* Change <p> to <div> */}
+    Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
+  </div>
+</div>
 
     {getPollsForPage(currentPage).map((poll) => (
       <div key={poll.id} className="poll-item">
