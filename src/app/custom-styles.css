@@ -420,6 +420,103 @@ button:focus {
   margin: 4px 0; /* Spacing between start datetime and end datetime */
 }
 
+/* second-header */
+
+.second-header{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  /* justify-content: center; */
+  /* flex-direction: column;
+  align-items: flex-end; */
+}
+/* search-bar style */
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  position: fixed;
+}
+
+.search-bar__input {
+  /* flex: 2; */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 8px;
+  font-size: 14px;
+  /* outline: none; */
+}
+
+
+.search-bar__button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: 1px solid #ccc;;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  /* outline: none; */
+}
+
+.search-bar__button:hover {
+  background-color: #0056b3;
+}
+
+
+/* DropdownSort style */
+
+.dropdown-sort {
+  display: inline-block;
+  position: relative;
+}
+
+.dropdown-sort__select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-color: rgba(35, 37, 65, 0.75);
+}
+
+.dropdown-sort__select:hover {
+  border-color: #999;
+}
+
+.dropdown-sort__select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.dropdown-sort__select::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #999;
+  pointer-events: none;
+}
+
+.dropdown-sort__select:focus::after {
+  border-top-color: #007bff;
+}
+
+.dropdown-sort__select option {
+  font-size: 14px;
+}
+
+
 /* pagination stylings */
 
 .pagination {
@@ -441,6 +538,7 @@ button:focus {
   color: #000000;
   border: 1px solid #868484; /* Add black border */
 }
+
 
 
 /* Dark mode styles */

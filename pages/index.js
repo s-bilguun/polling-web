@@ -3,6 +3,8 @@
   import Link from 'next/link';
   import { useRouter } from 'next/router';
   import Header from './Header';
+  import SearchBar from './SearchBar';
+import DropdownSort from './DropDownSort';
 
   const Page = () => {
     const isLoggedIn = true; // Change this based on your authentication logic
@@ -21,6 +23,19 @@
       { id: 12, title: 'Poll 12', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },
       
     ];
+
+    const sortOptions = [
+      { label: 'New polls', value: 'new polls' },
+      { label: 'Old polls', value: 'old polls' },
+      { label: 'A to Z', value: 'aToZ' },
+      { label: 'Z to A', value: 'zToA' },
+    ];
+  
+    const handleSort = (selectedOption) => {
+      // Perform sorting logic based on selectedOption
+      console.log('Sorting by:', selectedOption);
+    };
+
     const router = useRouter();
     const { page } = router.query;
     const currentPage = parseInt(page, 10) || 1;
@@ -48,7 +63,11 @@
 
 
         <div className="poll-list">
-    <h2>Poll Feed</h2>
+          <div className='second-header'>
+            <h2>Poll Feed</h2>
+            <SearchBar />
+            <p>Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} /></p>
+          </div>
 
     {getPollsForPage(currentPage).map((poll) => (
       <div key={poll.id} className="poll-item">
