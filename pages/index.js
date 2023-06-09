@@ -62,7 +62,7 @@
         <Header />
 
 
-        <div className="poll-list">
+   <div className="poll-list">
         <div className='second-header'>
   <h2>Poll Feed</h2>
   <SearchBar />
