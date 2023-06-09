@@ -21,7 +21,7 @@ const SearchBar = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <button type="submit" className="search-icon-button"><RiSearchLine /></button>
+      {/* <button type="submit" className="search-icon-button"><RiSearchLine /></button> */}
     </form>
   );
 };
