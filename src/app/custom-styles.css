@@ -1,20 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-start-rgb: 204, 209, 210; /* Light gray */
+  --background-end-rgb: 255, 255, 255; /* White */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 43, 48, 59; /* Dark blue */
-    --background-end-rgb: 47, 54, 90; /* Lighter blue */
+    --background-start-rgb: 28, 39, 59; /* Dark blue */
+    --background-end-rgb: 62, 87, 130; /* Lighter blue */
   }
 }
+
 
 
 body {
@@ -323,7 +323,7 @@ button:focus {
 
 .poll-list {
   display: grid;
-  margin-top: 50px; /* Adjust the margin-top value to create space below the header */
+  margin-top: 80px; /* Adjust the margin-top value to create space below the header */
   width: 100%; /* Make the poll list wider */
 }
 
@@ -408,4 +408,43 @@ button:focus {
 
 .poll-list .poll-datetime p {
   margin: 4px 0; /* Spacing between start datetime and end datetime */
+}
+
+/* pagination stylings */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #333;
+    color: #fff;
+  }
+
+  .pagination button {
+    background-color: #fff;
+    color: #333;
+  }
+
+  .pagination button.active {
+    background-color: #11038d;
+    color: #fff;
+  }
 }
