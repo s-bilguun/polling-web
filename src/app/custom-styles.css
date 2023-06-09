@@ -3,7 +3,7 @@
 @tailwind utilities;
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 204, 209, 210; /* Light gray */
+  --background-start-rgb: 191, 219, 226; /* Light blue/cyan */
   --background-end-rgb: 255, 255, 255; /* White */
 }
 
@@ -88,7 +88,7 @@ button {
 }
 
 button[type="submit"] {
-  background-color: #1d4085;
+  background-color: #204a9e;
   margin-right: 2rem;
 }
 
