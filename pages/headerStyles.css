@@ -5,7 +5,7 @@ header {
   left: 0;
   width: 100%;
   height: 80px; /* Adjust the height as per your preference */
-  background: linear-gradient(to right, #bdc2e1, #ebe0e0); /* Horizontal gradient for light mode */
+  background: linear-gradient(to right,   #b6d5fa, #93b5e4); /* Horizontal gradient for light mode */
   color: #b7dce8;
   display: flex;
   align-items: center;
@@ -29,7 +29,7 @@ a[href="/poll_create"] {
 
 @media (prefers-color-scheme: dark) {
   header {
-    background: linear-gradient(to right, #2c3b9b, #16045c);
+    background: linear-gradient(to right, #1e1361, #2b3497);
     color: #fff;
   }
   a[href="/login"] {
@@ -46,10 +46,12 @@ a[href="/poll_create"] {
   }
 }
 
+
 .logo img {
-  margin-left: 5px;
+  filter: drop-shadow(0 0 1px #000000);
+  margin-left: 10px;
   padding: 10px;
-  height: 70px; /* Adjust the height as per your preference */
+  height: 90px; /* Adjust the height as per your preference */
 }
 
 

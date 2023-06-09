@@ -10,7 +10,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 28, 39, 59; /* Dark blue */
+    --background-start-rgb: 40, 39, 59; /* Dark blue */
     --background-end-rgb: 62, 87, 130; /* Lighter blue */
   }
 }
@@ -62,10 +62,20 @@ input[type="datetime-local"]{
   padding: 0.5rem;
   margin-bottom: 1rem;
   border-radius: 0.25rem;
-  border: 1px solid #d1d5db; /* Add a border for the input fields */
+  border: 1px solid #000000; /* Add a border for the input fields */
   appearance: none; /* Added appearance property */
   background-color: rgb(var(--background-start-rgb)); /* Set the background color of the input */
   color: rgb(var(--foreground-rgb)); /* Set the color of the input text */
+}
+
+@media (prefers-color-scheme: dark) {
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="datetime-local"]{
+  border: 1px solid #d1d5db;
+}
 }
 
 button {
@@ -78,7 +88,7 @@ button {
 }
 
 button[type="submit"] {
-  background-color: #1f3a71;
+  background-color: #1d4085;
   margin-right: 2rem;
 }
 
@@ -97,7 +107,7 @@ button:focus {
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.65);
 }
 .card {
-  background-color: rgba(183, 183, 220, 0.65);
+  background-color: rgba(145, 181, 216, 0.664);
   display: inline-block;
   padding: 3rem;
   position: relative;
@@ -427,9 +437,11 @@ button:focus {
 }
 
 .pagination button.active {
-  background-color: #333;
-  color: #fff;
+  background-color: #edecec;
+  color: #000000;
+  border: 1px solid #868484; /* Add black border */
 }
+
 
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
