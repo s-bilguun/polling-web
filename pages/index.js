@@ -1,10 +1,10 @@
-// Page.js
-import React from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import Header from './Header';
-import SearchBar from './SearchBar';
-import DropdownSort from './DropDownSort';
+  // Page.js
+  import React from 'react';
+  import Link from 'next/link';
+  import { useRouter } from 'next/router';
+  import Header from './Header';
+  import SearchBar from './SearchBar';
+import DropdownSort from './DropdownSort';
 
 const Page = () => {
   const isLoggedIn = true; // Change this based on your authentication logic
@@ -64,9 +64,7 @@ const Page = () => {
           <div className='second-header'>
             <h2>Poll Feed</h2>
             <SearchBar />
-            <div> {/* Change <p> to <div> */}
-              Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
-            </div>
+            <p>Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} /></p>
           </div>
 
           {getPollsForPage(currentPage).map((poll) => (
