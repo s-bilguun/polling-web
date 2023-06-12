@@ -155,6 +155,11 @@ input:checked + .slider:before {
   --background-start-rgb: 191, 219, 226; /* Light blue/cyan */
   --background-end-rgb: 255, 255, 255;
   --header-background: linear-gradient(to right,   #b6d5fa, #93b5e4);
+  --card-background-color: rgba(145, 181, 216, 0.664);
+  --color-submit-buttom: #204a9e;
+  --color-comment-background: #c9d4e7;
+  --color-333: #fff;
+  --color-pagination-background: #edecec;
 }
 
 [data-theme='dark'] {
@@ -171,6 +176,11 @@ input:checked + .slider:before {
   --background-start-rgb: 40, 39, 59; /* Dark blue */
   --background-end-rgb: 62, 87, 130; 
   --header-background: linear-gradient(to right, #1e1361, #2b3497);
+  --card-background-color: rgba(35, 37, 65, 0.75);
+  --color-submit-buttom: #1e1361;
+  --color-comment-background: #334564;
+  --color-333: #333;
+  --color-pagination-background: #11038d;
 }
 
 body {

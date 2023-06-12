@@ -88,7 +88,7 @@ button {
 }
 
 button[type="submit"] {
-  background-color: #204a9e;
+  background-color: var(--color-submit-buttom);
   margin-right: 2rem;
 }
 
@@ -107,18 +107,12 @@ button:focus {
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.65);
 }
 .card {
-  background-color: rgba(145, 181, 216, 0.664);
+  background-color: var(--card-background-color);
   display: inline-block;
   padding: 3rem;
   position: relative;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   margin-top: 80px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .card {
-    background-color: rgba(35, 37, 65, 0.75);
-  }
 }
 
 .card::before,
@@ -173,7 +167,7 @@ button:focus {
 }
 
 .comment-container {
-  background-color: #c9d4e7;
+  background-color: var(--color-comment-background);
   padding: 20px;
   margin-top: 50px;
   border-radius: 4px;
@@ -188,7 +182,7 @@ button:focus {
   }
   .comment-container {
     
-    background-color: #334564;
+    background-color: var(--color-comment-background);
   }
 }
 
@@ -214,16 +208,14 @@ button:focus {
 
 .comment-item .datetime-posted {
   font-size: 0.8rem;
-  color: #313030;
+  color: var(--color-primary);
 }
 
 @media (prefers-color-scheme: dark) {
   .comment-item .datetime-posted {
-    color: #e1dada;
+    color: var(--color-primary);
   }
 }
-
-
 
 .result-buttons {
   margin-top: 1rem;
@@ -550,8 +542,8 @@ button:focus {
 }
 
 .pagination button.active {
-  background-color: #edecec;
-  color: #000000;
+  background-color: var(--color-pagination-background);
+  color: var(--color-primary);
   border: 1px solid #868484; /* Add black border */
 }
 
@@ -560,17 +552,17 @@ button:focus {
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #333;
-    color: #fff;
+    background-color: var(--color-333);
+    color: var(--color-primary);;
   }
 
   .pagination button {
-    background-color: #fff;
-    color: #333;
+    background-color: var(--color-primary);;
+    color: var(--color-333);
   }
 
   .pagination button.active {
-    background-color: #11038d;
-    color: #fff;
+    background-color: var(--color-pagination-background);
+    color: var(--color-primary);
   }
 }
