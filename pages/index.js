@@ -60,12 +60,16 @@ const Page = () => {
   return (
     <div>
         <Header />
-        <div className="poll-list">
-          <div className='second-header'>
-            <h2>Poll Feed</h2>
-            <SearchBar />
-            <p>Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} /></p>
-          </div>
+
+
+   <div className="poll-list">
+        <div className='second-header'>
+  <h2>Poll Feed</h2>
+  <SearchBar />
+  <div> {/* Change <p> to <div> */}
+    Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
+  </div>
+</div>
 
           {getPollsForPage(currentPage).map((poll) => (
             <div key={poll.id} className="poll-item">
