@@ -62,7 +62,7 @@ input[type="datetime-local"]{
   padding: 0.5rem;
   margin-bottom: 1rem;
   border-radius: 0.25rem;
-  border: 1px solid #000000; /* Add a border for the input fields */
+  border: 1px solid var(--color-border); /* Add a border for the input fields */
   appearance: none; /* Added appearance property */
   background-color: rgb(var(--background-start-rgb)); /* Set the background color of the input */
   color: rgb(var(--foreground-rgb)); /* Set the color of the input text */
@@ -74,7 +74,7 @@ input[type="email"],
 input[type="password"],
 input[type="date"],
 input[type="datetime-local"]{
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-border);
 }
 }
 
@@ -349,7 +349,7 @@ button:focus {
   display: flex;
   align-items: flex-start;
   padding: 16px;
-  border: 1px solid #000000; /* Border for each poll item */
+  border: 1px solid var(--color-primary); /* Border for each poll item */
   margin-bottom: 16px; /* Spacing between poll items */
 }
 
@@ -374,7 +374,7 @@ button:focus {
 
 @media (prefers-color-scheme: dark) {
   .poll-list .poll-item {
-    border-color: white; /* Border color for dark mode */
+    border-color: var(--color-primary); /* Border color for dark mode */
   }
 }
 
@@ -392,18 +392,18 @@ button:focus {
 .poll-list .poll-title-link {
   font-size: 25px;
   font-weight: bold;
-  color: black;
+  color: var(--color-primary);
 }
 
 @media (prefers-color-scheme: dark) {
   .poll-list .poll-title-link {
-    color: white;
+    color: var(--color-primary);
   }
 }
 
 .poll-list .poll-datetime {
   font-size: 12px;
-  color: #000000ab;
+  color: var(--color-poll-date);
   display: flex;
   flex-direction: column;
   align-items: flex-end; /* Align start and end datetimes to the right */
@@ -412,7 +412,7 @@ button:focus {
 
 @media (prefers-color-scheme: dark) {
   .poll-list .poll-datetime {
-    color: rgba(240, 227, 227, 0.719);
+    color: var(--color-poll-date);
   }
 }
 
@@ -436,22 +436,23 @@ button:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-direction: row;
-  position: fixed;
+  /* flex-direction: row; */
+  /* position: fixed; */
 }
 
 .search-bar__input {
   /* flex: 2; */
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid;
+  border-color: var(--color-border);
   border-radius: 4px;
   margin-right: 8px;
   font-size: 14px;
-  /* outline: none; */
+  outline: none;
+  width: max-content;
 }
 
-
-.search-bar__button {
+/* .search-bar__button {
   padding: 8px 16px;
   background-color: #007bff;
   color: #fff;
@@ -459,30 +460,37 @@ button:focus {
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
-  /* outline: none; */
+  outline: none;
 }
 
 .search-bar__button:hover {
   background-color: #0056b3;
 }
 
+@media (prefers-color-scheme: dark) {
+  .search-bar__button {
+    background-color: #fff;
+    color: #333;
+  }
+} */
+
 
 /* DropdownSort style */
 
 .dropdown-sort {
   display: inline-block;
-  position: relative;
+  /* position: relative; */
 }
 
 .dropdown-sort__select {
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #868484;
   border-radius: 4px;
   font-size: 14px;
   outline: none;
   cursor: pointer;
-  appearance: none;
-  background-color: rgba(35, 37, 65, 0.75);
+  appearance: none;    
+  background-color: var(--color-background);
 }
 
 .dropdown-sort__select:hover {
@@ -514,6 +522,14 @@ button:focus {
 
 .dropdown-sort__select option {
   font-size: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dropdown-sort__select {
+    background-color: var(--color-background);
+    color: #ccc;
+    border: 1px solid #ccc;
+  }
 }
 
 
