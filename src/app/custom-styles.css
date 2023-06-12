@@ -62,7 +62,7 @@ input[type="datetime-local"]{
   padding: 0.5rem;
   margin-bottom: 1rem;
   border-radius: 0.25rem;
-  border: 1px solid #000000; /* Add a border for the input fields */
+  border: 1px solid var(--color-border); /* Add a border for the input fields */
   appearance: none; /* Added appearance property */
   background-color: rgb(var(--background-start-rgb)); /* Set the background color of the input */
   color: rgb(var(--foreground-rgb)); /* Set the color of the input text */
@@ -74,7 +74,7 @@ input[type="email"],
 input[type="password"],
 input[type="date"],
 input[type="datetime-local"]{
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-border);
 }
 }
 
@@ -349,7 +349,7 @@ button:focus {
   display: flex;
   align-items: flex-start;
   padding: 16px;
-  border: 1px solid #000000; /* Border for each poll item */
+  border: 1px solid var(--color-primary); /* Border for each poll item */
   margin-bottom: 16px; /* Spacing between poll items */
 }
 
@@ -374,7 +374,7 @@ button:focus {
 
 @media (prefers-color-scheme: dark) {
   .poll-list .poll-item {
-    border-color: white; /* Border color for dark mode */
+    border-color: var(--color-primary); /* Border color for dark mode */
   }
 }
 
@@ -392,18 +392,18 @@ button:focus {
 .poll-list .poll-title-link {
   font-size: 25px;
   font-weight: bold;
-  color: black;
+  color: var(--color-primary);
 }
 
 @media (prefers-color-scheme: dark) {
   .poll-list .poll-title-link {
-    color: white;
+    color: var(--color-primary);
   }
 }
 
 .poll-list .poll-datetime {
   font-size: 12px;
-  color: #000000ab;
+  color: var(--color-poll-date);
   display: flex;
   flex-direction: column;
   align-items: flex-end; /* Align start and end datetimes to the right */
@@ -412,7 +412,7 @@ button:focus {
 
 @media (prefers-color-scheme: dark) {
   .poll-list .poll-datetime {
-    color: rgba(240, 227, 227, 0.719);
+    color: var(--color-poll-date);
   }
 }
 
@@ -443,7 +443,8 @@ button:focus {
 .search-bar__input {
   /* flex: 2; */
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid;
+  border-color: var(--color-border);
   border-radius: 4px;
   margin-right: 8px;
   font-size: 14px;
@@ -489,7 +490,7 @@ button:focus {
   outline: none;
   cursor: pointer;
   appearance: none;    
-  background-color: #edecec;
+  background-color: var(--color-background);
 }
 
 .dropdown-sort__select:hover {
@@ -525,7 +526,7 @@ button:focus {
 
 @media (prefers-color-scheme: dark) {
   .dropdown-sort__select {
-    background-color: rgba(35, 37, 65, 0.75);
+    background-color: var(--color-background);
     color: #ccc;
     border: 1px solid #ccc;
   }

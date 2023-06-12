@@ -59,46 +59,46 @@ const Page = () => {
 
   return (
     <div>
-      <Header />
-      <div className="poll-list">
-        <div className='second-header'>
-          <h2>Poll Feed</h2>
-          <SearchBar />
-          <div> {/* Change <p> to <div> */}
-            Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
+        <Header />
+        <div className="poll-list">
+          <div className='second-header'>
+            <h2>Poll Feed</h2>
+            <SearchBar />
+            <div> {/* Change <p> to <div> */}
+              Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
+            </div>
           </div>
-        </div>
 
-        {getPollsForPage(currentPage).map((poll) => (
-          <div key={poll.id} className="poll-item">
-            <div className="poll-details">
-              <div className="poll-username">Username: {poll.username}</div>
-              <div className="poll-title-link">
-                <Link href={`/poll/${poll.id}`} passHref>
-                  {poll.title}
-                </Link>
+          {getPollsForPage(currentPage).map((poll) => (
+            <div key={poll.id} className="poll-item">
+              <div className="poll-details">
+                <div className="poll-username">Username: {poll.username}</div>
+                <div className="poll-title-link">
+                  <Link href={`/poll/${poll.id}`} passHref>
+                    {poll.title}
+                  </Link>
+                </div>
+              </div>
+              <div className="poll-datetime ">
+                <p>Start Datetime: {poll.startDatetime}</p>
+                <p>End Datetime: {poll.endDatetime}</p>
               </div>
             </div>
-            <div className="poll-datetime">
-              <p>Start Datetime: {poll.startDatetime}</p>
-              <p>End Datetime: {poll.endDatetime}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-    {/* Pagination links */}
-      <div className="pagination">
-        {pageNumbers.map((pageNumber) => (
-          <button
-            key={pageNumber}
-            onClick={() => handlePageChange(pageNumber)}
-            className={pageNumber === currentPage ? 'active' : ''}
-          >
-            {pageNumber}
-          </button>
-        ))}
-      </div>
+      {/* Pagination links */}
+        <div className="pagination">
+          {pageNumbers.map((pageNumber) => (
+            <button
+              key={pageNumber}
+              onClick={() => handlePageChange(pageNumber)}
+              className={pageNumber === currentPage ? 'active' : ''}
+            >
+              {pageNumber}
+            </button>
+          ))}
+        </div>
     </div>
   );
 };
