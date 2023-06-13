@@ -14,44 +14,47 @@ const Header = () => {
   };
 
   useEffect(() => {
+    // Get the dark theme preference from localStorage
+    const storedTheme = window.localStorage.getItem('theme');
+    if (storedTheme === 'dark') {
+      setDarkTheme(true);
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      setDarkTheme(false);
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }, []);
+
+  useEffect(() => {
     if (darkTheme !== undefined) {
       if (darkTheme) {
-        // Set value of  darkmode to dark
+        // Set value of darkmode to dark
         document.documentElement.setAttribute('data-theme', 'dark');
         window.localStorage.setItem('theme', 'dark');
       } else {
-        // Set value of  darkmode to light
+        // Set value of darkmode to light
         document.documentElement.removeAttribute('data-theme');
         window.localStorage.setItem('theme', 'light');
       }
     }
   }, [darkTheme]);
 
-  useEffect(() => {
-    const root = window.document.documentElement;
-    const initialColorValue = root.style.getPropertyValue(
-      '--initial-color-mode'
-    );
-    // Set initial darkmode to light
-    setDarkTheme(initialColorValue === 'dark');
-  }, []);
-
   return (
     <header>
-      <Link href="/" >
-          <div className="logo">
+      <Link href="/">
+        <div className="logo">
           <img src="/Logo2.png" alt="Logo" />
-          </div>
+        </div>
       </Link>
       <nav>
         <ul>
           <li>
             <div>
-              <FontAwesomeIcon icon={faMoon} style={{marginRight: 12}}/>
-              <FontAwesomeIcon icon={faSun}/>
+              <FontAwesomeIcon icon={faMoon} style={{ marginRight: 12 }} />
+              <FontAwesomeIcon icon={faSun} />
               {darkTheme !== undefined && (
                 <form action="#">
-                  <label className="switch" style={{}}>
+                  <label className="switch">
                     <input
                       type="checkbox"
                       checked={darkTheme}
@@ -64,7 +67,7 @@ const Header = () => {
             </div>
           </li>
           <li>
-            <Link href="/poll_create"> Create poll</Link>
+            <Link href="/poll_create">Create poll</Link>
           </li>
           <li>
             <Link href="/login">Login</Link>
@@ -74,7 +77,6 @@ const Header = () => {
           </li>
         </ul>
       </nav>
-      
     </header>
   );
 };

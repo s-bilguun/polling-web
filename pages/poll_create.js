@@ -43,7 +43,7 @@ const AddPoll = () => {
     setChoices(['', '']);
 
     // Go back to the index page
-    router.back();
+    router.push('/');
   };
 
   return (
