@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react"; 
 import Header from "./Header";
 import axios from "axios";
 import { useRouter } from "next/router";
-  const Login = () => {
+import { AuthContext } from './AuthContext'; 
+
+
+const Login = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login } = useContext(AuthContext);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -21,9 +25,9 @@ import { useRouter } from "next/router";
         password: password,
       },
     })
-      // Handle the response from backend here
+      // Handle the response from the backend here
       .then((res) => {
-        console.log("connected to pollweb 2023");
+        console.log("Connected to pollweb 2023");
         router.push("/");
         console.log(res);
       })
@@ -39,7 +43,7 @@ import { useRouter } from "next/router";
   };
 
   return (
-    <div class="card">
+    <div className="card"> {/* Use className instead of class */}
       <Header />
       <h1>Login</h1>
       <form onSubmit={handleLogin}>
