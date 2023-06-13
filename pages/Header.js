@@ -7,23 +7,30 @@ import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { faSun } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
-  const [darkTheme, setDarkTheme] = useState(undefined);
+  const [darkTheme, setDarkTheme] = useState(false);
 
-  const handleToggle = (event) => {
-    setDarkTheme(event.target.checked);
+  const handleToggle = () => {
+    setDarkTheme(!darkTheme);
   };
 
   useEffect(() => {
-    if (darkTheme !== undefined) {
-      if (darkTheme) {
-        // Set value of  darkmode to dark
-        document.documentElement.setAttribute('data-theme', 'dark');
-        window.localStorage.setItem('theme', 'dark');
-      } else {
-        // Set value of  darkmode to light
-        document.documentElement.removeAttribute('data-theme');
-        window.localStorage.setItem('theme', 'light');
-      }
+    const storedTheme = window.localStorage.getItem('theme');
+    if (storedTheme === 'dark') {
+      setDarkTheme(true);
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      setDarkTheme(false);
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (darkTheme) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      window.localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      window.localStorage.setItem('theme', 'light');
     }
   }, [darkTheme]);
 
@@ -46,21 +53,12 @@ const Header = () => {
       <nav>
         <ul>
           <li>
-            <div>
-              <FontAwesomeIcon icon={faMoon} style={{marginRight: 12}}/>
-              <FontAwesomeIcon icon={faSun}/>
-              {darkTheme !== undefined && (
-                <form action="#">
-                  <label className="switch" style={{}}>
-                    <input
-                      type="checkbox"
-                      checked={darkTheme}
-                      onChange={handleToggle}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </form>
-              )}
+            <div className="toggle-container">
+              <FontAwesomeIcon
+                icon={darkTheme ? faMoon : faSun}
+                className={`toggle-icon ${darkTheme ? 'moon' : 'sun'}`}
+                onClick={handleToggle}
+              />
             </div>
           </li>
           <li>
