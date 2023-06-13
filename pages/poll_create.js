@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import Header from './Header';
 
 const AddPoll = () => {
@@ -16,6 +17,8 @@ const AddPoll = () => {
     updatedChoices[index] = value;
     setChoices(updatedChoices);
   };
+
+  const router = useRouter();
 
   const handlePollSubmit = (e) => {
     e.preventDefault();
@@ -38,6 +41,9 @@ const AddPoll = () => {
     setStartDateTime('');
     setEndDateTime('');
     setChoices(['', '']);
+
+    // Go back to the index page
+    router.back();
   };
 
   return (

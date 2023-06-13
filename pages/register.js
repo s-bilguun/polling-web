@@ -1,47 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
-import axios from "axios";
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
-  const Register = () => {
+const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [birthday, setBirthday] = useState('');
   const [darkMode, setDarkMode] = useState(false);
 
+  const router = useRouter();
+
   const handleRegister = (e) => {
     e.preventDefault();
     // TODO: Add your registration logic here
 
     axios({
-      url: "http://localhost:8001/user/createUser",
-      method: "POST",
+      url: 'http://localhost:8001/user/createUser',
+      method: 'POST',
       headers: {},
       // Attaching the form data
       data: {
         email: email,
         username: username,
         password: password,
-        birthdate: birthdate,
+        birthday: birthday,
       },
     })
       .then((res) => {
-        //console.log(data)
         console.log(res);
+        router.push('/');
       })
       .catch((err) => {
         console.log(err);
       });
-    console.log("Registration submitted:", {
+
+    console.log('Registration submitted:', {
       email,
       username,
       password,
-      birthdate,
+      birthday,
     });
     // Reset the form
     setEmail('');
     setUsername('');
-
     setPassword('');
     setBirthday('');
   };
@@ -59,8 +62,8 @@ import axios from "axios";
   };
 
   return (
-    <div class="card">
-       <Header/>
+    <div className="card">
+      <Header />
       <h1>Register</h1>
       <form onSubmit={handleRegister}>
         <label>
@@ -73,14 +76,14 @@ import axios from "axios";
           />
         </label>
         <label>
-    Username:
-    <input
-      type="text"
-      value={username}
-      onChange={(e) => setUsername(e.target.value)}
-      required
-    />
-  </label>
+          Username:
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </label>
         <label>
           Password:
           <input
