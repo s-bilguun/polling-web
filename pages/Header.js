@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import './headerStyles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { faSun } from "@fortawesome/free-solid-svg-icons";
+import { AuthContext } from './AuthContext';
 
 const Header = () => {
   const [darkTheme, setDarkTheme] = useState(false);
+  const { isLoggedIn, logout } = useContext(AuthContext);
 
   const handleToggle = () => {
     setDarkTheme(!darkTheme);
@@ -45,10 +47,10 @@ const Header = () => {
 
   return (
     <header>
-      <Link href="/" >
-          <div className="logo">
+      <Link href="/">
+        <div className="logo">
           <img src="/Logo2.png" alt="Logo" />
-          </div>
+        </div>
       </Link>
       <nav>
         <ul>
@@ -62,17 +64,24 @@ const Header = () => {
             </div>
           </li>
           <li>
-            <Link href="/poll_create"> Create poll</Link>
+            <Link href="/poll_create">Create poll</Link>
           </li>
-          <li>
-            <Link href="/login">Login</Link>
-          </li>
-          <li>
-            <Link href="/register">Register</Link>
-          </li>
+          {isLoggedIn ? (
+            <li>
+              <button onClick={logout}>Logout</button>
+            </li>
+          ) : (
+            <>
+              <li>
+                <Link href="/login">Login</Link>
+              </li>
+              <li>
+                <Link href="/register">Register</Link>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
-      
     </header>
   );
 };
