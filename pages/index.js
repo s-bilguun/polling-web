@@ -1,21 +1,21 @@
-  // Page.js
-  import React from 'react';
-  import Link from 'next/link';
-  import { useRouter } from 'next/router';
-  import Header from './Header';
-  import SearchBar from './SearchBar';
+// Page.js
+import React from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import Header from './Header';
+import SearchBar from './SearchBar';
 import DropdownSort from './DropdownSort';
 
 const Page = () => {
   const isLoggedIn = true; // Change this based on your authentication logic
   const polls = [
     { id: 1, title: 'Таны дуртай өнгө юу вэ?', username: 'User 1', startDatetime: '2023-06-06 05:12:00', endDatetime: '2023-06-10 05:12:00' },
-    { id: 2, title: 'Poll 2', username: 'User 2', startDatetime: '2023-06-07 05:12:00', endDatetime: '023-06-11 05:12:00' },
-    { id: 3, title: 'Poll 3', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },
-    { id: 4, title: 'Poll 4', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },
-    { id: 5, title: 'Poll 5', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },
-    { id: 6, title: 'Poll 6', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },
-    { id: 7, title: 'Poll 7', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },
+    { id: 2, title: 'Чи юунаас хамгийн их айдаг вэ?', username: 'User 2', startDatetime: '2023-06-07 05:12:00', endDatetime: '023-06-11 05:12:00' },
+    { id: 3, title: 'Өнөө орой яахийй ?', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },
+    { id: 4, title: 'Таны дуртай хоол юу вэ?', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },
+    { id: 5, title: 'Та ямар утас барьдаг вэ?', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },
+    { id: 6, title: 'Пиззанд дуртай юу?', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },
+    { id: 7, title: 'Өглөө хэдэн цагт босч байна вэ?', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },
     { id: 8, title: 'Poll 8', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },
     { id: 9, title: 'Poll 9', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },
     { id: 10, title: 'Poll 10', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },

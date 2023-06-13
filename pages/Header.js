@@ -2,6 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import './headerStyles.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoon } from "@fortawesome/free-solid-svg-icons";
+import { faSun } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
   const [darkTheme, setDarkTheme] = useState(undefined);
@@ -44,6 +47,8 @@ const Header = () => {
         <ul>
           <li>
             <div>
+              <FontAwesomeIcon icon={faMoon} style={{marginRight: 12}}/>
+              <FontAwesomeIcon icon={faSun}/>
               {darkTheme !== undefined && (
                 <form action="#">
                   <label className="switch" style={{}}>

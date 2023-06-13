@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
+import axios from "axios";
 
-const Register = () => {
+  const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,7 +13,31 @@ const Register = () => {
     e.preventDefault();
     // TODO: Add your registration logic here
 
-    console.log('Registration submitted:', { email,username,  password, birthday });
+    axios({
+      url: "http://localhost:8001/user/createUser",
+      method: "POST",
+      headers: {},
+      // Attaching the form data
+      data: {
+        email: email,
+        username: username,
+        password: password,
+        birthdate: birthdate,
+      },
+    })
+      .then((res) => {
+        //console.log(data)
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log("Registration submitted:", {
+      email,
+      username,
+      password,
+      birthdate,
+    });
     // Reset the form
     setEmail('');
     setUsername('');
@@ -34,7 +59,6 @@ const Register = () => {
   };
 
   return (
-  
     <div class="card">
        <Header/>
       <h1>Register</h1>
