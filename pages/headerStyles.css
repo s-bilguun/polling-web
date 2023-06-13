@@ -81,64 +81,47 @@ nav ul li a:hover {
 
 
 /* mode switch */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 24px;
+.toggle-container {
+  display: flex;
+  align-items: center;
 }
 
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
+.toggle-icon {
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
 }
 
-.slider:before {
-  position: absolute;
-  content: '';
-  height: 16px;
-  width: 16px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+.toggle-icon.sun {
+  color: #fdd835;
+  font-size: 1.5rem; /* Set the color for the sun icon */
 }
 
-input:checked + .slider {
-  background-color: #0b0f0a;
+.toggle-icon.moon {
+  color: #3f51b5;
+  font-size: 1.5rem; /* Set the color for the moon icon */
 }
 
-input:focus + .slider {
-  box-shadow: 0 0 2px #99a598;
+.toggle-icon.sun:hover,
+.toggle-icon.moon:hover {
+  opacity: 0.8; /* Set the opacity when hovering over the icons */
 }
 
-input:checked + .slider:before {
-  -webkit-transform: translateX(16px);
-  -ms-transform: translateX(16px);
-  transform: translateX(16px);
+.toggle-icon.sun:before,
+.toggle-icon.moon:before {
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 20px;
 }
 
-.slider {
-  border-radius: 34px;
+.toggle-icon.sun:before {
+  content: '\f185'; /* Set the content to the sun icon's unicode */
+  font-family: 'Font Awesome 5 Free';
 }
 
-.slider:before {
-  border-radius: 50%;
+.toggle-icon.moon:before {
+  content: '\f186'; /* Set the content to the moon icon's unicode */
+  font-family: 'Font Awesome 5 Free';
 }
+
 
 /* declaring the css variables colors */
 :root {
