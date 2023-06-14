@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Header from './Header';
 
-const PollDetail = ({ id }) => {
+const PollDetail = ({ pollid }) => {
   const router = useRouter();
 
   // Replace with your poll data logic
   const poll = {
-    id,
+    pollid,
     question: 'What is your favorite color?',
     answers: [
-      { id: 1, text: 'Red' },
-      { id: 2, text: 'Blue' },
-      { id: 3, text: 'Green' },
+      { pollid: 1, text: 'Red' },
+      { pollid: 2, text: 'Blue' },
+      { pollid: 3, text: 'Green' },
     ],
   };
 

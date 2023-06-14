@@ -1,15 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import './headerStyles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { faSun } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from './AuthContext';
 
-const Header = () => {
+const Header = ({ }) => {
+  
   const [darkTheme, setDarkTheme] = useState(false);
-  const { isLoggedIn, logout } = useContext(AuthContext);
+
+  const { user, logout } = useContext(AuthContext);
+  const isLoggedIn = user !== null;
 
   const handleToggle = () => {
     setDarkTheme(!darkTheme);
@@ -68,7 +70,7 @@ const Header = () => {
           </li>
           {isLoggedIn ? (
             <li>
-              <button onClick={logout}>Logout</button>
+              <button className='logout-button' onClick={() => logout()}>Logout</button>
             </li>
           ) : (
             <>

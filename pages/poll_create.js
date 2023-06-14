@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Header from './Header';
+import axios from 'axios';
 
 const AddPoll = () => {
   const [question, setQuestion] = useState('');
@@ -20,35 +21,44 @@ const AddPoll = () => {
 
   const router = useRouter();
 
-  const handlePollSubmit = (e) => {
+  const handlePollSubmit = async (e) => {
     e.preventDefault();
+    axios({
+      url: 'http://localhost:8001/poll/createPoll',
+      method: 'POST',
+      headers: {},
+      // Attaching the form data
+      data: {
+        question:question,
+        startdate:startDateTime,
+        expiredate:endDateTime,
+        answer:choices,
+      },
+    }).then((res) => {
+      console.log(res);
+      router.push('/');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
     // Format the date and time strings
     const startDateTimeFormatted = `${startDateTime}:00`;
     const endDateTimeFormatted = `${endDateTime}:00`;
+      // Submit the poll data to the backend
+      // Reset the form
+      setQuestion('');
+      setStartDateTime('');
+      setEndDateTime('');
+      setChoices(['', '']);
 
-    // Validate and submit the poll data to the backend
-    // TODO: backend connect
-    console.log('Poll submitted:', {
-      question,
-      startDateTime: startDateTimeFormatted,
-      endDateTime: endDateTimeFormatted,
-      choices,
-    });
-
-    // Reset the form
-    setQuestion('');
-    setStartDateTime('');
-    setEndDateTime('');
-    setChoices(['', '']);
-
-    // Go back to the index page
-    router.push('/');
+      // Go back to the index page or any other desired page
+      //router.push('/');
   };
 
   return (
-    <div class="card">
-      <Header/>
+    <div className="card">
+      <Header />
       <h1>Add Poll</h1>
       <form onSubmit={handlePollSubmit}>
         <label>
@@ -78,7 +88,6 @@ const AddPoll = () => {
             required
           />
         </label>
-        
         <label>
           Choices:
           {choices.map((choice, index) => (
@@ -95,7 +104,7 @@ const AddPoll = () => {
             Add Choice
           </button>
         </label>
-        <button type="submit">Submit</button>
+        <button type="submit" onClick={handlePollSubmit}>Submit</button>
       </form>
     </div>
   );

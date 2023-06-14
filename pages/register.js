@@ -9,18 +9,17 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [birthdate, setBirthdate] = useState('');
   const [darkMode, setDarkMode] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(''); // State variable for error message
 
   const router = useRouter();
 
   const handleRegister = (e) => {
     e.preventDefault();
-    // TODO: Add your registration logic here
 
     axios({
       url: 'http://localhost:8001/user/createUser',
       method: 'POST',
       headers: {},
-      // Attaching the form data
       data: {
         email: email,
         username: username,
@@ -33,6 +32,7 @@ const Register = () => {
         router.push('/');
       })
       .catch((err) => {
+        setErrorMessage('Registration failed.'); // Set error message
         console.log(err);
       });
 
@@ -42,7 +42,7 @@ const Register = () => {
       password,
       birthdate,
     });
-    // Reset the form
+
     setEmail('');
     setUsername('');
     setPassword('');
@@ -102,15 +102,8 @@ const Register = () => {
             required
           />
         </label>
-        <button onClick={handleRegister} type="submit">Register</button>
+        <button type="submit">Register</button>
       </form>
-      {/* <button className="toggle-btn" onClick={handleDarkModeToggle}>
-        {darkMode ? (
-          <img src="/light-logo.svg" alt="Light Mode" />
-        ) : (
-          <img src="/dark-logo.svg" alt="Dark Mode" />
-        )}
-      </button> */}
     </div>
   );
 };

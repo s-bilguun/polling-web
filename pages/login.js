@@ -1,49 +1,45 @@
-import React, { useState, useContext } from "react"; 
+import React, { useState, useContext } from "react";
 import Header from "./Header";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { AuthContext } from './AuthContext'; 
 
-
 const Login = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // State variable for error message
   const { login } = useContext(AuthContext);
 
   const handleLogin = (e) => {
     e.preventDefault();
     axios({
-      // Endpoint to send files
       url: "http://localhost:8001/auth/login",
       method: "POST",
       headers: {},
-
-      // Attaching the form data
       data: {
         email: email,
         password: password,
       },
     })
-      // Handle the response from the backend here
       .then((res) => {
         console.log("Connected to pollweb 2023");
+        login(res.data.token); // call the login function from AuthContext
         router.push("/");
         console.log(res);
       })
       .catch((err) => {
-        router.push("/");
+        setErrorMessage("Login failed. Please check email or password"); // Set error message
         console.log(err);
       });
 
     console.log("Login submitted:", { email, password });
-    // Reset the form
     setEmail("");
     setPassword("");
   };
 
   return (
-    <div className="card"> {/* Use className instead of class */}
+    <div className="card">
       <Header />
       <h1>Login</h1>
       <form onSubmit={handleLogin}>
@@ -68,6 +64,7 @@ const Login = () => {
         <button onClick={handleLogin} type="submit">
           Login
         </button>
+        {errorMessage && <p>{errorMessage}</p>} {/* Render error message */}
       </form>
     </div>
   );
