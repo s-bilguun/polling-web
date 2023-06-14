@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Link from 'next/link';
 import './headerStyles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,8 +6,8 @@ import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { faSun } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from './AuthContext';
 
-const Header = ({ }) => {
-  
+const Header = () => {
+
   const [darkTheme, setDarkTheme] = useState(false);
 
   const { user, logout } = useContext(AuthContext);
@@ -37,15 +37,6 @@ const Header = ({ }) => {
       window.localStorage.setItem('theme', 'light');
     }
   }, [darkTheme]);
-
-  useEffect(() => {
-    const root = window.document.documentElement;
-    const initialColorValue = root.style.getPropertyValue(
-      '--initial-color-mode'
-    );
-    // Set initial darkmode to light
-    setDarkTheme(initialColorValue === 'dark');
-  }, []);
 
   return (
     <header>

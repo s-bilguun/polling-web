@@ -26,6 +26,8 @@ const PollDetail = ({ pollid }) => {
   const [comments, setComments] = useState([
     { username: 'John Doe', comment: 'Lorem ipsum dolor sit amet.', datetime_posted: '2023-06-05 09:30:00' },
     { username: 'Jane Smith', comment: 'Fusce sagittis urna in diam luctus eleifend.', datetime_posted: '2023-06-06 14:45:00' },
+    
+    
   ]);
 
   const handleAnswerSelection = (answerId) => {
