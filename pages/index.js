@@ -1,5 +1,5 @@
 // Page.js
-import React from 'react';
+import React, {useState} from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Header from './Header';
@@ -23,6 +23,37 @@ const Page = () => {
     { id: 12, title: 'Poll 12', username: 'User 3', startDatetime: '2023-06-08 05:12:00', endDatetime: '2023-06-12 05:12:00' },
     
   ];
+
+
+  const [pollData, setPollData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handlePoll = (e) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+
+    axios
+      .get("http://localhost:8001/poll/list", {
+        params: {
+          id: 1, // replace with the actual value
+          userid: 1, // replace with the actual value
+          tquestion: "Sample question", // replace with the actual value
+          startDatetime: "2023-06-14", // replace with the actual value
+          endDatetime: "2023-06-14", // replace with the actual value
+        },
+      })
+      .then((res) => {
+        setPollData(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
+
 
   const sortOptions = [
     { label: 'New polls', value: 'new polls' },
@@ -64,12 +95,31 @@ const Page = () => {
 
    <div className="poll-list">
         <div className='second-header'>
-  <h2>Poll Feed</h2>
-  <SearchBar />
-  <div> {/* Change <p> to <div> */}
-    Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
-  </div>
-</div>
+          <h2>Poll Feed</h2>
+          <SearchBar />
+          <div> {/* Change <p> to <div> */}
+            Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
+          </div>
+        </div>
+
+        <div>
+          <form onSubmit={handlePoll}>
+            <button type="submit">Fetch Poll</button>
+          </form>
+
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            <div>
+              {/* Render the received pollData */}
+              <p>ID: {pollData.id}</p>
+              <p>User ID: {pollData.userid}</p>
+              <p>Question: {pollData.tquestion}</p>
+              <p>Start Date Time: {pollData.startDatetime}</p>
+              <p>End Date Time: {pollData.endDatetime}</p>
+            </div>
+          )}
+          </div>
 
           {getPollsForPage(currentPage).map((poll) => (
             <div key={poll.id} className="poll-item">

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { AuthContext } from './AuthContext';
 
 const AddPoll = () => {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
 
   const [question, setQuestion] = useState('');
   const [startDateTime, setStartDateTime] = useState(new Date().toISOString().slice(0, -8)); // Set default to current time
@@ -42,7 +42,7 @@ const AddPoll = () => {
       const response = await axios.post(
         'http://localhost:8001/poll/createPoll',
         {
-          question,
+          question: question,
           startdate: startDateTimeFormatted,
           expiredate: endDateTimeFormatted,
           answer: choices,
