@@ -1,54 +1,50 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Header from './Header';
+import axios from 'axios';
 
 const AddPoll = () => {
   const [question, setQuestion] = useState('');
   const [startDateTime, setStartDateTime] = useState('');
   const [endDateTime, setEndDateTime] = useState('');
-  const [choices, setChoices] = useState(['', '']);
-
-  const handleAddChoice = () => {
-    setChoices([...choices, '']);
-  };
-
-  const handleChoiceChange = (index, value) => {
-    const updatedChoices = [...choices];
-    updatedChoices[index] = value;
-    setChoices(updatedChoices);
-  };
 
   const router = useRouter();
 
-  const handlePollSubmit = (e) => {
+  const handlePollSubmit = async (e) => {
     e.preventDefault();
 
     // Format the date and time strings
     const startDateTimeFormatted = `${startDateTime}:00`;
     const endDateTimeFormatted = `${endDateTime}:00`;
 
-    // Validate and submit the poll data to the backend
-    // TODO: backend connect
-    console.log('Poll submitted:', {
-      question,
-      startDateTime: startDateTimeFormatted,
-      endDateTime: endDateTimeFormatted,
-      choices,
-    });
+    try {
+      // Submit the poll data to the backend
+      const response = await axios.post('http://localhost:8001/polls', {
+        question,
+        startdate: startDateTimeFormatted,
+        expiredate: endDateTimeFormatted,
+      });
+      const { pollid } = response.data; // Assuming the response contains the poll ID
 
-    // Reset the form
-    setQuestion('');
-    setStartDateTime('');
-    setEndDateTime('');
-    setChoices(['', '']);
+      // Reset the form
+      setQuestion('');
+      setStartDateTime('');
+      setEndDateTime('');
 
-    // Go back to the index page
-    router.push('/');
+      // Navigate to the PollChoices component and pass the poll ID
+      router.push({
+        pathname: '/poll_choices',
+        query: { pollid
+         },
+      });
+    } catch (error) {
+      console.log('Error submitting poll:', error);
+    }
   };
 
   return (
-    <div class="card">
-      <Header/>
+    <div className="card">
+      <Header />
       <h1>Add Poll</h1>
       <form onSubmit={handlePollSubmit}>
         <label>
@@ -78,24 +74,7 @@ const AddPoll = () => {
             required
           />
         </label>
-        
-        <label>
-          Choices:
-          {choices.map((choice, index) => (
-            <div key={index}>
-              <input
-                type="text"
-                value={choice}
-                onChange={(e) => handleChoiceChange(index, e.target.value)}
-                required
-              />
-            </div>
-          ))}
-          <button type="button" onClick={handleAddChoice}>
-            Add Choice
-          </button>
-        </label>
-        <button type="submit">Submit</button>
+        <button type="submit">Next</button>
       </form>
     </div>
   );
