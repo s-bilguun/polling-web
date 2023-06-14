@@ -7,7 +7,7 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [birthday, setBirthday] = useState('');
+  const [birthdate, setBirthdate] = useState('');
   const [darkMode, setDarkMode] = useState(false);
 
   const router = useRouter();
@@ -25,7 +25,7 @@ const Register = () => {
         email: email,
         username: username,
         password: password,
-        birthday: birthday,
+        birthdate: birthdate,
       },
     })
       .then((res) => {
@@ -40,13 +40,13 @@ const Register = () => {
       email,
       username,
       password,
-      birthday,
+      birthdate,
     });
     // Reset the form
     setEmail('');
     setUsername('');
     setPassword('');
-    setBirthday('');
+    setBirthdate('');
   };
 
   useEffect(() => {
@@ -94,15 +94,15 @@ const Register = () => {
           />
         </label>
         <label>
-          Birthday:
+          Birthdate:
           <input
             type="date"
-            value={birthday}
-            onChange={(e) => setBirthday(e.target.value)}
+            value={birthdate}
+            onChange={(e) => setBirthdate(e.target.value)}
             required
           />
         </label>
-        <button type="submit">Register</button>
+        <button onClick={handleRegister} type="submit">Register</button>
       </form>
       {/* <button className="toggle-btn" onClick={handleDarkModeToggle}>
         {darkMode ? (
