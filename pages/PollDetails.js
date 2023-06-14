@@ -75,7 +75,7 @@ const PollDetail = ({ pollid }) => {
   };
 
   const handleViewResults = () => {
-    router.push(`/poll/${id}/result`);
+    router.push(`/poll/${pollid}/result`);
   };
 
   return (

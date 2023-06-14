@@ -5,7 +5,7 @@ import axios from 'axios';
 import { AuthContext } from './AuthContext';
 
 const AddPoll = () => {
-  const { user } = useContext(AuthContext);
+  const { user ,setUser} = useContext(AuthContext);
 
   const [question, setQuestion] = useState('');
   const [startDateTime, setStartDateTime] = useState(new Date().toISOString().slice(0, -8)); // Set default to current time
@@ -33,22 +33,27 @@ const AddPoll = () => {
 
     try {
       // Submit the poll data to the backend
-      const response = await axios.post('http://localhost:8001/polls', {
+      const response = await axios.post('http://localhost:8001/poll/createPoll', {
+        // userid: user.id,
         question,
         startdate: startDateTimeFormatted,
         expiredate: endDateTimeFormatted,
-        choices,
+        answer: choices,
       },   {headers: {
         'Authorization': `Bearer ${user.token}`,
       },
     });
+
+    
       
       // Reset the form
       setQuestion('');
       setStartDateTime('');
       setEndDateTime('');
       setChoices(['', '']);
-
+      console.log('User:', user);
+      console.log('User ID:', user.id);
+      
       // Go back to the index page or any other desired page
       router.push('/');
     } catch (error) {
