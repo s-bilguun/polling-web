@@ -23,29 +23,20 @@ const AddPoll = () => {
 
   const handlePollSubmit = async (e) => {
     e.preventDefault();
-    axios({
-      url: 'http://localhost:8001/poll/createPoll',
-      method: 'POST',
-      headers: {},
-      // Attaching the form data
-      data: {
-        question:question,
-        startdate:startDateTime,
-        expiredate:endDateTime,
-        answer:choices,
-      },
-    }).then((res) => {
-      console.log(res);
-      router.push('/');
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 
     // Format the date and time strings
     const startDateTimeFormatted = `${startDateTime}:00`;
     const endDateTimeFormatted = `${endDateTime}:00`;
+
+    try {
       // Submit the poll data to the backend
+      const response = await axios.post('http://localhost:8001/polls', {
+        question,
+        startdate: startDateTimeFormatted,
+        expiredate: endDateTimeFormatted,
+        choices,
+      });
+      
       // Reset the form
       setQuestion('');
       setStartDateTime('');
@@ -53,7 +44,10 @@ const AddPoll = () => {
       setChoices(['', '']);
 
       // Go back to the index page or any other desired page
-      //router.push('/');
+      router.push('/');
+    } catch (error) {
+      console.log('Error submitting poll:', error);
+    }
   };
 
   return (
@@ -104,7 +98,7 @@ const AddPoll = () => {
             Add Choice
           </button>
         </label>
-        <button type="submit" onClick={handlePollSubmit}>Submit</button>
+        <button type="submit">Submit</button>
       </form>
     </div>
   );
