@@ -170,8 +170,16 @@ nav ul li a:hover {
 .logout-button {
   background-color: transparent;
   color: var(--color-dark);
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  cursor: pointer;
 }
 
+.logout-button:hover {
+  text-decoration: underline;
+  background-color: transparent;
+}
 
 body {
   background-color: var(--color-background);

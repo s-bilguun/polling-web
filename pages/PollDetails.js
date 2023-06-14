@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 import Header from './Header';
+import { AuthContext } from './AuthContext';
 
 const PollDetail = ({ pollid }) => {
+  const { user } = useContext(AuthContext);
+
   const router = useRouter();
 
-  // Replace with your poll data logic
+  // replace. just example
   const poll = {
     pollid,
     question: 'What is your favorite color?',
@@ -32,17 +36,21 @@ const PollDetail = ({ pollid }) => {
     setComment(e.target.value);
   };
 
-  const handleAnswerSubmit = (e) => {
+  const handleAnswerSubmit = async  (e) => {
     e.preventDefault();
 
-    // Perform the logic to submit the poll answer
-    // ...
+    await axios.post(`http://localhost:8001/polls/${pollid}/answer`, {
+      answerId: selectedAnswer,
+    }, {
+      headers: {
+        'Authorization': `Bearer ${user.token}`,
+      },
+    });
 
-    // Reset the selected answer
     setSelectedAnswer('');
   };
 
-  const handleCommentSubmit = (e) => {
+  const handleCommentSubmit = async  (e) => {
     e.preventDefault();
 
     // Create a new comment object
@@ -52,7 +60,14 @@ const PollDetail = ({ pollid }) => {
       date_posted: new Date().toISOString(),
     };
 
-    // Add the new comment to the comments array
+     await axios.post(`http://localhost:8001/polls/${pollid}/comments`, {
+      comment: newComment,
+    }, {
+      headers: {
+        'Authorization': `Bearer ${user.token}`,
+      },
+    });
+
     setComments([...comments, newComment]);
 
     // Reset the comment input

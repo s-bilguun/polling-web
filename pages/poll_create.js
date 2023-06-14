@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Header from './Header';
 import axios from 'axios';
+import { AuthContext } from './AuthContext';
 
 const AddPoll = () => {
+  const { user } = useContext(AuthContext);
+
   const [question, setQuestion] = useState('');
   const [startDateTime, setStartDateTime] = useState('');
   const [endDateTime, setEndDateTime] = useState('');
@@ -35,7 +38,10 @@ const AddPoll = () => {
         startdate: startDateTimeFormatted,
         expiredate: endDateTimeFormatted,
         choices,
-      });
+      },   {headers: {
+        'Authorization': `Bearer ${user.token}`,
+      },
+    });
       
       // Reset the form
       setQuestion('');
