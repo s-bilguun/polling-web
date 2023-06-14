@@ -109,6 +109,7 @@ button:focus {
 .card {
   background-color: var(--card-background-color);
   display: inline-block;
+  min-width: 400px;
   padding: 3rem;
   position: relative;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
