@@ -7,6 +7,17 @@ const AddPoll = () => {
   const [question, setQuestion] = useState('');
   const [startDateTime, setStartDateTime] = useState('');
   const [endDateTime, setEndDateTime] = useState('');
+  const [choices, setChoices] = useState(['', '']);
+
+  const handleAddChoice = () => {
+    setChoices([...choices, '']);
+  };
+
+  const handleChoiceChange = (index, value) => {
+    const updatedChoices = [...choices];
+    updatedChoices[index] = value;
+    setChoices(updatedChoices);
+  };
 
   const router = useRouter();
 
@@ -23,20 +34,17 @@ const AddPoll = () => {
         question,
         startdate: startDateTimeFormatted,
         expiredate: endDateTimeFormatted,
+        choices,
       });
-      const { pollid } = response.data; // Assuming the response contains the poll ID
-
+      
       // Reset the form
       setQuestion('');
       setStartDateTime('');
       setEndDateTime('');
+      setChoices(['', '']);
 
-      // Navigate to the PollChoices component and pass the poll ID
-      router.push({
-        pathname: '/poll_choices',
-        query: { pollid
-         },
-      });
+      // Go back to the index page or any other desired page
+      router.push('/');
     } catch (error) {
       console.log('Error submitting poll:', error);
     }
@@ -74,7 +82,23 @@ const AddPoll = () => {
             required
           />
         </label>
-        <button type="submit">Next</button>
+        <label>
+          Choices:
+          {choices.map((choice, index) => (
+            <div key={index}>
+              <input
+                type="text"
+                value={choice}
+                onChange={(e) => handleChoiceChange(index, e.target.value)}
+                required
+              />
+            </div>
+          ))}
+          <button type="button" onClick={handleAddChoice}>
+            Add Choice
+          </button>
+        </label>
+        <button type="submit">Submit</button>
       </form>
     </div>
   );
