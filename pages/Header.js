@@ -9,7 +9,9 @@ import { AuthContext } from './AuthContext';
 
 const Header = () => {
   const [darkTheme, setDarkTheme] = useState(false);
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
+
+  const isLoggedIn = user !== null;
 
   const handleToggle = () => {
     setDarkTheme(!darkTheme);
