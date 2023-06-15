@@ -144,6 +144,7 @@ nav ul li a:hover {
   --color-comment-background: #c9d4e7;
   --color-333: #fff;
   --color-pagination-background: #edecec;
+  --color-scheme: light;
 }
 
 [data-theme='dark'] {
@@ -165,6 +166,7 @@ nav ul li a:hover {
   --color-comment-background: #334564;
   --color-333: #333;
   --color-pagination-background: #11038d;
+  --color-scheme: dark;
 }
 
 .logout-button {
