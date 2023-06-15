@@ -101,8 +101,8 @@ const Page = () => {
                 </div>
               </div>
               <div className="poll-datetime ">
-                <p>Start Datetime: {poll.startDatetime}</p>
-                <p>End Datetime: {poll.endDatetime}</p>
+                <p>Start Datetime: {poll.startdate}</p>
+                <p>End Datetime: {poll.expiredate}</p>
               </div>
             </div>
           ))}
