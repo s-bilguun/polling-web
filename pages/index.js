@@ -3,12 +3,11 @@ import React, {useState, useEffect} from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Header from './Header';
+import Footer from './Footer';
 import SearchBar from './SearchBar';
 import DropdownSort from './DropdownSort';
 
 const Page = () => {
-  
- 
   const [polls, setPolls] = useState([]);
 
   useEffect(() => {
@@ -62,34 +61,17 @@ const Page = () => {
   const handlePageChange = (pageNumber) => {
     router.push(`/${pageNumber}`);
   };
-
-
   return (
     <div>
         <Header />
-
-
-   <div className="poll-list">
-        <div className='second-header'>
-          <h2>Poll Feed</h2>
-          <SearchBar />
-          <div> {/* Change <p> to <div> */}
-            Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
-          </div>
-        </div>
-        
-        {/* {getPollsForPage(currentPage).map((pollData) => (
-        <div key={pollData.id} className="poll-item">
-            <div>
-              <p>ID: {pollData.id}</p>
-              <p>User ID: {pollData.userid}</p>
-              <p>Question: {pollData.question}</p>
-              <p>Start Date Time: {pollData.startDatetime}</p>
-              <p>End Date Time: {pollData.endDatetime}</p>
+        <div className="poll-list">
+          <div className='second-header'>
+            <h2>Poll Feed</h2>
+            <SearchBar />
+            <div> {/* Change <p> to <div> */}
+              Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
             </div>
           </div>
-        ))} */}
-
           {getPollsForPage(currentPage).map((poll) => (
             <div key={poll.id} className="poll-item">
               <div className="poll-details">
@@ -120,6 +102,7 @@ const Page = () => {
             </button>
           ))}
         </div>
+        <Footer />
     </div>
   );
 };
