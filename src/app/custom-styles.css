@@ -30,7 +30,7 @@ body {
   justify-content: center; /* Center align the content horizontally */
   min-height: 100vh; /* Set a minimum height for the body */
   padding: 1rem;
-  
+  transition: background-color 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 
@@ -117,6 +117,7 @@ button:focus {
   position: relative;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   margin-top: 80px;
+  transition: background-color 0.3s ease; 
 }
 
 .card::before,
