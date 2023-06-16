@@ -194,7 +194,7 @@ import axios from 'axios';
         </div>
       </div>
     </div>
-    :"roading..."
+    :"loading..."
   );
  
 };
