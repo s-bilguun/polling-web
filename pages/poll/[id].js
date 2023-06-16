@@ -10,7 +10,7 @@ const Poll = () => {
   const { user } = useContext(AuthContext);
   const [poll, setPoll] = useState();
   const [answers, setAnswers] = useState([]);
-
+  const [comments, setComments] = useState([]);
   useEffect(() => {
     if(id){
       axios
@@ -41,18 +41,27 @@ const Poll = () => {
         console.error('Error fetching poll answer:', error);
       }
     };
-
+    const fetchComment = async () =>{
+      const response = await fetch(`http://localhost:8001/comment/${id}`);
+      if(response.ok){
+        const data = await response.json();
+        setComments(data);
+      }else{
+        console.error('failed to fetch comments');
+      }
+    }
     fetchAnswer();
+    fetchComment();
   }, [id]);
 
 
   // replace with comment data logic
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const [comment, setComment] = useState('');
-  const [comments, setComments] = useState([
-    { username: 'John Doe', comment: 'Lorem ipsum dolor sit amet.', datetime_posted: '2023-06-05 09:30:00' },
-    { username: 'Jane Smith', comment: 'Fusce sagittis urna in diam luctus eleifend.', datetime_posted: '2023-06-06 14:45:00' },
-  ]);
+  // const [comments, setComments] = useState([
+  //   { username: 'John Doe', comment: 'Lorem ipsum dolor sit amet.', datetime_posted: '2023-06-05 09:30:00' },
+  //   { username: 'Jane Smith', comment: 'Fusce sagittis urna in diam luctus eleifend.', datetime_posted: '2023-06-06 14:45:00' },
+  // ]);
 
   const handleAnswerSelection = (answerId) => {
     setSelectedAnswer(answerId);
@@ -64,8 +73,8 @@ const Poll = () => {
 
   const handleAnswerSubmit = async  (e) => {
     e.preventDefault();
-    await axios.post(`http://localhost:8001/answers/${id}`, {
-      answerId: selectedAnswer,
+    await axios.post(`http://localhost:8001/attendance/${id}/createPollAttendance/${selectedAnswer}`, {
+      //answerId: selectedAnswer,
     }, {
       headers: {
         'Authorization': `Bearer ${user.token}`,
@@ -138,7 +147,8 @@ const Poll = () => {
         {selectedAnswer && (
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleAnswerSubmit}>
             Submit Answer
           </button>
         )}
@@ -178,6 +188,7 @@ const Poll = () => {
             <div key={index} className="mb-4 comment-item">
               <div className="username font-bold">{comment.username}</div>
               <div>{comment.comment}</div>
+              <div>{comment.createdAt}</div>
               <div className="datetime-posted text-sm text-gray-500">{comment.datetime_posted}</div>
             </div>
           ))}
