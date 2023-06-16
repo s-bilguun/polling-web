@@ -7,10 +7,9 @@ import axios from 'axios';
 const Poll = () => {
   const router = useRouter();
   const { id } = router.query;
-
   const { user } = useContext(AuthContext);
-
   const [poll, setPoll] = useState();
+  const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
     if(id){
@@ -18,14 +17,32 @@ const Poll = () => {
         .get(`http://localhost:8001/poll/${id}`)
         .then(res => {
           setPoll(res.data);
+          console.log(res.data);
         })
         .then(data => {
-          console.log(data)
+          console.log(data);
         })
         .catch(error => {
-          console.log(error.response.data.error)
+          console.log(error.response.data.error);
         })
-  }
+    }
+    const fetchAnswer = async () => {
+      try {
+        const response = await fetch(`http://localhost:8001/answers/${id}`);
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          setAnswers(data);
+        } else {
+          console.error('Failed to fetch Poll answer');
+        }
+      } catch (error) {
+        console.error('Error fetching poll answer:', error);
+      }
+    };
+
+    fetchAnswer();
   }, [id]);
 
 
@@ -47,8 +64,7 @@ const Poll = () => {
 
   const handleAnswerSubmit = async  (e) => {
     e.preventDefault();
-
-    await axios.post(`http://localhost:8001/poll/${pollid}/answer`, {
+    await axios.post(`http://localhost:8001/answers/${id}`, {
       answerId: selectedAnswer,
     }, {
       headers: {
@@ -69,7 +85,7 @@ const Poll = () => {
       date_posted: new Date().toISOString(),
     };
 
-     await axios.post(`http://localhost:8001/poll/${pollid}/comments`, {
+     await axios.post(`http://localhost:8001/poll/${id}/comments`, {
       comment: newComment,
     }, {
       headers: {
@@ -84,7 +100,7 @@ const Poll = () => {
   };
 
   const handleViewResults = () => {
-    router.push(`/poll/${pollid}/result`);
+    router.push(`/poll/${id}/result`);
   };
 
   return (
@@ -92,23 +108,28 @@ const Poll = () => {
     <div className="container">
       <Header/>
       <h1 className="text-3xl font-bold mb-4">Poll Details</h1>
-      <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>
-      <h1 className="text-xl font-bold mb-2 poll-question">{poll.username}</h1>
-      
-
-      {/* <form onSubmit={handleAnswerSubmit}>
+      <form onSubmit={handleAnswerSubmit}>
         <div className="mb-4">
-          {poll.answers.map((answer) => (
+        <p>username:{poll.username}</p>
+        <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>
+        
+        {/* <h1 className="text-xl font-bold mb-2 poll-question">{poll.startdate}</h1> 
+        <h1 className="text-xl font-bold mb-2 poll-question">{poll.expiredate}</h1> */}
+        
+        {/* <h1 className="text-xl font-bold mb-2 poll-question">{answers}</h1> */}
+          {answers.map((answer) => (
             <div key={answer.id} className="poll-answer">
+              
               <label>
                 <input
                   type="radio"
-                  name="answer"
-                  value={answer.id}
+                  name={answer.answername}
+                  value={answer.answername}
                   checked={selectedAnswer === answer.id}
                   onChange={() => handleAnswerSelection(answer.id)}
                 />
-                {answer.text}
+                <p className="poll-username">{answer.answername}</p>
+              {/* {answers.text}  */}
               </label>
             </div>
           ))}
@@ -117,8 +138,7 @@ const Poll = () => {
         {selectedAnswer && (
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Submit Answer
           </button>
         )}
@@ -130,41 +150,41 @@ const Poll = () => {
         >
           View results
         </button>
-      </form> */}
-<div className="comment-container">
-      <form onSubmit={handleCommentSubmit} className="comment-form">
-        <div className="mb-4">
-          <label htmlFor="comment">Write comment</label>
-          <textarea
-            id="comment"
-            className="text-input"
-            value={comment}
-            onChange={handleCommentChange}
-            placeholder="Enter your comment"
-          ></textarea>
-        </div>
-
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Add Comment
-        </button>
       </form>
-
-      <div className="comment-list">
-        <h3 className="text-lg font-bold mb-2">Comments:</h3>
-        {comments.map((comment, index) => (
-          <div key={index} className="mb-4 comment-item">
-            <div className="username font-bold">{comment.username}</div>
-            <div>{comment.comment}</div>
-            <div className="datetime-posted text-sm text-gray-500">{comment.datetime_posted}</div>
+      <div className="comment-container">
+        <form onSubmit={handleCommentSubmit} className="comment-form">
+          <div className="mb-4">
+            <label htmlFor="comment">Write comment</label>
+            <textarea
+              id="comment"
+              className="text-input"
+              value={comment}
+              onChange={handleCommentChange}
+              placeholder="Enter your comment"
+            ></textarea>
           </div>
-        ))}
+
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Add Comment
+          </button>
+        </form>
+
+        <div className="comment-list">
+          <h3 className="text-lg font-bold mb-2">Comments:</h3>
+          {comments.map((comment, index) => (
+            <div key={index} className="mb-4 comment-item">
+              <div className="username font-bold">{comment.username}</div>
+              <div>{comment.comment}</div>
+              <div className="datetime-posted text-sm text-gray-500">{comment.datetime_posted}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
-    </div>
-    :" asdsd"
+    :"roading..."
   );
  
 };
