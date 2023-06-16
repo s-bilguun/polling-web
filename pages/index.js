@@ -76,11 +76,11 @@ const Page = () => {
             <div key={poll.id} className="poll-item">
               <div className="poll-details">
                 <div className="poll-username">Username: {poll.username}</div>
-                <div className="poll-title-link">
-                  <Link href={`/poll/${poll.id}`} passHref>
-                    {poll.question}
-                  </Link>
-                </div>
+                  <div className="poll-title-link">
+                    <Link href={`/poll/${poll.id}`} passHref>
+                      {poll.question}
+                    </Link>
+                  </div>
               </div>
               <div className="poll-datetime ">
                 <p>Start Datetime: {poll.startdate}</p>
