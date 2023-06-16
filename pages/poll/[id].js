@@ -73,8 +73,8 @@ const Poll = () => {
 
   const handleAnswerSubmit = async  (e) => {
     e.preventDefault();
-    await axios.post(`http://localhost:8001/answers/${id}`, {
-      answerId: selectedAnswer,
+    await axios.post(`http://localhost:8001/attendance/${id}/createPollAttendance/${selectedAnswer}`, {
+      //answerId: selectedAnswer,
     }, {
       headers: {
         'Authorization': `Bearer ${user.token}`,
@@ -147,7 +147,8 @@ const Poll = () => {
         {selectedAnswer && (
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleAnswerSubmit}>
             Submit Answer
           </button>
         )}
