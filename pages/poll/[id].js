@@ -29,7 +29,6 @@ const Poll = () => {
     const fetchAnswer = async () => {
       try {
         const response = await fetch(`http://localhost:8001/answers/${id}`);
-
         if (response.ok) {
           const data = await response.json();
           console.log(data);
