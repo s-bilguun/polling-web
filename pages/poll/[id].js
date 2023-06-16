@@ -78,24 +78,24 @@ const Poll = () => {
   const handleCommentSubmit = async  (e) => {
     e.preventDefault();
 
-    // Create a new comment object
-    const newComment = {
-      username: 'Current User', // Replace with the actual username of the logged-in user
-      comment,
-      date_posted: new Date().toISOString(),
-    };
-
-     await axios.post(`http://localhost:8001/poll/${id}/comments`, {
-      comment: newComment,
-    }, {
+    axios({
+      url: `http://localhost:8001/comment/createComment/${id}`,
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
-    });
-
-    setComments([...comments, newComment]);
-
-    // Reset the comment input
+      data: {
+        comment: comment,
+      },
+    })
+      .then((res) => {
+        login(res.data.token); // call the login function from AuthContext
+        console.log(res);
+      })
+      .catch((err) => {
+        //setErrorMessage("Comment add failed"); // Set error message
+        console.log(err);
+      });
     setComment('');
   };
 
