@@ -7,11 +7,8 @@ import axios from 'axios';
 const Poll = () => {
   const router = useRouter();
   const { id } = router.query;
-
   const { user } = useContext(AuthContext);
-
   const [poll, setPoll] = useState();
-
   useEffect(() => {
     if(id){
       axios
@@ -36,6 +33,7 @@ const Poll = () => {
     { username: 'John Doe', comment: 'Lorem ipsum dolor sit amet.', datetime_posted: '2023-06-05 09:30:00' },
     { username: 'Jane Smith', comment: 'Fusce sagittis urna in diam luctus eleifend.', datetime_posted: '2023-06-06 14:45:00' },
   ]);
+  //setComment("");
 
   const handleAnswerSelection = (answerId) => {
     setSelectedAnswer(answerId);
@@ -61,26 +59,44 @@ const Poll = () => {
 
   const handleCommentSubmit = async  (e) => {
     e.preventDefault();
-
-    // Create a new comment object
-    const newComment = {
-      username: 'Current User', // Replace with the actual username of the logged-in user
-      comment,
-      date_posted: new Date().toISOString(),
-    };
-
-     await axios.post(`http://localhost:8001/poll/${pollid}/comments`, {
-      comment: newComment,
-    }, {
+    axios({
+      url: `http://localhost:8001/comment/createComment/${id}`,
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
-    });
+      data: {
+        comment: comment,
+      },
+    })
+      .then((res) => {
+        login(res.data.token); // call the login function from AuthContext
+        console.log(res);
+      })
+      .catch((err) => {
+        //setErrorMessage("Comment add failed"); // Set error message
+        console.log(err);
+      });
+  
+    //console.log("Comment added:", { comment });
+  
+    // // Create a new comment object
+    // const newComment = {
+    //   comment,
+    // };
 
-    setComments([...comments, newComment]);
+    //  await axios.post(`http://localhost:8001/comment/createComment/${id}`, {
+    //   comment: newComment,
+    // }, {
+    //   headers: {
+    //     'Authorization': `Bearer ${user.token}`,
+    //   },
+    // });
 
-    // Reset the comment input
-    setComment('');
+    // setComments([...comments, newComment]);
+
+    // // Reset the comment input
+     setComment('');
   };
 
   const handleViewResults = () => {
@@ -132,7 +148,7 @@ const Poll = () => {
         </button>
       </form> */}
 <div className="comment-container">
-      <form onSubmit={handleCommentSubmit} className="comment-form">
+      <form className="comment-form">
         <div className="mb-4">
           <label htmlFor="comment">Write comment</label>
           <textarea
@@ -147,6 +163,7 @@ const Poll = () => {
         <button
           type="submit"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handleCommentSubmit}
         >
           Add Comment
         </button>
