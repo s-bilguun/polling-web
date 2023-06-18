@@ -76,7 +76,7 @@ const Poll = () => {
       //answerId: selectedAnswer,
     }, {
       headers: {
-        'Authorization': `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     });
 
@@ -85,7 +85,6 @@ const Poll = () => {
 
   const handleCommentSubmit = async  (e) => {
     e.preventDefault();
-
     axios({
       url: `http://localhost:8001/comment/createComment/${id}`,
       method: "POST",
@@ -176,6 +175,7 @@ const Poll = () => {
           <button
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            
           >
             Add Comment
           </button>
@@ -194,7 +194,7 @@ const Poll = () => {
         </div>
       </div>
     </div>
-    :"roading..."
+    :"loading..."
   );
  
 };
