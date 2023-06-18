@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import Header from '../Header';
 import { AuthContext } from '../AuthContext';
 import axios from 'axios';
-
-const Poll = () => {
+//anything
+  const Poll = () => {
   const router = useRouter();
   const { id } = router.query;
   const { user } = useContext(AuthContext);
@@ -150,7 +150,7 @@ const Poll = () => {
             Submit Answer
           </button>
         )}
-
+  
         <button
           type="button"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -171,7 +171,7 @@ const Poll = () => {
               placeholder="Enter your comment"
             ></textarea>
           </div>
-
+        
           <button
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
