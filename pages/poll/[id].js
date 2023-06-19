@@ -82,30 +82,34 @@ import axios from 'axios';
 
     setSelectedAnswer('');
   };
-
-  const handleCommentSubmit = async  (e) => {
+  const handleCommentSubmit = async (e) => {
     e.preventDefault();
-
-    axios({
-      url: `http://localhost:8001/comment/createComment/${id}`,
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-      data: {
-        comment: comment,
-      },
-    })
-      .then((res) => {
-        login(res.data.token); // call the login function from AuthContext
-        console.log(res);
-      })
-      .catch((err) => {
-        //setErrorMessage("Comment add failed"); // Set error message
-        console.log(err);
+  
+    try {
+      const response = await axios({
+        url: `http://localhost:8001/comment/createComment/${id}`,
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+        data: {
+          comment: comment,
+        },
       });
-    setComment('');
+  
+      console.log(response);
+  
+      // Add the newly created comment to the comments state
+      setComments((prevComments) => [...prevComments, response.data.commento]);
+  
+      // Clear the comment input field
+      setComment('');
+    } catch (err) {
+      //setErrorMessage("Comment add failed"); // Set error message
+      console.log(err);
+    }
   };
+  
 
   const handleViewResults = () => {
     router.push(`/poll/${id}/result`);

@@ -180,11 +180,12 @@ button:focus {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.comment-form .text-input  {
+  color: #030303;
+}
 
 @media (prefers-color-scheme: dark) {
-  .comment-form .text-input  {
-    color: #030303;
-  }
+  
   .comment-container {
     
     background-color: var(--color-comment-background);

@@ -140,7 +140,7 @@ return (
     <h1 className="text-3xl font-bold mb-4">Poll Result</h1>
 
     <h2 className="text-xl font-bold mb-2 poll-question"></h2>
-
+        
     <div className="chart-container">
         <div className="chart">
             <ApexChart options={barChartOptions} series={barChartSeries} type="bar" height={350} />
