@@ -619,13 +619,13 @@ button:focus {
 .poll-answer input[type="radio"] {
   appearance: none;
   -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border: 2px solid #aaa;
   border-radius: 50%;
   margin-right: 10px;
   cursor: pointer;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease-in-out;
 }
 
 .poll-answer input[type="radio"]:checked {
