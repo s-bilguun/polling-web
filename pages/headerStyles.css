@@ -181,6 +181,9 @@ nav ul li a:hover {
 .logout-button:hover {
   text-decoration: underline;
   background-color: transparent;
+  /* border: 3px solid #D8D8D8;
+  border-radius: 10px;
+  padding: 2px; */
 }
 
 body {
