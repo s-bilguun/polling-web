@@ -10,7 +10,11 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
   const router = useRouter();
   const { id } = router.query;
   const { user } = useContext(AuthContext);
-  const [poll, setPoll] = useState();
+  const [poll, setPoll] = useState({
+    // Other poll fields...
+    startdate: null,
+    expiredate: null,
+  });
   const [answers, setAnswers] = useState([]);
   const [comments, setComments] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
@@ -76,6 +80,20 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 
   const handleAnswerSubmit = async (e) => {
     e.preventDefault();
+
+    const now = new Date();
+    const startDate = new Date(poll.startdate);
+    const expireDate = new Date(poll.expiredate);
+  
+    if (now < startDate) {
+      setErrorMessage('The poll has not started yet.');
+      return;
+    }
+  
+    if (now > expireDate) {
+      setErrorMessage('The poll has expired.');
+      return;
+    }
   
     try {
       await axios.post(

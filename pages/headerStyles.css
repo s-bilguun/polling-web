@@ -145,6 +145,7 @@ nav ul li a:hover {
   --color-333: #fff;
   --color-pagination-background: #edecec;
   --color-scheme: light;
+  --color-inactive: rgb(114, 113, 113);
 }
 
 [data-theme='dark'] {
@@ -167,6 +168,7 @@ nav ul li a:hover {
   --color-333: #333;
   --color-pagination-background: #11038d;
   --color-scheme: dark;
+  --color-inactive: rgb(173, 173, 173);
 }
 
 .logout-button {
