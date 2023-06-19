@@ -370,6 +370,13 @@ button:focus {
   margin-bottom: 16px;
 }
 
+.poll-list .poll-item.not-started * {
+  color: var(--color-inactive);
+}
+
+.poll-list .poll-item.expired * {
+  color: var(--color-inactive);
+}
 
 
 @media (max-width: 1200px) {

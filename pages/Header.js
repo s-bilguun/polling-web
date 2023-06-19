@@ -5,7 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { faSun } from "@fortawesome/free-solid-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from './AuthContext';
 
 const Header = () => {
@@ -68,10 +70,10 @@ const Header = () => {
           ) : (
             <>
               <li>
-                <Link href="/login">Login</Link>
+                <Link href="/login"><FontAwesomeIcon icon={faRightToBracket} /> Login</Link>
               </li>
               <li>
-                <Link href="/register">Register</Link>
+                <Link href="/register"><FontAwesomeIcon icon={faUserPlus} /> Register</Link>
               </li>
             </>
           )}

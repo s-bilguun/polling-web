@@ -1,11 +1,13 @@
 // Page.js
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Header from './Header';
 import Footer from './Footer';
 import SearchBar from './SearchBar';
 import DropdownSort from './DropdownSort';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 const Page = () => {
   const [polls, setPolls] = useState([]);
@@ -30,6 +32,8 @@ const Page = () => {
     fetchPolls();
   }, []);
 
+
+
   const sortOptions = [
     { label: 'New polls', value: 'new polls' },
     { label: 'Old polls', value: 'old polls' },
@@ -39,7 +43,7 @@ const Page = () => {
 
   const handleSort = (selectedOption) => {
     const sortedPolls = [...polls];
-  
+
     switch (selectedOption) {
       case 'new polls':
         sortedPolls.sort((a, b) => new Date(b.startdate) - new Date(a.startdate));
@@ -56,10 +60,10 @@ const Page = () => {
       default:
         break;
     }
-  
+
     setPolls(sortedPolls);
   };
-  
+
   const router = useRouter();
   const { page } = router.query;
   const currentPage = parseInt(page, 10) || 1;
@@ -72,7 +76,7 @@ const Page = () => {
     const endIndex = startIndex + pollsPerPage;
     return polls.slice(startIndex, endIndex);
   };
-  
+
 
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
@@ -81,46 +85,49 @@ const Page = () => {
   };
   return (
     <div>
-        <Header />
-        <div className="poll-list">
-          <div className='second-header'>
-            <h2>Poll Feed</h2>
-            <SearchBar />
-            <div> {/* Change <p> to <div> */}
-              Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
+      <Header />
+      <div className="poll-list">
+        <div className='second-header'>
+          <h2>Poll Feed</h2>
+          <SearchBar />
+          <div> {/* Change <p> to <div> */}
+            Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
+          </div>
+        </div>
+        {getPollsForPage(currentPage).map((poll) => (
+          <div
+            key={poll.id}
+            className={`poll-item ${new Date(poll.startdate) > new Date() ? 'not-started' : ''} ${new Date(poll.expiredate) < new Date() ? 'expired' : ''}`}
+          >
+            <div className="poll-details">
+              <div className="poll-username"><FontAwesomeIcon icon={faUser} />  { poll.username}</div>
+              <div className="poll-title-link">
+                <Link href={`/poll/${poll.id}`} passHref>
+                  {poll.question}
+                </Link>
+              </div>
+            </div>
+            <div className="poll-datetime">
+              <p>Start Datetime: {poll.startdate}</p>
+              <p>End Datetime: {poll.expiredate}</p>
             </div>
           </div>
-          {getPollsForPage(currentPage).map((poll) => (
-            <div key={poll.id} className="poll-item">
-              <div className="poll-details">
-                <div className="poll-username">Username: {poll.username}</div>
-                  <div className="poll-title-link">
-                    <Link href={`/poll/${poll.id}`} passHref>
-                      {poll.question}
-                    </Link>
-                  </div>
-              </div>
-              <div className="poll-datetime ">
-                <p>Start Datetime: {poll.startdate}</p>
-                <p>End Datetime: {poll.expiredate}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        ))}
+      </div>
 
       {/* Pagination links */}
-        <div className="pagination">
-          {pageNumbers.map((pageNumber) => (
-            <button
-              key={pageNumber}
-              onClick={() => handlePageChange(pageNumber)}
-              className={pageNumber === currentPage ? 'active' : ''}
-            >
-              {pageNumber}
-            </button>
-          ))}
-        </div>
-        <Footer />
+      <div className="pagination">
+        {pageNumbers.map((pageNumber) => (
+          <button
+            key={pageNumber}
+            onClick={() => handlePageChange(pageNumber)}
+            className={pageNumber === currentPage ? 'active' : ''}
+          >
+            {pageNumber}
+          </button>
+        ))}
+      </div>
+      <Footer />
     </div>
   );
 };

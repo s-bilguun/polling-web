@@ -1,16 +1,34 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { RiSearchLine } from 'react-icons/ri';
+import axios from 'axios';
 
-const SearchBar = () => {
+const SearchBar = ({ setPolls }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
 
+    try {
+      const response = await axios.get('http://localhost:8001/poll/search', {
+        params: {
+          quest: searchTerm,
+        }
+      });
+
+      if (response.status === 200) {
+        const data = response.data.searchingPolls;
+        setPolls(data); // Update the polls state in the Page component
+      } else {
+        console.error('Failed to fetch searched polls');
+      }
+    } catch (error) {
+      console.error('Error fetching searched polls:', error);
+    }
+
     // Redirect to search results page
-    router.push(`/search?query=${searchTerm}`);
+    router.push(`/search?quest=${searchTerm}`);
   };
 
   return (
@@ -21,7 +39,9 @@ const SearchBar = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      {/* <button type="submit" className="search-icon-button"><RiSearchLine /></button> */}
+      {/* <button type="submit" className="search-icon-button">
+        <RiSearchLine />
+      </button> */}
     </form>
   );
 };
