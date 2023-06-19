@@ -4,6 +4,8 @@ import './headerStyles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { faSun } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from './AuthContext';
 
 const Header = () => {
@@ -57,11 +59,11 @@ const Header = () => {
             </div>
           </li>
           <li>
-            <Link href="/poll_create">Create poll</Link>
+            <Link href="/poll_create"><FontAwesomeIcon icon={faPlus} /> Create poll</Link>
           </li>
           {isLoggedIn ? (
             <li>
-              <button className='logout-button' onClick={() => logout()}>Logout</button>
+              <button className='logout-button' onClick={() => logout()}><FontAwesomeIcon icon={faRightFromBracket} /> Logout</button>
             </li>
           ) : (
             <>
