@@ -13,6 +13,8 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
   const [poll, setPoll] = useState();
   const [answers, setAnswers] = useState([]);
   const [comments, setComments] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
+
   useEffect(() => {
     if(id){
       axios
@@ -72,18 +74,30 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
     setComment(e.target.value);
   };
 
-  const handleAnswerSubmit = async  (e) => {
+  const handleAnswerSubmit = async (e) => {
     e.preventDefault();
-    await axios.post(`http://localhost:8001/attendance/${id}/createPollAttendance/${selectedAnswer}`, {
-      //answerId: selectedAnswer,
-    }, {
-      headers: {
-        'Authorization': `Bearer ${user.token}`,
-      },
-    });
-
-    setSelectedAnswer('');
+  
+    try {
+      await axios.post(
+        `http://localhost:8001/attendance/${id}/createPollAttendance/${selectedAnswer}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+  
+      setSelectedAnswer('');
+    } catch (err) {
+      if (err.response && err.response.status === 500) {
+        setErrorMessage('You have already submitted this poll.');
+      } else {
+        setErrorMessage('An error occurred while submitting the poll attendance.');
+      }
+    }
   };
+  
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
   
@@ -155,7 +169,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
             Submit Answer
           </button>
         )}
-  
+
         <button
           type="button"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -163,6 +177,12 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
         >
           View results
         </button>
+
+        {errorMessage && (
+        <div className="error-message">
+          {errorMessage}
+        </div>
+      )}
       </form>
       <div className="comment-container">
         <form onSubmit={handleCommentSubmit} className="comment-form">
