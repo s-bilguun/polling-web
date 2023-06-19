@@ -6,6 +6,8 @@ import Header from './Header';
 import Footer from './Footer';
 import SearchBar from './SearchBar';
 import DropdownSort from './DropdownSort';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 const Page = () => {
   const [polls, setPolls] = useState([]);
@@ -98,7 +100,7 @@ const Page = () => {
             className={`poll-item ${new Date(poll.startdate) > new Date() ? 'not-started' : ''} ${new Date(poll.expiredate) < new Date() ? 'expired' : ''}`}
           >
             <div className="poll-details">
-              <div className="poll-username">Username: {poll.username}</div>
+              <div className="poll-username"><FontAwesomeIcon icon={faUser} />  { poll.username}</div>
               <div className="poll-title-link">
                 <Link href={`/poll/${poll.id}`} passHref>
                   {poll.question}
