@@ -38,10 +38,28 @@ const Page = () => {
   ];
 
   const handleSort = (selectedOption) => {
-    // Perform sorting logic based on selectedOption
-    console.log('Sorting by:', selectedOption);
+    const sortedPolls = [...polls];
+  
+    switch (selectedOption) {
+      case 'new polls':
+        sortedPolls.sort((a, b) => new Date(b.startdate) - new Date(a.startdate));
+        break;
+      case 'old polls':
+        sortedPolls.sort((a, b) => new Date(a.startdate) - new Date(b.startdate));
+        break;
+      case 'aToZ':
+        sortedPolls.sort((a, b) => a.question.localeCompare(b.question));
+        break;
+      case 'zToA':
+        sortedPolls.sort((a, b) => b.question.localeCompare(a.question));
+        break;
+      default:
+        break;
+    }
+  
+    setPolls(sortedPolls);
   };
-
+  
   const router = useRouter();
   const { page } = router.query;
   const currentPage = parseInt(page, 10) || 1;

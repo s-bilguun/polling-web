@@ -132,11 +132,11 @@ nav ul li a:hover {
   --color-border: #000;
   --color-paragraph: #797979;
   --color-button-text: rgb(255, 255, 255);
-  --color-background: #e7e7e7;
+  --color-background: rgb(248, 246, 244);
   --color-dark: rgb(0, 0, 0);
   --color-poll-date: #000000ab;
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 191, 219, 226; /* Light blue/cyan */
+  --background-start-rgb: rgb(174, 226, 255);/* Light blue/cyan */
   --background-end-rgb: 255, 255, 255;
   --header-background: linear-gradient(to right,   #b6d5fa, #93b5e4);
   --card-background-color: rgba(145, 181, 216, 0.664);
