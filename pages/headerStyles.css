@@ -1,5 +1,6 @@
 /* headerStyles.css */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,400;0,500;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap');
 header {
   position: fixed;
   top: 0; 
@@ -191,6 +192,7 @@ nav ul li a:hover {
 body {
   background-color: var(--color-background);
   color: var(--color-primary);
+  font-family: 'Nunito', sans-serif;
 }
 /* adding some custom CSS */
 
