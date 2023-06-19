@@ -99,8 +99,8 @@ import axios from 'axios';
   
       console.log(response);
   
-      // Add the newly created comment to the comments state
-      setComments((prevComments) => [...prevComments, response.data.commento]);
+      // Add the newly created comment to the beginning of the comments state
+      setComments((prevComments) => [response.data.commento, ...prevComments]);
   
       // Clear the comment input field
       setComment('');
@@ -109,7 +109,6 @@ import axios from 'axios';
       console.log(err);
     }
   };
-  
 
   const handleViewResults = () => {
     router.push(`/poll/${id}/result`);
