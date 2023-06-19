@@ -574,3 +574,58 @@ button:focus {
     color: var(--color-primary);
   }
 }
+
+.poll-answer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.poll-answer label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.poll-answer input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #aaa;
+  border-radius: 50%;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.poll-answer input[type="radio"]:checked {
+  background-color: var(--color-submit-buttom);
+  border-color: var(--color-primary);
+}
+
+.poll-answer .poll-username {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.poll-answer .poll-username:hover {
+  text-decoration: underline;
+}
+
+/* Additional styles to enhance the appearance */
+
+.poll-answer label:hover .poll-username {
+  color: var( --color-paragraph);
+}
+
+.poll-answer label:hover input[type="radio"] {
+  border-color: var(--color-submit-buttom);
+  box-shadow: 0 0 8px var(--color-submit-buttom);
+}
+
+.poll-answer label:hover input[type="radio"]:checked {
+  background-color: var(--color-submit-buttom);
+  border-color: var(--color-submit-buttom);
+}

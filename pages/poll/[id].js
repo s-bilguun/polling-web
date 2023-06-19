@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import Header from '../Header';
 import { AuthContext } from '../AuthContext';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 //anything
   const Poll = () => {
   const router = useRouter();
@@ -121,7 +123,7 @@ import axios from 'axios';
       <h1 className="text-3xl font-bold mb-4">Poll Details</h1>
       <form onSubmit={handleAnswerSubmit}>
         <div className="mb-4">
-        <p>username:{poll.username}</p>
+        <p><FontAwesomeIcon icon={faUser} /> : {poll.username}</p>
         <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>
         
         {/* <h1 className="text-xl font-bold mb-2 poll-question">{poll.startdate}</h1> 
@@ -130,7 +132,6 @@ import axios from 'axios';
         {/* <h1 className="text-xl font-bold mb-2 poll-question">{answers}</h1> */}
           {answers.map((answer) => (
             <div key={answer.id} className="poll-answer">
-              
               <label>
                 <input
                   type="radio"
