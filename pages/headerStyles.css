@@ -130,7 +130,7 @@ nav ul li a:hover {
 :root {
   --color-primary-accent: #2614c7;
   --color-primary: #000;
-  --color-button: #3d486c;
+  --color-button: #797979;
   --color-border: #000;
   --color-paragraph: #797979;
   --color-button-text: rgb(255, 255, 255);
@@ -153,7 +153,7 @@ nav ul li a:hover {
 [data-theme='dark'] {
   --color-primary-accent: #00ff4c;
   --color-primary: #fff;
-  --color-button: #00ff4c;
+  --color-button: #929292;
   --color-border: #ccc;
   --color-paragraph: #8a8a8a;
   --color-button-text: rgb(0, 0, 0);
