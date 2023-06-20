@@ -580,6 +580,8 @@ button:focus {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  background-color: var(--color-primary);;
+  color: var(--color-333);
 }
 
 .pagination button.active {
