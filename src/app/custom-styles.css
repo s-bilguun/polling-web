@@ -668,6 +668,12 @@ button:focus {
   border-color: var(--color-submit-buttom);
 }
 
+.input-inline {
+  display: flex;
+  justify-content: flex-end;
+  align-items: self-start;
+}
+
 
 .error-container {
   min-width: 800px; /* Add a minimum height to prevent the content from being bunched up */

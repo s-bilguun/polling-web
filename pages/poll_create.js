@@ -16,6 +16,11 @@ const AddPoll = () => {
   const handleAddChoice = () => {
     setChoices([...choices, '']);
   };
+  const handleDeleteChoice=(index)=>{
+    const deletVal=[...choices]
+    deletVal.splice(index,1)
+    setChoices(deletVal)  
+}
 
   const handleChoiceChange = (index, value) => {
     const updatedChoices = [...choices];
@@ -104,13 +109,14 @@ const AddPoll = () => {
           <label>
             Choices:
             {choices.map((choice, index) => (
-              <div key={index}>
+              <div key={index} className='input-inline'>
                 <input
                   type="text"
                   value={choice}
                   onChange={(e) => handleChoiceChange(index, e.target.value)}
                   required
                 />
+                <button onClick={()=>handleDeleteChoice(index)}>X</button>
               </div>
             ))}
             <button type="button" onClick={handleAddChoice}>
