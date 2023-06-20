@@ -5,9 +5,10 @@ import Header from '../../Header';
 import axios from 'axios'
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-const Result = () => {
-const router = useRouter();
-const { id } = router.query;
+const Result = ( {id }) => { 
+  const router = useRouter();
+  const { id: queryId } = router.query;
+
 const [poll, setPoll] = useState();
   const [answers, setAnswers] = useState([]);
   const [attendance, setAttendance] = useState([]);
@@ -48,26 +49,12 @@ const [poll, setPoll] = useState();
         console.error("failed to fetch attendance");
       }
     };
+    
     fetchAnswer();
     fetchAttendance();
   }, [id]);
 
 
-// Replace with your result data logic
-// const initialPollResult = {
-// id,
-// question,
-// results : 
-// };
-
-// // State for poll result
-// const [pollResult, setPollResult] = useState(initialPollResult);
-// const counts = JSON.parse("{"+attendance+"}");
-// const labels = JSON.parse("{"+answers+"}");
-//console.log(pollResult);
-// Extract answers and counts for the bar chart
-// const answerLabels = pollResult.results.map((result) => result.answer);
-// const answerCounts = pollResult.results.map((result) => result.count);
 const answerLabels = answers;
 const answerCounts = attendance;
 
@@ -163,6 +150,11 @@ return (
     </div>
 </div>
 );
+};
+
+Result.getInitialProps = async (ctx) => {
+  const { id } = ctx.query;
+  return { id };
 };
 
 export default Result;
