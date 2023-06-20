@@ -6,6 +6,18 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 //anything
+
+const formatDateTime = (dateTimeString) => {
+  const dateTime = new Date(dateTimeString);
+  const date = dateTime.toLocaleDateString('en-US');
+  const time = dateTime.toLocaleTimeString('en-US', {
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  return `${date} ${time}`;
+};
+
   const Poll = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -65,10 +77,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
   // replace with comment data logic
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const [comment, setComment] = useState('');
-  // const [comments, setComments] = useState([
-  //   { username: 'John Doe', comment: 'Lorem ipsum dolor sit amet.', datetime_posted: '2023-06-05 09:30:00' },
-  //   { username: 'Jane Smith', comment: 'Fusce sagittis urna in diam luctus eleifend.', datetime_posted: '2023-06-06 14:45:00' },
-  // ]);
+
 
   const handleAnswerSelection = (answerId) => {
     setSelectedAnswer(answerId);
@@ -229,7 +238,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
             <div key={index} className="mb-4 comment-item">
               <div className="username font-bold">{comment.username}</div>
               <div>{comment.comment}</div>
-              <div>{comment.createdAt}</div>
+              <div>{formatDateTime(comment.createdAt)}</div>
               <div className="datetime-posted text-sm text-gray-500">{comment.datetime_posted}</div>
             </div>
           ))}

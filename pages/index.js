@@ -9,6 +9,17 @@ import DropdownSort from './DropdownSort';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
+const formatDateTime = (dateTimeString) => {
+  const dateTime = new Date(dateTimeString);
+  const date = dateTime.toLocaleDateString('en-US');
+  const time = dateTime.toLocaleTimeString('en-US', {
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  return `${date} ${time}`;
+};
+
 const Page = () => {
   const [polls, setPolls] = useState([]);
   const [notFound, setNotFound] = useState(false);
@@ -139,8 +150,8 @@ const Page = () => {
                 </div>
               </div>
               <div className="poll-datetime">
-                <p>Start Datetime: {poll.startdate}</p>
-                <p>End Datetime: {poll.expiredate}</p>
+                <p>Start Datetime: {formatDateTime(poll.startdate)}</p>
+                <p>End Datetime: {formatDateTime(poll.expiredate)}</p>
               </div>
             </div>
           ))

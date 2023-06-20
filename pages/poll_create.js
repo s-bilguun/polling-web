@@ -2,13 +2,14 @@ import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Header from './Header';
 import axios from 'axios';
+import moment from 'moment';
 import { AuthContext } from './AuthContext';
 
 const AddPoll = () => {
   const { user, setUser } = useContext(AuthContext);
 
   const [question, setQuestion] = useState('');
-  const [startDateTime, setStartDateTime] = useState(new Date().toISOString().slice(0, -8)); // Set default to current time
+  const [startDateTime, setStartDateTime] = useState(moment().format('YYYY-MM-DDTHH:mm'));
   const [endDateTime, setEndDateTime] = useState('');
   const [choices, setChoices] = useState(['', '']);
 
