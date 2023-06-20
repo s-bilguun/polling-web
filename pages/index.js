@@ -11,16 +11,20 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 const Page = () => {
   const [polls, setPolls] = useState([]);
+  const [notFound, setNotFound] = useState(false);
+  const [initialPolls, setInitialPolls] = useState([]);
 
   useEffect(() => {
     const fetchPolls = async () => {
       try {
         const response = await fetch('http://localhost:8001/poll/list');
-
+  
         if (response.ok) {
           const data = await response.json();
           console.log(data);
           setPolls(data);
+          setInitialPolls(data); // Store the original list of polls
+          setNotFound(data.length === 0); // Set notFound based on the length of the polls
         } else {
           console.error('Failed to fetch polls');
         }
@@ -28,9 +32,10 @@ const Page = () => {
         console.error('Error fetching polls:', error);
       }
     };
-
+  
     fetchPolls();
   }, []);
+  
 
 
 
@@ -108,32 +113,40 @@ const Page = () => {
       <div className="poll-list">
         <div className='second-header'>
           <h2>Poll Feed</h2>
-          <SearchBar setPolls={setPolls} />
+          <SearchBar setPolls={setPolls} setNotFound={setNotFound} initialPolls={initialPolls} />
+  
           <div> {/* Change <p> to <div> */}
             Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
           </div>
         </div>
-        {getPollsForPage(currentPage).map((poll) => (
-          <div
-            key={poll.id}
-            className={`poll-item ${new Date(poll.startdate) > new Date() ? 'not-started' : ''} ${new Date(poll.expiredate) < new Date() ? 'expired' : ''}`}
-          >
-            <div className="poll-details">
-              <div className="poll-username"><FontAwesomeIcon icon={faUser} />  { poll.username}</div>
-              <div className="poll-title-link">
-                <Link href={`/poll/${poll.id}`} passHref>
-                  {poll.question}
-                </Link>
+  
+        {notFound ? (
+            <div className="error-container">
+            <p>No polls found matching the search query.</p>
+          </div>
+        ) : (
+          getPollsForPage(currentPage).map((poll) => (
+            <div
+              key={poll.id}
+              className={`poll-item ${new Date(poll.startdate) > new Date() ? 'not-started' : ''} ${new Date(poll.expiredate) < new Date() ? 'expired' : ''}`}
+            >
+              <div className="poll-details">
+                <div className="poll-username"><FontAwesomeIcon icon={faUser} />  { poll.username}</div>
+                <div className="poll-title-link">
+                  <Link href={`/poll/${poll.id}`} passHref>
+                    {poll.question}
+                  </Link>
+                </div>
+              </div>
+              <div className="poll-datetime">
+                <p>Start Datetime: {poll.startdate}</p>
+                <p>End Datetime: {poll.expiredate}</p>
               </div>
             </div>
-            <div className="poll-datetime">
-              <p>Start Datetime: {poll.startdate}</p>
-              <p>End Datetime: {poll.expiredate}</p>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
-
+  
       {/* Pagination links */}
       <div className="pagination">
         {pageNumbers.map((pageNumber) => (
@@ -149,6 +162,7 @@ const Page = () => {
       <Footer />
     </div>
   );
-};
-
-export default Page;
+        };
+  
+  export default Page;
+  

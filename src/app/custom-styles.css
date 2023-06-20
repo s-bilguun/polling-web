@@ -667,3 +667,12 @@ button:focus {
   background-color: var(--color-submit-buttom);
   border-color: var(--color-submit-buttom);
 }
+
+
+.error-container {
+  min-width: 800px; /* Add a minimum height to prevent the content from being bunched up */
+  min-height: 100px;
+  display: flex;
+  align-items: center; /* Vertically center the error message */
+  justify-content: center; /* Horizontally center the error message */
+}
