@@ -674,6 +674,12 @@ button:focus {
   align-items: self-start;
 }
 
+.input-inline button {
+  margin: 1px;
+  background-color: var(--color-button);
+  color: var(--card-background-color);
+}
+
 
 .error-container {
   min-width: 800px; /* Add a minimum height to prevent the content from being bunched up */

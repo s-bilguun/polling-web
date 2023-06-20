@@ -4,6 +4,8 @@ import Header from './Header';
 import axios from 'axios';
 import moment from 'moment';
 import { AuthContext } from './AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 const AddPoll = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -116,7 +118,7 @@ const AddPoll = () => {
                   onChange={(e) => handleChoiceChange(index, e.target.value)}
                   required
                 />
-                <button onClick={()=>handleDeleteChoice(index)}>X</button>
+                <button onClick={()=>handleDeleteChoice(index)}><FontAwesomeIcon icon={faTrashCan} /></button>
               </div>
             ))}
             <button type="button" onClick={handleAddChoice}>
