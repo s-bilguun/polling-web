@@ -39,6 +39,7 @@ const Page = () => {
     { label: 'Old polls', value: 'old polls' },
     { label: 'A to Z', value: 'aToZ' },
     { label: 'Z to A', value: 'zToA' },
+    { label: 'Active polls', value: 'active polls' },
   ];
 
   const handleSort = (selectedOption) => {
@@ -57,11 +58,29 @@ const Page = () => {
       case 'zToA':
         sortedPolls.sort((a, b) => b.question.localeCompare(a.question));
         break;
-      default:
-        break;
-    }
-
-    setPolls(sortedPolls);
+        case 'active polls':
+          sortedPolls.sort((a, b) => {
+            const now = new Date();
+            const aIsActive = new Date(a.startdate) <= now && new Date(a.expiredate) >= now;
+            const bIsActive = new Date(b.startdate) <= now && new Date(b.expiredate) >= now;
+    
+            // Sort active polls first
+            if (aIsActive && !bIsActive) {
+              return -1;
+            }
+            if (!aIsActive && bIsActive) {
+              return 1;
+            }
+    
+            // Sort by start date for both active and inactive polls
+            return new Date(b.startdate) - new Date(a.startdate);
+          });
+          break;
+        default:
+          break;
+      }
+    
+      setPolls(sortedPolls);
   };
 
   const router = useRouter();
@@ -89,7 +108,7 @@ const Page = () => {
       <div className="poll-list">
         <div className='second-header'>
           <h2>Poll Feed</h2>
-          <SearchBar />
+          <SearchBar setPolls={setPolls} />
           <div> {/* Change <p> to <div> */}
             Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
           </div>
