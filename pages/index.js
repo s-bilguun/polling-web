@@ -8,6 +8,7 @@ import SearchBar from './SearchBar';
 import DropdownSort from './DropdownSort';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDownWideShort } from "@fortawesome/free-solid-svg-icons";
 
 const formatDateTime = (dateTimeString) => {
   const dateTime = new Date(dateTimeString);
@@ -127,7 +128,7 @@ const Page = () => {
           <SearchBar setPolls={setPolls} setNotFound={setNotFound} initialPolls={initialPolls} />
   
           <div> {/* Change <p> to <div> */}
-            Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
+            Sort by <FontAwesomeIcon icon={faArrowDownWideShort} /> <DropdownSort options={sortOptions} onSelectSort={handleSort} />
           </div>
         </div>
   
