@@ -108,7 +108,7 @@ const Page = () => {
       <div className="poll-list">
         <div className='second-header'>
           <h2>Poll Feed</h2>
-          <SearchBar />
+          <SearchBar setPolls={setPolls} />
           <div> {/* Change <p> to <div> */}
             Sort by <DropdownSort options={sortOptions} onSelectSort={handleSort} />
           </div>

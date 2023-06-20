@@ -11,9 +11,9 @@ const SearchBar = ({ setPolls }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.get('http://localhost:8001/poll/search', {
+      const response = await axios.get('http://localhost:8001/poll/search/qwertyuiop', {
         params: {
-          quest: searchTerm,
+          question: searchTerm,
         }
       });
 
@@ -28,7 +28,7 @@ const SearchBar = ({ setPolls }) => {
     }
 
     // Redirect to search results page
-    router.push(`/search?quest=${searchTerm}`);
+    router.push(`/search?question=${searchTerm}`);
   };
 
   return (
