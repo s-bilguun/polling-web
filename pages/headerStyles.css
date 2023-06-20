@@ -14,6 +14,7 @@ header {
   justify-content: space-between;
   padding: 0 1rem;
   margin: auto;
+  box-shadow: 0 0.5px 2px var(--color-dark);
 }
 
 a[href="/login"] {
@@ -139,10 +140,10 @@ nav ul li a:hover {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: rgb(174, 226, 255);/* Light blue/cyan */
   --background-end-rgb: 255, 255, 255;
-  --header-background: linear-gradient(to right,   #b6d5fa, #93b5e4);
-  --card-background-color: rgba(145, 181, 216, 0.664);
+  --header-background: linear-gradient(to right,   #f2f2f2, #f2f2f2);
+  --card-background-color: #f2f2f2;
   --color-submit-buttom: #204a9e;
-  --color-comment-background: #c9d4e7;
+  --color-comment-background: #f2f2f2;
   --color-333: #fff;
   --color-pagination-background: #edecec;
   --color-scheme: light;
