@@ -4,58 +4,54 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 
 const Register = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [retypePassword, setRetypePassword] = useState('');
-  const [profilePicture, setProfilePicture] = useState(null);
+  const [password2, setPassword2] = useState('');
   const [darkMode, setDarkMode] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // State variable for error message
 
   const router = useRouter();
 
   const handleRegister = (e) => {
     e.preventDefault();
 
-    if (password !== retypePassword) {
-      setErrorMessage('Нууц үг зөрж байна!');
+    if (password !== password2) {
+      setErrorMessage('Passwords do not match.'); // Set error message for mismatched passwords
       return;
     }
-
-    const formData = new FormData();
-    formData.append('email', email);
-    formData.append('firstName', firstName);
-    formData.append('lastName', lastName);
-    formData.append('password', password);
-    formData.append('profilePicture', profilePicture);
 
     axios({
       url: 'http://localhost:8001/user/createUser',
       method: 'POST',
       headers: {},
-      data: formData,
+      data: {
+        email: email,
+        username: username,
+        password: password,
+        password2: password2,
+      },
     })
       .then((res) => {
         console.log(res);
         router.push('/');
       })
       .catch((err) => {
-        setErrorMessage('Registration failed.');
+        setErrorMessage('Registration failed.'); // Set error message
         console.log(err);
       });
 
-    setEmail('');
-    setFirstName('');
-    setLastName('');
-    setPassword('');
-    setRetypePassword('');
-    setProfilePicture(null);
-  };
+    console.log('Registration submitted:', {
+      email,
+      username,
+      password,
+      password2,
+    });
 
-  const handleProfilePictureChange = (e) => {
-    const file = e.target.files[0];
-    setProfilePicture(file);
+    setEmail('');
+    setUsername('');
+    setPassword('');
+    setPassword2('');
   };
 
   useEffect(() => {
@@ -73,10 +69,10 @@ const Register = () => {
   return (
     <div className="card">
       <Header />
-      <h1>Бүртгүүлэх</h1>
+      <h1>Register</h1>
       <form onSubmit={handleRegister}>
         <label>
-          Цахим хаяг:
+          Email:
           <input
             type="email"
             value={email}
@@ -85,27 +81,16 @@ const Register = () => {
           />
         </label>
         <label>
-         Овог:
+          Username:
           <input
             type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </label>
-
         <label>
-          Нэр:
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-        </label>
- 
-        <label>
-          Нууц үг:
+          Password:
           <input
             type="password"
             value={password}
@@ -113,25 +98,18 @@ const Register = () => {
             required
           />
         </label>
+        
         <label>
-          Нууц үг лавтан бичнэ үү:
+          Confirm password:
           <input
             type="password"
-            value={retypePassword}
-            onChange={(e) => setRetypePassword(e.target.value)}
+            value={password2}
+            onChange={(e) => setPassword2(e.target.value)}
             required
           />
         </label>
-        <label>
-          Профайл зураг:
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleProfilePictureChange}
-          />
-        </label>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <button type="submit">Бүртгүүлэх</button>
+        {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
+        <button type="submit">Register</button>
       </form>
     </div>
   );
