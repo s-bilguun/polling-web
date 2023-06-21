@@ -1,10 +1,17 @@
+:root {
+    --loading-screen: #ffffff;
+}
+
+[data-theme='dark']  {
+    --loading-screen: rgb(38, 41, 82);
+}
 .loading-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(255, 255, 255);
+    background-color: var(--loading-screen);
     display: flex;
     justify-content: center;
     align-items: center;
