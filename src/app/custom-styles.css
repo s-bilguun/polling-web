@@ -209,6 +209,8 @@ button:focus {
 }
 
 .comment-list {
+  display: flex;
+  flex-direction: column;
   margin-top: 2rem;
 }
 
@@ -217,11 +219,34 @@ button:focus {
 }
 
 .comment-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   margin-bottom: 1rem;
 }
 
 .comment-item .username {
   font-weight: bold;
+  font-size: small;
+}
+
+.comment-item .comment {
+  font-size: x-large;
+}
+
+.comment-item .datetime {
+  font-weight: bold;
+  font-size: small;
+  color: var(--color-poll-date);
+  display: flex;
+  justify-content: flex-end;
+  display: inline-flexbox;
+}
+
+.comment-item {
+  border: 1px solid var(--color-poll-date);
+  padding: 12px;
+  border-radius: 5px;
 }
 
 .comment-item .datetime-posted {
@@ -234,6 +259,12 @@ button:focus {
     color: var(--color-primary);
   }
 }
+
+
+
+
+
+
 
 .result-buttons {
   margin-top: 1rem;

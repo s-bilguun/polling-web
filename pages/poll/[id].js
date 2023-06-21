@@ -161,7 +161,7 @@ const formatDateTime = (dateTimeString) => {
     poll ?
     <div className="container">
       <Header/>
-      <h1 className="text-3xl font-bold mb-4">Poll Details</h1>
+      {/* <h1 className="text-3xl font-bold mb-4">Poll Details</h1> */}
       <form onSubmit={handleAnswerSubmit}>
         <div className="mb-4">
         <p><FontAwesomeIcon icon={faUser} /> : {poll.username}</p>
@@ -236,9 +236,9 @@ const formatDateTime = (dateTimeString) => {
           <h3 className="text-lg font-bold mb-2">Comments:</h3>
           {comments.map((comment, index) => (
             <div key={index} className="mb-4 comment-item">
-              <div className="username font-bold">{comment.username}</div>
-              <div>{comment.comment}</div>
-              <div>{formatDateTime(comment.createdAt)}</div>
+              <div className="username"> <FontAwesomeIcon icon={faUser} /> {comment.username}</div>
+              <div className="datetime"> {formatDateTime(comment.createdAt)}</div>
+              <div className="comment">{comment.comment}</div>
               <div className="datetime-posted text-sm text-gray-500">{comment.datetime_posted}</div>
             </div>
           ))}
