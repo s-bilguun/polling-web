@@ -1,46 +1,47 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useLayoutEffect, useState, useContext } from 'react';
 import Link from 'next/link';
 import './headerStyles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoon } from "@fortawesome/free-solid-svg-icons";
-import { faSun } from "@fortawesome/free-solid-svg-icons";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faSun, faPlus, faUserPlus, faRightFromBracket, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from './AuthContext';
 
 const Header = () => {
-
   const [darkTheme, setDarkTheme] = useState(false);
 
   const { user, logout } = useContext(AuthContext);
   const isLoggedIn = user !== null;
 
   const handleToggle = () => {
-    setDarkTheme(!darkTheme);
+    if (typeof window !== 'undefined') {
+      setDarkTheme(!darkTheme);
+      if (darkTheme) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    }
   };
 
-  useEffect(() => {
-    const storedTheme = window.localStorage.getItem('theme');
-    if (storedTheme === 'dark') {
-      setDarkTheme(true);
-      document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-      setDarkTheme(false);
-      document.documentElement.removeAttribute('data-theme');
-    }
+  useLayoutEffect(() => {
+    // Make icons visible after mounting
+    const icons = document.querySelectorAll('.icon-initial');
+    icons.forEach((icon) => {
+      icon.style.opacity = '1';
+    });
   }, []);
 
   useEffect(() => {
-    if (darkTheme) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      window.localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-      window.localStorage.setItem('theme', 'light');
+    if (typeof window !== 'undefined') {
+      const storedTheme = localStorage.getItem('theme');
+      if (storedTheme === 'dark') {
+        setDarkTheme(true);
+      } else {
+        setDarkTheme(false);
+      }
     }
-  }, [darkTheme]);
+  }, []);
 
   return (
     <header>
@@ -55,25 +56,25 @@ const Header = () => {
             <div className="toggle-container">
               <FontAwesomeIcon
                 icon={darkTheme ? faMoon : faSun}
-                className={`toggle-icon ${darkTheme ? 'moon' : 'sun'}`}
+                className={`toggle-icon ${darkTheme ? 'moon' : 'sun'} icon icon-initial`}
                 onClick={handleToggle}
               />
             </div>
           </li>
           <li>
-            <Link href="/poll_create"><FontAwesomeIcon icon={faPlus} /> Create poll</Link>
+            <Link href="/poll_create"><FontAwesomeIcon icon={faPlus} className="icon-initial" /> Санал асуулга үүсгэх</Link>
           </li>
           {isLoggedIn ? (
             <li>
-              <button className='logout-button' onClick={() => logout()}><FontAwesomeIcon icon={faRightFromBracket} /> Logout</button>
+              <button className='logout-button' onClick={() => logout()}><FontAwesomeIcon icon={faRightFromBracket} className="icon" /> Гарах</button>
             </li>
           ) : (
             <>
               <li>
-                <Link href="/login"><FontAwesomeIcon icon={faRightToBracket} /> Login</Link>
+                <Link href="/login"><FontAwesomeIcon icon={faRightToBracket} className="icon-initial" /> Нэвтрэх</Link>
               </li>
               <li>
-                <Link href="/register"><FontAwesomeIcon icon={faUserPlus} /> Register</Link>
+                <Link href="/register"><FontAwesomeIcon icon={faUserPlus} className="icon-initial" /> Бүртгүүлэх</Link>
               </li>
             </>
           )}

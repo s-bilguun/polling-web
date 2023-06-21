@@ -142,6 +142,7 @@ nav ul li a:hover {
   --background-end-rgb: 255, 255, 255;
   --header-background: linear-gradient(to right,   #f2f2f2, #f2f2f2);
   --card-background-color: #f2f2f2;
+  --poll-background-color: #ffffff;
   --color-submit-buttom: #204a9e;
   --color-comment-background: #f2f2f2;
   --color-333: #fff;
@@ -165,6 +166,7 @@ nav ul li a:hover {
   --background-end-rgb: 62, 87, 130; 
   --header-background: linear-gradient(to right, #1e1361, #2b3497);
   --card-background-color: rgba(35, 37, 65, 0.75);
+  --poll-background-color: rgba(38, 41, 82, 0.75);
   --color-submit-buttom: #1e1361;
   --color-comment-background: #334564;
   --color-333: #333;

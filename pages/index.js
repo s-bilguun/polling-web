@@ -1,5 +1,5 @@
 // Page.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Header from './Header';
@@ -12,14 +12,17 @@ import { faArrowDownWideShort } from "@fortawesome/free-solid-svg-icons";
 
 const formatDateTime = (dateTimeString) => {
   const dateTime = new Date(dateTimeString);
-  const date = dateTime.toLocaleDateString('en-US');
+  const year = String(dateTime.getFullYear()).slice(-2); // Extract the last two digits of the year
+  const month = String(dateTime.getMonth() + 1).padStart(2, '0'); // Adding 1 to month since it is zero-based
+  const day = String(dateTime.getDate()).padStart(2, '0');
   const time = dateTime.toLocaleTimeString('en-US', {
     hour12: false,
     hour: '2-digit',
     minute: '2-digit',
   });
-  return `${date} ${time}`;
+  return `${year}-${month}-${day} ${time}`;
 };
+
 
 const Page = () => {
   const [polls, setPolls] = useState([]);
@@ -49,14 +52,21 @@ const Page = () => {
   }, []);
   
 
+  useLayoutEffect(() => {
+    // Make icons visible after mounting
+    const icons = document.querySelectorAll('.icon-initial');
+    icons.forEach((icon) => {
+      icon.style.opacity = '1';
+    });
+  }, []);
 
 
   const sortOptions = [
-    { label: 'New polls', value: 'new polls' },
-    { label: 'Old polls', value: 'old polls' },
+    { label: 'Шинэ', value: 'new polls' },
+    { label: 'Хуучин', value: 'old polls' },
     { label: 'A to Z', value: 'aToZ' },
     { label: 'Z to A', value: 'zToA' },
-    { label: 'Active polls', value: 'active polls' },
+    { label: 'Идэвхтэй', value: 'active polls' },
   ];
 
   const handleSort = (selectedOption) => {
@@ -124,17 +134,17 @@ const Page = () => {
       <Header />
       <div className="poll-list">
         <div className='second-header'>
-          <h2>Poll Feed</h2>
+        
           <SearchBar setPolls={setPolls} setNotFound={setNotFound} initialPolls={initialPolls} />
   
           <div> {/* Change <p> to <div> */}
-            Sort by <FontAwesomeIcon icon={faArrowDownWideShort} /> <DropdownSort options={sortOptions} onSelectSort={handleSort} />
+            Sort by <FontAwesomeIcon icon={faArrowDownWideShort} className='icon-initial' /> <DropdownSort options={sortOptions} onSelectSort={handleSort} />
           </div>
         </div>
   
         {notFound ? (
             <div className="error-container">
-            <p>No polls found matching the search query.</p>
+            <p>Хайлтад таарсан санал асуулга олдсонгүй</p>
           </div>
         ) : (
           getPollsForPage(currentPage).map((poll) => (
@@ -151,8 +161,8 @@ const Page = () => {
                 </div>
               </div>
               <div className="poll-datetime">
-                <p>Start Datetime: {formatDateTime(poll.startdate)}</p>
-                <p>End Datetime: {formatDateTime(poll.expiredate)}</p>
+                <p>{formatDateTime(poll.startdate)}</p>
+                <p>{formatDateTime(poll.expiredate)}</p>
               </div>
             </div>
           ))
