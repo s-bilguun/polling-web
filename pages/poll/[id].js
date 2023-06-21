@@ -162,7 +162,7 @@ const formatDateTime = (dateTimeString) => {
     <div className="container">
       <Header/>
       {/* <h1 className="text-3xl font-bold mb-4">Poll Details</h1> */}
-      <form onSubmit={handleAnswerSubmit}>
+      <form className='detial-info' onSubmit={handleAnswerSubmit}>
         <div className="mb-4">
         <p><FontAwesomeIcon icon={faUser} /> : {poll.username}</p>
         <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>
