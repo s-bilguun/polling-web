@@ -1,5 +1,5 @@
 // Page.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Header from './Header';
@@ -52,6 +52,13 @@ const Page = () => {
   }, []);
   
 
+  useLayoutEffect(() => {
+    // Make icons visible after mounting
+    const icons = document.querySelectorAll('.icon-initial');
+    icons.forEach((icon) => {
+      icon.style.opacity = '1';
+    });
+  }, []);
 
 
   const sortOptions = [
@@ -127,11 +134,11 @@ const Page = () => {
       <Header />
       <div className="poll-list">
         <div className='second-header'>
-          <h2>Санал асуулгууд</h2>
+        
           <SearchBar setPolls={setPolls} setNotFound={setNotFound} initialPolls={initialPolls} />
   
           <div> {/* Change <p> to <div> */}
-            Sort by <FontAwesomeIcon icon={faArrowDownWideShort} /> <DropdownSort options={sortOptions} onSelectSort={handleSort} />
+            Sort by <FontAwesomeIcon icon={faArrowDownWideShort} className='icon-initial' /> <DropdownSort options={sortOptions} onSelectSort={handleSort} />
           </div>
         </div>
   

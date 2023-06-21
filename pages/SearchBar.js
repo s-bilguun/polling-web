@@ -44,6 +44,13 @@ const SearchBar = ({ setPolls, setNotFound, initialPolls }) => {
     router.push(`/search?question=${searchTerm}`);
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+  
+
   useEffect(() => {
     handleSearch();
   }, [searchTerm]);
@@ -55,6 +62,7 @@ const SearchBar = ({ setPolls, setNotFound, initialPolls }) => {
         placeholder="Хайх..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyPress={handleKeyPress}
       />
     </form>
   );
