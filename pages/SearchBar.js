@@ -52,7 +52,7 @@ const SearchBar = ({ setPolls, setNotFound, initialPolls }) => {
     <form>
       <input
         type="text"
-        placeholder="Search..."
+        placeholder="Хайх..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />

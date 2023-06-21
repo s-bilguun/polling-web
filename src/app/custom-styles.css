@@ -102,7 +102,7 @@ button[type="button"] {
 
 /* Add a hover effect for the buttons */
 button:hover {
-  background-color: #718096;
+  opacity: 0.8;
 }
 
 /* Add a focus effect for the buttons */
@@ -416,31 +416,20 @@ button:focus {
   color: var(--color-primary);
 }
 
-@media (prefers-color-scheme: dark) {
-  .poll-list .poll-title-link {
-    color: var(--color-primary);
-  }
-}
+
 
 .poll-list .poll-datetime {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--color-poll-date);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  /* Align start and end datetimes to the right */
+  
 }
 
-
-@media (prefers-color-scheme: dark) {
-  .poll-list .poll-datetime {
-    color: var(--color-poll-date);
-  }
-}
 
 .poll-list .poll-datetime p {
-  margin: 4px 0;
-  /* Spacing between start datetime and end datetime */
+  margin: 8px;
 }
 
 /* second-header */

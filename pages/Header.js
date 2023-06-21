@@ -61,19 +61,19 @@ const Header = () => {
             </div>
           </li>
           <li>
-            <Link href="/poll_create"><FontAwesomeIcon icon={faPlus} /> Create poll</Link>
+            <Link href="/poll_create"><FontAwesomeIcon icon={faPlus} /> Санал асуулга үүсгэх</Link>
           </li>
           {isLoggedIn ? (
             <li>
-              <button className='logout-button' onClick={() => logout()}><FontAwesomeIcon icon={faRightFromBracket} /> Logout</button>
+              <button className='logout-button' onClick={() => logout()}><FontAwesomeIcon icon={faRightFromBracket} /> Гарах</button>
             </li>
           ) : (
             <>
               <li>
-                <Link href="/login"><FontAwesomeIcon icon={faRightToBracket} /> Login</Link>
+                <Link href="/login"><FontAwesomeIcon icon={faRightToBracket} /> Нэвтрэх</Link>
               </li>
               <li>
-                <Link href="/register"><FontAwesomeIcon icon={faUserPlus} /> Register</Link>
+                <Link href="/register"><FontAwesomeIcon icon={faUserPlus} /> Бүртгүүлэх</Link>
               </li>
             </>
           )}
