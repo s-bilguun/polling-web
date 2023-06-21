@@ -219,6 +219,7 @@ button:focus {
 .comment-item .username {
   font-weight: bold;
   font-size: small;
+  align-items: flex-start;
 }
 
 .comment-item .comment {
@@ -230,8 +231,13 @@ button:focus {
   font-size: small;
   color: var(--color-poll-date);
   display: flex;
-  justify-content: flex-end;
-  display: inline-flexbox;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.comment-inline {
+  display: flex;
+  justify-content: space-between;
 }
 
 .comment-item {
@@ -702,4 +708,3 @@ button:focus {
 .hide-initially {
   display: none;
 }
-

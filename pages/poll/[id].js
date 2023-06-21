@@ -236,8 +236,10 @@ const formatDateTime = (dateTimeString) => {
           <h3 className="text-lg font-bold mb-2">Comments:</h3>
           {comments.map((comment, index) => (
             <div key={index} className="mb-4 comment-item">
-              <div className="username"> <FontAwesomeIcon icon={faUser} /> {comment.username}</div>
-              <div className="datetime"> {formatDateTime(comment.createdAt)}</div>
+              <div className='comment-inline'>
+                <div className="username"> <FontAwesomeIcon icon={faUser} /> {comment.username}</div>
+                <div className="datetime"> {formatDateTime(comment.createdAt)}</div>
+              </div>
               <div className="comment">{comment.comment}</div>
               <div className="datetime-posted text-sm text-gray-500">{comment.datetime_posted}</div>
             </div>
