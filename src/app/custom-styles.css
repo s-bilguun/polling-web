@@ -62,7 +62,8 @@ input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="date"],
-input[type="datetime-local"] {
+input[type="datetime-local"]
+{
   width: 100%;
   padding: 0.5rem;
   margin-bottom: 1rem;
@@ -76,17 +77,6 @@ input[type="datetime-local"] {
   color: rgb(var(--foreground-rgb));
   /* Set the color of the input text */
   color-scheme: var(--color-scheme);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="date"],
-  input[type="datetime-local"] {
-    border: 1px solid var(--color-border);
-  }
 }
 
 button {
@@ -156,6 +146,7 @@ button:focus {
   min-width: 600px;
   box-sizing: border-box;
   margin-top: 80px;
+  
 }
 
 .poll-question {

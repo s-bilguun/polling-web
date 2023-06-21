@@ -4,49 +4,58 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 
 const Register = () => {
-  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [birthdate, setBirthdate] = useState('');
+  const [retypePassword, setRetypePassword] = useState('');
+  const [profilePicture, setProfilePicture] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(''); // State variable for error message
+  const [errorMessage, setErrorMessage] = useState('');
 
   const router = useRouter();
 
   const handleRegister = (e) => {
     e.preventDefault();
 
+    if (password !== retypePassword) {
+      setErrorMessage('Нууц үг зөрж байна!');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('password', password);
+    formData.append('profilePicture', profilePicture);
+
     axios({
       url: 'http://localhost:8001/user/createUser',
       method: 'POST',
       headers: {},
-      data: {
-        email: email,
-        username: username,
-        password: password,
-        birthdate: birthdate,
-      },
+      data: formData,
     })
       .then((res) => {
         console.log(res);
         router.push('/');
       })
       .catch((err) => {
-        setErrorMessage('Registration failed.'); // Set error message
+        setErrorMessage('Registration failed.');
         console.log(err);
       });
 
-    console.log('Registration submitted:', {
-      email,
-      username,
-      password,
-      birthdate,
-    });
-
     setEmail('');
-    setUsername('');
+    setFirstName('');
+    setLastName('');
     setPassword('');
-    setBirthdate('');
+    setRetypePassword('');
+    setProfilePicture(null);
+  };
+
+  const handleProfilePictureChange = (e) => {
+    const file = e.target.files[0];
+    setProfilePicture(file);
   };
 
   useEffect(() => {
@@ -64,10 +73,10 @@ const Register = () => {
   return (
     <div className="card">
       <Header />
-      <h1>Register</h1>
+      <h1>Бүртгүүлэх</h1>
       <form onSubmit={handleRegister}>
         <label>
-          Email:
+          Цахим хаяг:
           <input
             type="email"
             value={email}
@@ -76,16 +85,27 @@ const Register = () => {
           />
         </label>
         <label>
-          Username:
+         Овог:
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
             required
           />
         </label>
+
         <label>
-          Password:
+          Нэр:
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
+        </label>
+ 
+        <label>
+          Нууц үг:
           <input
             type="password"
             value={password}
@@ -94,15 +114,24 @@ const Register = () => {
           />
         </label>
         <label>
-          Birthdate:
+          Нууц үг лавтан бичнэ үү:
           <input
-            type="date"
-            value={birthdate}
-            onChange={(e) => setBirthdate(e.target.value)}
+            type="password"
+            value={retypePassword}
+            onChange={(e) => setRetypePassword(e.target.value)}
             required
           />
         </label>
-        <button type="submit">Register</button>
+        <label>
+          Профайл зураг:
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleProfilePictureChange}
+          />
+        </label>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <button type="submit">Бүртгүүлэх</button>
       </form>
     </div>
   );
