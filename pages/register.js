@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { motion } from "framer-motion";
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -82,6 +83,14 @@ const Register = () => {
   return (
     <div className="card">
       <Header />
+      <motion.div
+      initial={{ y: 25, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{
+        duration: 0.75,
+      }}
+      className="nav-bar"
+      >
       <h1>Register</h1>
       <form onSubmit={handleRegister}>
         <label>
@@ -131,6 +140,7 @@ const Register = () => {
         )}
         <button type="submit">Register</button>
       </form>
+      </motion.div>
     </div>
   );
 };

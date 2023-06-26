@@ -3,6 +3,7 @@ import Header from "./Header";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { AuthContext } from './AuthContext'; 
+import { motion } from "framer-motion";
 
 const Login = () => {
   const router = useRouter();
@@ -41,6 +42,14 @@ const Login = () => {
   return (
     <div className="card">
       <Header />
+      <motion.div
+      initial={{ y: 25, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{
+        duration: 0.75,
+      }}
+      className="nav-bar"
+      >
       <h1>Login</h1>
       <form onSubmit={handleLogin}>
         <label>
@@ -66,6 +75,7 @@ const Login = () => {
         </button>
         {errorMessage && <p>{errorMessage}</p>} {/* Render error message */}
       </form>
+      </motion.div>
     </div>
   );
 };
