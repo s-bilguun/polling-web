@@ -9,7 +9,7 @@ import DropdownSort from './DropdownSort';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faArrowDownWideShort } from "@fortawesome/free-solid-svg-icons";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const formatDateTime = (dateTimeString) => {
   const dateTime = new Date(dateTimeString);
@@ -133,6 +133,13 @@ const Page = () => {
   return (
     <div>
       <Header />
+      <motion.div
+      initial={{ y: 25, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{
+        duration: 0.75,
+      }}
+      >
       <div className="poll-list">
         <div className="second-header">
           <SearchBar setPolls={setPolls} setNotFound={setNotFound} initialPolls={initialPolls} />
@@ -176,6 +183,7 @@ const Page = () => {
           </button>
         ))}
       </div>
+      </motion.div>
       <Footer />
     </div>
   );

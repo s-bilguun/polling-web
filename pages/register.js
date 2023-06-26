@@ -89,7 +89,6 @@ const Register = () => {
       transition={{
         duration: 0.75,
       }}
-      className="nav-bar"
       >
       <h1>Register</h1>
       <form onSubmit={handleRegister}>
