@@ -6,7 +6,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faComments} from '@fortawesome/free-solid-svg-icons';
 import Profile from '../Profile';
-//anything
+import { motion } from "framer-motion";
 
 const formatDateTime = (dateTimeString) => {
   const dateTime = new Date(dateTimeString);
@@ -217,6 +217,14 @@ const formatDateTime = (dateTimeString) => {
     poll ?
     <div className="container">
       <Header/>
+      <motion.div
+      initial={{ y: 25, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{
+        duration: 0.75,
+      }}
+      className="nav-bar"
+      >
       {/* <h1 className="text-3xl font-bold mb-4">Poll Details</h1> */}
       <form className="detial-info" onSubmit={hasSubmitted ? handleAnswerUpdate : handleAnswerSubmit}>
         <div className="mb-4">
@@ -302,6 +310,7 @@ const formatDateTime = (dateTimeString) => {
           ))}
         </div>
       </div>
+      </motion.div>
     </div>
     :"loading..."
   );
