@@ -4,7 +4,8 @@ import Header from '../Header';
 import { AuthContext } from '../AuthContext';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faComments} from '@fortawesome/free-solid-svg-icons';
+import Profile from '../Profile';
 //anything
 
 const formatDateTime = (dateTimeString) => {
@@ -164,7 +165,7 @@ const formatDateTime = (dateTimeString) => {
       {/* <h1 className="text-3xl font-bold mb-4">Poll Details</h1> */}
       <form className='detial-info' onSubmit={handleAnswerSubmit}>
         <div className="mb-4">
-        <p><FontAwesomeIcon icon={faUser} /> : {poll.username}</p>
+        <p><Profile width={30} height={30} /> : {poll.username}</p>
         <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>
         
         {/* <h1 className="text-xl font-bold mb-2 poll-question">{poll.startdate}</h1> 
@@ -233,7 +234,7 @@ const formatDateTime = (dateTimeString) => {
         </form>
 
         <div className="comment-list">
-          <h3 className="text-lg font-bold mb-2">Comments:</h3>
+          <h3 className="text-lg font-bold mb-2"> <FontAwesomeIcon icon={faComments} /> Comments </h3>
           {comments.map((comment, index) => (
             <div key={index} className="mb-4 comment-item">
               <div className='comment-inline'>
