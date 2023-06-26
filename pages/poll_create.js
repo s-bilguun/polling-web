@@ -6,6 +6,7 @@ import moment from 'moment';
 import { AuthContext } from './AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
 
 const AddPoll = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -78,6 +79,14 @@ const AddPoll = () => {
   return (
     <div className="card">
       <Header />
+      <motion.div
+      initial={{ y: 25, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{
+        duration: 0.75,
+      }}
+      className="nav-bar"
+      >
       <h1>Add Poll</h1>
       {user ? (
         <form onSubmit={handlePollSubmit}>
@@ -130,6 +139,7 @@ const AddPoll = () => {
       ) : (
         <p>You are not logged in</p>
       )}
+      </motion.div>
     </div>
   );
 };

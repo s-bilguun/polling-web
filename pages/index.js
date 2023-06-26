@@ -9,6 +9,7 @@ import DropdownSort from './DropdownSort';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faArrowDownWideShort } from "@fortawesome/free-solid-svg-icons";
+import { motion, AnimatePresence } from "framer-motion";
 
 const formatDateTime = (dateTimeString) => {
   const dateTime = new Date(dateTimeString);
