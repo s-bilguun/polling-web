@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useState, useContext } from 'react';
 import Link from 'next/link';
 import './headerStyles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoon, faSun, faPlus, faUserPlus, faRightFromBracket, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faSun, faPlus, faUserPlus, faRightFromBracket, faRightToBracket, faPollH, faCog } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from './AuthContext';
 
 const Header = () => {
@@ -88,13 +88,13 @@ const Header = () => {
                 </div>
                 {dropdownVisible && (
                   <ul className="dropdown-menu">
-                    <li>
-                      <Link href="/my_polls">My Polls</Link>
-                    </li>
-                    <li>
-                      <Link href="/settings">Settings</Link>
-                    </li>
-                    <li>
+                  <li>
+                    <Link href="/my_polls"><FontAwesomeIcon icon={faPollH} className="icon" /> My Polls</Link>
+                  </li>
+                  <li>
+                    <Link href="/settings"><FontAwesomeIcon icon={faCog} className="icon" /> Settings</Link>
+                  </li>
+                  <li>
                       <button className="logout-button" onClick={() => logout()}>
                         <FontAwesomeIcon icon={faRightFromBracket} className="icon" /> Гарах
                       </button>
