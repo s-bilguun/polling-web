@@ -9,17 +9,14 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [darkMode, setDarkMode] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(''); // State variable for error message
+  const [errorMessage, setErrorMessage] = useState('');
+  const [verificationSent, setVerificationSent] = useState(false);
+  const [verificationSuccess, setVerificationSuccess] = useState(false);
 
   const router = useRouter();
 
   const handleRegister = (e) => {
     e.preventDefault();
-
-    if (password !== password2) {
-      setErrorMessage('Passwords do not match.'); // Set error message for mismatched passwords
-      return;
-    }
 
     axios({
       url: 'http://localhost:8001/user/createUser',
@@ -34,33 +31,49 @@ const Register = () => {
     })
       .then((res) => {
         console.log(res);
-        router.push('/');
+        setVerificationSent(true);
       })
       .catch((err) => {
-        setErrorMessage('Registration failed.'); // Set error message
+        setErrorMessage('Registration failed.');
         console.log(err);
       });
+  };
 
-    console.log('Registration submitted:', {
-      email,
-      username,
-      password,
-      password2,
-    });
-
-    setEmail('');
-    setUsername('');
-    setPassword('');
-    setPassword2('');
+  const checkVerificationStatus = () => {
+    axios({
+      url: 'http://localhost:8001/user/checkVerification',
+      method: 'POST',
+      headers: {},
+      data: {
+        email: email,
+      },
+    })
+      .then((res) => {
+        if (res.data.verified) {
+          setVerificationSent(false);
+          setVerificationSuccess(true);
+          setTimeout(() => {
+            router.push('/login');
+          }, 3000);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+    let intervalId;
+    if (verificationSent) {
+      intervalId = setInterval(() => {
+        checkVerificationStatus();
+      }, 5000);
     }
-  }, [darkMode]);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [verificationSent]);
 
   const handleDarkModeToggle = () => {
     setDarkMode(!darkMode);
@@ -98,7 +111,6 @@ const Register = () => {
             required
           />
         </label>
-        
         <label>
           Confirm password:
           <input
@@ -108,7 +120,15 @@ const Register = () => {
             required
           />
         </label>
-        {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        {verificationSent && (
+          <p className="verification-message">
+            Verification email sent. Please check your email.
+          </p>
+        )}
+        {verificationSuccess && (
+          <p className="verification-success">Verification successful</p>
+        )}
         <button type="submit">Register</button>
       </form>
     </div>

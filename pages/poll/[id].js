@@ -31,6 +31,7 @@ const formatDateTime = (dateTimeString) => {
   const [answers, setAnswers] = useState([]);
   const [comments, setComments] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
     if(id){
@@ -61,6 +62,27 @@ const formatDateTime = (dateTimeString) => {
         console.error('Error fetching poll answer:', error);
       }
     };
+
+    const fetchAttendance = async () => {
+      try {
+        const response = await fetch(`http://localhost:8001/attendance/${id}/getOwnAttendance`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setSelectedAnswer(data.attend.answerid || ''); // Set the selected answer from the attendance data
+          console.log(data.attend.answerid);
+          setHasSubmitted(data.attend.answerid !== null);
+        } else {
+          console.error('Failed to fetch poll attendance');
+        }
+      } catch (error) {
+        console.error('Error fetching poll attendance:', error);
+      }
+    };
+
     const fetchComment = async () =>{
       const response = await fetch(`http://localhost:8001/comment/${id}`);
       if(response.ok){
@@ -72,6 +94,7 @@ const formatDateTime = (dateTimeString) => {
     }
     fetchAnswer();
     fetchComment();
+    fetchAttendance();
   }, [id]);
 
 
@@ -87,6 +110,35 @@ const formatDateTime = (dateTimeString) => {
   const handleCommentChange = (e) => {
     setComment(e.target.value);
   };
+
+    const handleAnswerUpdate = async (e) => {
+    e.preventDefault();
+      // setSelectedAnswer()
+    try {
+      const response = await axios.put(
+        `http://localhost:8001/attendance/${id}/updatePollAttendance/${selectedAnswer}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        // setSelectedAnswer('');
+        setErrorMessage('Answer updated successfully.');
+        setHasSubmitted(true); // Set hasSubmitted to true
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 404) {
+        setErrorMessage('You have not submitted any answer yet.');
+      } else {
+        setErrorMessage('An error occurred while updating the answer.');
+      }
+    }
+  };
+
 
   const handleAnswerSubmit = async (e) => {
     e.preventDefault();
@@ -115,8 +167,11 @@ const formatDateTime = (dateTimeString) => {
           },
         }
       );
+
+      setErrorMessage('Successfully submitted');
+      setHasSubmitted(true); // Set hasSubmitted to true
   
-      setSelectedAnswer('');
+     // setSelectedAnswer('');
     } catch (err) {
       if (err.response && err.response.status === 500) {
         setErrorMessage('You have already submitted this poll.');
@@ -163,7 +218,7 @@ const formatDateTime = (dateTimeString) => {
     <div className="container">
       <Header/>
       {/* <h1 className="text-3xl font-bold mb-4">Poll Details</h1> */}
-      <form className='detial-info' onSubmit={handleAnswerSubmit}>
+      <form className="detial-info" onSubmit={hasSubmitted ? handleAnswerUpdate : handleAnswerSubmit}>
         <div className="mb-4">
         <p><Profile width={30} height={30} /> : {poll.username}</p>
         <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>
@@ -190,13 +245,13 @@ const formatDateTime = (dateTimeString) => {
         </div>
 
         {selectedAnswer && (
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={handleAnswerSubmit}>
-            Submit Answer
-          </button>
-        )}
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          {hasSubmitted ? 'Update Answer' : 'Submit Answer'}
+        </button>
+      )}
 
         <button
           type="button"

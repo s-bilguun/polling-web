@@ -133,37 +133,35 @@ const Page = () => {
     <div>
       <Header />
       <div className="poll-list">
-        <div className='second-header'>
-        
+        <div className="second-header">
           <SearchBar setPolls={setPolls} setNotFound={setNotFound} initialPolls={initialPolls} />
-  
-          <div> {/* Change <p> to <div> */}
-            Sort by <FontAwesomeIcon icon={faArrowDownWideShort} className='icon-initial' /> <DropdownSort options={sortOptions} onSelectSort={handleSort} />
+          <div>
+            Sort by <FontAwesomeIcon icon={faArrowDownWideShort} className="icon-initial" /> <DropdownSort options={sortOptions} onSelectSort={handleSort} />
           </div>
         </div>
   
         {notFound ? (
-            <div className="error-container">
+          <div className="error-container">
             <p>Хайлтад таарсан санал асуулга олдсонгүй</p>
           </div>
         ) : (
           getPollsForPage(currentPage).map((poll) => (
             <div
               key={poll.id}
-              className={`poll-item ${new Date(poll.startdate) > new Date() ? 'not-started' : ''} ${new Date(poll.expiredate) < new Date() ? 'expired' : ''}`}
+              className={`poll-item ${new Date(poll.startdate) > new Date() ? "not-started" : ""} ${new Date(poll.expiredate) < new Date() ? "expired" : ""}`}
             >
-              <div className="poll-details">
-                <div className="poll-username"><FontAwesomeIcon icon={faUser} />  { poll.username}</div>
-                <div className="poll-title-link">
-                  <Link href={`/poll/${poll.id}`} passHref>
-                    {poll.question}
-                  </Link>
+              <Link href={`/poll/${poll.id}`} className="poll-item-link">
+                <div className="poll-details">
+                  <div className="poll-username">
+                    <FontAwesomeIcon icon={faUser} /> {poll.username}
+                  </div>
+                  <div className="poll-title-link">{poll.question}</div>
                 </div>
-              </div>
-              <div className="poll-datetime">
-                <p>{formatDateTime(poll.startdate)}</p>
-                <p>{formatDateTime(poll.expiredate)}</p>
-              </div>
+                <div className="poll-datetime">
+                  <p>{formatDateTime(poll.startdate)}</p>
+                  <p>{formatDateTime(poll.expiredate)}</p>
+                </div>
+              </Link>
             </div>
           ))
         )}
@@ -172,11 +170,7 @@ const Page = () => {
       {/* Pagination links */}
       <div className="pagination">
         {pageNumbers.map((pageNumber) => (
-          <button
-            key={pageNumber}
-            onClick={() => handlePageChange(pageNumber)}
-            className={pageNumber === currentPage ? 'active' : ''}
-          >
+          <button key={pageNumber} onClick={() => handlePageChange(pageNumber)} className={pageNumber === currentPage ? "active" : ""}>
             {pageNumber}
           </button>
         ))}
@@ -184,6 +178,7 @@ const Page = () => {
       <Footer />
     </div>
   );
+  
         };
   
   export default Page;
