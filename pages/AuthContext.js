@@ -2,19 +2,37 @@ import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  
+  const [loading, setLoading] = useState(true);
+  const [authChecked, setAuthChecked] = useState(false); // New state variable
 
-  const login = (token) => {
+
+  const login = async (token) => {
     // Set the token in a cookie
     Cookies.set('token', token);
-    // Set the user state
-    setUser({ token });
+    // Decode the token to get the user ID
+    const decodedToken = jwt_decode(token);
+    console.log('Decoded token:', decodedToken);
+  
+    if (decodedToken.userid) {
+      // Fetch user details using the user ID
+      const userDetails = await fetchUserDetails(decodedToken.userid);
+      
+      if (userDetails) {
+        setUser({ token, ...userDetails, username: userDetails.username });
+      } else {
+        setUser(null);
+      }
+    } else {
+      console.error('Invalid user ID');
+      setUser(null);
+    }
   };
 
   const logout = () => {
@@ -25,22 +43,52 @@ const AuthProvider = ({ children }) => {
     // Redirect to the login page
     router.push('/login');
   };
-
-  const checkAuth = () => {
-    // Check if the token exists in the cookie
+  const fetchUserDetails = async (id) => {
+    try {
+      if (id) {
+        const response = await axios.get(`http://localhost:8001/user/${id}`);
+        const userData = response.data;
+        console.log('User data:', userData);
+        return userData.user; // Return the nested user object
+      } else {
+        console.error('Invalid user ID');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+      return null;
+    }
+  };
+  
+  
+  
+  
+  
+  const checkAuth = async () => {
+    setLoading(true);
     const token = Cookies.get('token');
     if (token) {
-      // Set the user state with a dummy user object
-      setUser({ token, username: 'testuser' }); // Replace with your desired dummy user data
+      const decodedToken = jwt_decode(token);
+      const userDetails = await fetchUserDetails(decodedToken.userid);
+      if (userDetails) {
+        setUser({ token, ...userDetails, username: userDetails.username });
+      } else {
+        setUser(null);
+      }
     } else {
-      // Reset the user state
       setUser(null);
     }
+    setLoading(false);
+    setAuthChecked(true);
   };
 
   useEffect(() => {
-    checkAuth(); // Call checkAuth when the component mounts
+    checkAuth();
   }, []);
+
+  if (!authChecked) {
+    return null; // Or any loading state component
+  }
 
   return (
     <AuthContext.Provider
@@ -51,7 +99,7 @@ const AuthProvider = ({ children }) => {
         checkAuth,
       }}
     >
-      {children}
+      {!loading && children} {/* Only render children when not loading */}
     </AuthContext.Provider>
   );
 };

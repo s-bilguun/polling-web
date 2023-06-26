@@ -541,6 +541,7 @@ button:focus {
 /* DropdownSort style */
 
 .dropdown-sort {
+  margin-top: 15px;
   display: inline-block;
   /* position: relative; */
 }

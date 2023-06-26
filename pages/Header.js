@@ -10,7 +10,8 @@ const Header = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const { user, logout } = useContext(AuthContext);
-  const isLoggedIn = user !== null;
+  const isLoggedIn = !!user;
+
 
   const handleDropdownToggle = () => {
     setDropdownVisible(!dropdownVisible);
@@ -46,7 +47,9 @@ const Header = () => {
         setDarkTheme(false);
       }
     }
-  }, []);
+    console.log(user && user.username); // Move this line inside useEffect
+  }, [user]); // Add [user] as the dependency
+  
 
   
 
@@ -80,7 +83,8 @@ const Header = () => {
                     alt="Profile"
                     className="profile-picture"
                   />
-                  <span>{user.username}</span>
+                {user && <span>{user.username}</span>}
+                
                 </div>
                 {dropdownVisible && (
                   <ul className="dropdown-menu">
