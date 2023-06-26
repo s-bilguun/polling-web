@@ -7,9 +7,14 @@ import { AuthContext } from './AuthContext';
 
 const Header = () => {
   const [darkTheme, setDarkTheme] = useState(false);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const { user, logout } = useContext(AuthContext);
   const isLoggedIn = user !== null;
+
+  const handleDropdownToggle = () => {
+    setDropdownVisible(!dropdownVisible);
+  };
 
   const handleToggle = () => {
     if (typeof window !== 'undefined') {
@@ -43,6 +48,8 @@ const Header = () => {
     }
   }, []);
 
+  
+
   return (
     <header>
       <Link href="/">
@@ -65,9 +72,33 @@ const Header = () => {
             <Link href="/poll_create"><FontAwesomeIcon icon={faPlus} className="icon-initial" /> Санал асуулга үүсгэх</Link>
           </li>
           {isLoggedIn ? (
-            <li>
-              <button className='logout-button' onClick={() => logout()}><FontAwesomeIcon icon={faRightFromBracket} className="icon" /> Гарах</button>
-            </li>
+            <>
+              <li>
+                <div onClick={handleDropdownToggle} className="profile-container">
+                  <img
+                    src="https://via.placeholder.com/40"
+                    alt="Profile"
+                    className="profile-picture"
+                  />
+                  <span>{user.username}</span>
+                </div>
+                {dropdownVisible && (
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link href="/my_polls">My Polls</Link>
+                    </li>
+                    <li>
+                      <Link href="/settings">Settings</Link>
+                    </li>
+                    <li>
+                      <button className="logout-button" onClick={() => logout()}>
+                        <FontAwesomeIcon icon={faRightFromBracket} className="icon" /> Гарах
+                      </button>
+                    </li>
+                  </ul>
+                )}
+              </li>
+            </>
           ) : (
             <>
               <li>
