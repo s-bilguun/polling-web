@@ -63,12 +63,16 @@ nav ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  align-items: center; /* Add this line to align items vertically */
 }
 
 nav ul li {
   margin-left: 1rem;
   margin-right: 2rem;
+  display: flex; /* Add this line to make the li items flex containers */
+  align-items: center; /* Add this line to align the content of li items vertically */
 }
+
 
 nav ul li a {
   color: #fff;
@@ -201,4 +205,48 @@ body {
 
 nav .mybrand {
   color: var(--color-primary);
+}
+
+
+.profile-picture {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative; /* Add this line to position the dropdown relative to the profile container */
+}
+
+.profile-container span {
+  margin-left: 8px;
+}
+.dropdown-menu {
+  position: absolute;
+  background-color: var(--header-background);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 8px;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  min-width: 150px;
+  top: 100%; /* Add this line to position the dropdown menu below the username */
+  margin-top: 0px; /* Add this line to add a small margin between the username and the dropdown menu */
+}
+
+.dropdown-menu li a {
+  padding: 4px 8px; /* Add padding to the left and right of text */
+  display: flex;
+  align-items: center;
+  color: var(--color-dark);
+}
+.dropdown-menu li a:not(:last-child) {
+  margin-bottom: 4px;
 }
