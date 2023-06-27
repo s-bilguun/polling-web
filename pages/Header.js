@@ -1,17 +1,19 @@
 import React, { useEffect, useLayoutEffect, useState, useContext } from 'react';
 import Link from 'next/link';
 import './headerStyles.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import axios from 'axios';
+
 import { faMoon, faSun, faPlus, faUserPlus, faRightFromBracket, faRightToBracket, faPollH, faCog } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from './AuthContext';
 
 const Header = () => {
   const [darkTheme, setDarkTheme] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [profileImage, setProfileImage] = useState('/placeholder.jpg'); // Set the default placeholder image path
 
   const { user, logout } = useContext(AuthContext);
   const isLoggedIn = !!user;
-
 
   const handleDropdownToggle = () => {
     setDropdownVisible(!dropdownVisible);
@@ -47,12 +49,27 @@ const Header = () => {
         setDarkTheme(false);
       }
     }
-    console.log(user && user.username); // Move this line inside useEffect
-  }, [user]); // Add [user] as the dependency
-  
-
-  
-
+    if (isLoggedIn) {
+      console.log('User object:', user);
+      const fetchProfileImage = async () => {
+        try {
+          const response = await axios.get(`http://localhost:8001/image/displayImage/${user.id}`, {
+            responseType: 'blob', // Set the response type to 'blob'
+          });
+    
+          const imageUrl = URL.createObjectURL(response.data); // Create an object URL from the blob
+    
+          console.log('Fetched profile image URL:', imageUrl);
+          setProfileImage(imageUrl);
+        } catch (error) {
+          console.log('Error fetching profile image:', error);
+        }
+      };
+    
+      fetchProfileImage();
+    }
+    }, [isLoggedIn, user]);
+    
   return (
     <header>
       <Link href="/">
@@ -79,22 +96,21 @@ const Header = () => {
               <li>
                 <div onClick={handleDropdownToggle} className="profile-container">
                   <img
-                    src="https://via.placeholder.com/40"
+                    src={profileImage} // Use the profileImage state variable as the image source
                     alt="Profile"
                     className="profile-picture"
                   />
-                {user && <span>{user.username}</span>}
-                
+                  {user && <span>{user.username}</span>}
                 </div>
                 {dropdownVisible && (
                   <ul className="dropdown-menu">
-                  <li>
-                    <Link href="/my_polls"><FontAwesomeIcon icon={faPollH} className="icon" /> My Polls</Link>
-                  </li>
-                  <li>
-                    <Link href="/settings"><FontAwesomeIcon icon={faCog} className="icon" /> Settings</Link>
-                  </li>
-                  <li>
+                    <li>
+                      <Link href="/my_polls"><FontAwesomeIcon icon={faPollH} className="icon" /> My polls</Link>
+                    </li>
+                    <li>
+                      <Link href="/settings"><FontAwesomeIcon icon={faCog} className="icon" /> Settings</Link>
+                    </li>
+                    <li>
                       <button className="logout-button" onClick={() => logout()}>
                         <FontAwesomeIcon icon={faRightFromBracket} className="icon" /> Гарах
                       </button>

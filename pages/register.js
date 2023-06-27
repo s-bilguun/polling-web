@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import AvatarEditor from 'react-avatar-editor';
 import Header from './Header';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -13,31 +14,58 @@ const Register = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [verificationSent, setVerificationSent] = useState(false);
   const [verificationSuccess, setVerificationSuccess] = useState(false);
-
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [scale, setScale] = useState(1);
+  const editorRef = useRef(null);
   const router = useRouter();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
-    axios({
-      url: 'http://localhost:8001/user/createUser',
-      method: 'POST',
-      headers: {},
-      data: {
+    try {
+      const response = await axios.post('http://localhost:8001/user/createUser', {
         email: email,
         username: username,
         password: password,
         password2: password2,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        setVerificationSent(true);
-      })
-      .catch((err) => {
-        setErrorMessage('Registration failed.');
-        console.log(err);
       });
+
+      const userid = response.data.userid;
+      if (image) {
+        const canvas = editorRef.current.getImageScaledToCanvas().toDataURL();
+        const croppedImage = dataURLtoFile(canvas, 'croppedImage.png');
+
+        const formData = new FormData();
+        formData.append('image', croppedImage);
+
+        await axios.post(`http://localhost:8001/image/registerUploadImage/${userid}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          data: {
+            userid: userid,
+          },
+        });
+      }
+
+      setVerificationSent(true);
+    } catch (error) {
+      setErrorMessage('Registration failed.');
+      console.log(error);
+    }
+  };
+
+  const dataURLtoFile = (dataUrl, filename) => {
+    const arr = dataUrl.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
   };
 
   const checkVerificationStatus = () => {
@@ -76,6 +104,22 @@ const Register = () => {
     };
   }, [verificationSent]);
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(file);
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleZoomChange = (e) => {
+    setScale(parseFloat(e.target.value));
+  };
+
   const handleDarkModeToggle = () => {
     setDarkMode(!darkMode);
   };
@@ -84,61 +128,86 @@ const Register = () => {
     <div className="card">
       <Header />
       <motion.div
-      initial={{ y: 25, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{
-        duration: 0.75,
-      }}
+        initial={{ y: 25, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{
+          duration: 0.75,
+        }}
       >
-      <h1>Register</h1>
-      <form onSubmit={handleRegister}>
-        <label>
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Username:
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Confirm password:
-          <input
-            type="password"
-            value={password2}
-            onChange={(e) => setPassword2(e.target.value)}
-            required
-          />
-        </label>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        {verificationSent && (
-          <p className="verification-message">
-            Verification email sent. Please check your email.
-          </p>
-        )}
-        {verificationSuccess && (
-          <p className="verification-success">Verification successful</p>
-        )}
-        <button type="submit">Register</button>
-      </form>
+        <h1>Register</h1>
+        <form onSubmit={handleRegister}>
+          <label>
+            Email:
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          </label>
+          <label>
+            Username:
+            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+          </label>
+          <label>
+            Password:
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Confirm password:
+            <input
+              type="password"
+              value={password2}
+              onChange={(e) => setPassword2(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Profile Picture:
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+          </label>
+          {preview && (
+            <div style={{ marginTop: '1rem' }}>
+              <AvatarEditor
+                ref={editorRef}
+                image={preview}
+                width={200}
+                height={200}
+                border={10}
+                borderRadius={100}
+                color={[255, 255, 255, 0.6]} // RGBA
+                scale={scale}
+                rotate={0}
+                onPositionChange={() => {
+                  // Handle position change if needed
+                }}
+                style={{ borderRadius: '50%' }}
+              />
+            </div>
+          )}
+          {preview && (
+            <div>
+              <label>
+                Zoom:
+                <input
+                  type="range"
+                  min="1"
+                  max="3"
+                  step="0.1"
+                  value={scale}
+                  onChange={handleZoomChange}
+                />
+              </label>
+            </div>
+          )}
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {verificationSent && (
+            <p className="verification-message">Verification email sent. Please check your email.</p>
+          )}
+          {verificationSuccess && <p className="verification-success">Verification successful</p>}
+
+          <button type="submit">Register</button>
+        </form>
       </motion.div>
     </div>
   );

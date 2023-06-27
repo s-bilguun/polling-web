@@ -239,7 +239,7 @@ nav .mybrand {
   position: absolute;
   background-color: var(--color-pagination-background);
   border: 1px solid var(--color-dark);
-  border-radius: 4px;
+  border-radius: 0 0 4px 4px;
   padding: 8px;
   right: 8px; /* Adjust the value to add space between the menu and the right edge */
   z-index: 100;
@@ -248,7 +248,7 @@ nav .mybrand {
   width: auto;
   min-width: 150px;
   top: 100%;
-  margin-top: -2px; 
+ 
   border-top: none;
 }
 
