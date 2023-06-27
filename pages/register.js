@@ -20,41 +20,47 @@ const Register = () => {
   const editorRef = useRef(null);
   const router = useRouter();
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
+const handleRegister = async (e) => {
+  e.preventDefault();
 
-    try {
-      const response = await axios.post('http://localhost:8001/user/createUser', {
-        email: email,
-        username: username,
-        password: password,
-        password2: password2,
+  try {
+    const response = await axios.post('http://localhost:8001/user/createUser', {
+      email: email,
+      username: username,
+      password: password,
+      password2: password2,
+    });
+
+    const userid = response.data.userid;
+    if (image) {
+      // Upload the cropped image
+      const canvas = editorRef.current.getImageScaledToCanvas().toDataURL();
+      const croppedImage = dataURLtoFile(canvas, `croppedImage_${Date.now()}.png`);
+
+      const formData = new FormData();
+      formData.append('image', croppedImage);
+
+      await axios.post(`http://localhost:8001/image/registerUploadImage/${userid}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        data: {
+          userid: userid,
+        },
       });
-
-      const userid = response.data.userid;
-      if (image) {
-        const canvas = editorRef.current.getImageScaledToCanvas().toDataURL();
-        const croppedImage = dataURLtoFile(canvas, `croppedImage_${Date.now()}.png`);
-
-        const formData = new FormData();
-        formData.append('image', croppedImage);
-
-        await axios.post(`http://localhost:8001/image/registerUploadImage/${userid}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          data: {
-            userid: userid,
-          },
-        });
-      }
-
-      setVerificationSent(true);
-    } catch (error) {
-      setErrorMessage('Registration failed.');
-      console.log(error);
+    } else {
+      // Set default profile picture if no image is selected
+      await axios.post(`http://localhost:8001/image/setDefaultProfilePicture/${userid}`);
     }
-  };
+
+    setVerificationSent(true);
+  } catch (error) {
+    setErrorMessage('Registration failed.');
+    console.log(error);
+  }
+};
+
+  
 
   const dataURLtoFile = (dataUrl, filename) => {
     const arr = dataUrl.split(',');
