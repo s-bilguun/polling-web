@@ -34,7 +34,7 @@ const Register = () => {
       const userid = response.data.userid;
       if (image) {
         const canvas = editorRef.current.getImageScaledToCanvas().toDataURL();
-        const croppedImage = dataURLtoFile(canvas, 'croppedImage.png');
+        const croppedImage = dataURLtoFile(canvas, `croppedImage_${Date.now()}.png`);
 
         const formData = new FormData();
         formData.append('image', croppedImage);
