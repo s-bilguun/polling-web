@@ -23,18 +23,18 @@ const AuthProvider = ({ children }) => {
     if (decodedToken.userid) {
       // Fetch user details using the user ID
       const userDetails = await fetchUserDetails(decodedToken.userid);
-      
+  
       if (userDetails) {
         setUser({ token, ...userDetails, username: userDetails.username });
       } else {
-        setUser(null);
+        setUser({ token }); // Set the token value in the state even if userDetails is null
       }
     } else {
       console.error('Invalid user ID');
-      setUser(null);
+      setUser({ token }); // Set the token value in the state even if user ID is invalid
     }
   };
-
+  
   const logout = () => {
     // Remove the token from the cookie
     Cookies.remove('token');
@@ -61,7 +61,14 @@ const AuthProvider = ({ children }) => {
   };
   
   
+  const updateUser = (updatedUser) => {
+    setUser(updatedUser);
+  };
   
+  const value = {
+    user,
+    updateUser,
+  };
   
   
   const checkAuth = async () => {
@@ -97,6 +104,7 @@ const AuthProvider = ({ children }) => {
         login,
         logout,
         checkAuth,
+        updateUser,
       }}
     >
       {!loading && children} {/* Only render children when not loading */}

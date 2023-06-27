@@ -726,6 +726,8 @@ button:focus {
 }
 
 .profile-image {
-  border-radius: 50%;
-  object-fit: cover;
+  width: 40px; /* Adjust the width as needed */
+  height: 40px; /* Adjust the height as needed */
+  object-fit: cover; /* Maintain the aspect ratio and cover the container */
+  border-radius: 50%; /* Display the image in a circular shape */
 }
