@@ -38,7 +38,7 @@ const Poll = () => {
   useEffect(() => {
     if (id) {
       axios
-        .get(`http://localhost:8001/poll/${id}`)
+        .get(`http://localhost:8001/poll/getPoll/${id}`)
         .then(res => {
           setPoll(res.data);
           console.log(res.data);
