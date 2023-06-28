@@ -103,10 +103,27 @@ const Poll = () => {
         console.error('Failed to fetch comments');
       }
     }
+
+    const fetchProfileImage = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8001/image/displayWithUsername/${poll.username}`, {
+          responseType: 'blob', // Set the response type to 'blob'
+        });
+  
+        const imageUrl = URL.createObjectURL(response.data); // Create an object URL from the blob
+  
+  
+        setProfileImage(imageUrl);
+      } catch (error) {
+        console.log('Error fetching profile image:', error);
+      }
+    };
+  
+    fetchProfileImage();
     fetchAnswer();
     fetchComment();
     fetchAttendance();
-  }, [id]);
+  }, [id, poll.username]);
 
 
   // replace with comment data logic
@@ -230,22 +247,7 @@ const Poll = () => {
     router.push(`/poll/${id}/result`);
   };
 
-  const fetchProfileImage = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8001/image/displayWithUsername/${poll.username}`, {
-        responseType: 'blob', // Set the response type to 'blob'
-      });
 
-      const imageUrl = URL.createObjectURL(response.data); // Create an object URL from the blob
-
-
-      setProfileImage(imageUrl);
-    } catch (error) {
-      console.log('Error fetching profile image:', error);
-    }
-  };
-
-  fetchProfileImage();
 
 
   const fetchProfileImageByUsername = async (username) => {
