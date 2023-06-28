@@ -135,7 +135,7 @@ const Page = () => {
     router.push(`/${pageNumber}`);
   };
 
-  
+
   const fetchProfileImageByUsername = async (username) => {
     try {
       const response = await axios.get(`http://localhost:8001/image/displayWithUsername/${username}`, {
@@ -188,20 +188,22 @@ const Page = () => {
                 <Link href={`/poll/${poll.id}`} className="poll-item-link">
                   <div className="poll-details">
                     <div className="poll-username">
-                      {poll.username && profileImages[poll.username] ? (
-                        <img
-                          src={profileImages[poll.username]}
-                          alt={`${poll.username}'s profile`}
-                          className="profile-image"
-                        />
-                      ) : (
-                        <img
-                          src="path/to/your/alt/image"
-                          alt={`${poll.username}'s profile`}
-                          className="profile-image"
-                        />
-                      )}
-                      {poll.username}
+                      <div className="profile-info">
+                        {poll.username && profileImages[poll.username] ? (
+                          <img
+                            src={profileImages[poll.username]}
+                            alt={`${poll.username}'s profile`}
+                            className="profile-image"
+                          />
+                        ) : (
+                          <img
+                            src="path/to/your/alt/image"
+                            alt={`${poll.username}'s profile`}
+                            className="profile-image"
+                          />
+                        )}
+                        <span className="username">{poll.username}</span>
+                      </div>
                     </div>
                     <div className="poll-title-link">{poll.question}</div>
                   </div>

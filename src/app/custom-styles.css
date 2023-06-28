@@ -168,6 +168,7 @@ button:focus {
   margin-bottom: 0.5rem;
 }
 
+
 .poll-answer input[type="radio"] {
   margin-right: 0.5rem;
 }
@@ -195,9 +196,7 @@ button:focus {
 }
 
 @media (prefers-color-scheme: dark) {
-
   .comment-container {
-
     background-color: var(--color-comment-background);
   }
 }
@@ -217,29 +216,26 @@ button:focus {
 }
 
 .comment-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  position: relative;
+  display: flex;  
+  align-items: center; /* Vertically center the items */
   margin-bottom: 1rem;
 }
 
+
 .comment-item .username {
   font-weight: bold;
-  font-size: small;
-  align-items: flex-start;
+  font-size: 13px;
 }
 
 .comment-item .comment {
-  font-size: x-large;
+  font-size: 18px;
 }
 
 .comment-item .datetime {
   font-weight: bold;
   font-size: small;
   color: var(--color-poll-date);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
 }
 
 .comment-inline {
@@ -258,16 +254,31 @@ button:focus {
   color: var(--color-primary);
 }
 
-@media (prefers-color-scheme: dark) {
-  .comment-item .datetime-posted {
-    color: var(--color-primary);
-  }
+
+.comment-profile {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
 }
 
+.comment-profile-pic {
+  width: 40px; 
+  height: 40px; 
+  border-radius: 50%;
+  margin-right: 10px;
+}
 
+.comment-content {
+  overflow-wrap: break-word; /* Break the word to prevent overflow */
+  word-break: break-word;
+  margin-left: 10px;
+  flex-grow: 1;
+}
 
-
-
+.comment-inline {
+  display: flex;
+  justify-content: space-between;
+}
 
 
 .result-buttons {
@@ -451,8 +462,27 @@ button:focus {
 }
 
 .poll-list .poll-username {
-  font-size: 12px;
+  display: flex;
+  align-items: center;
   margin-bottom: 8px;
+}
+
+.poll-list .poll-username .profile-info {
+  display: flex;
+  align-items: center;
+  margin-right: 8px; /* Adjust the margin value as needed */
+}
+
+.poll-list .poll-username .username {
+  margin-left: 8px; /* Adjust the margin value as needed */
+  font-size: 13px;
+}
+
+.profile-image {
+  width: 40px; /* Adjust the width as needed */
+  height: 40px; /* Adjust the height as needed */
+  object-fit: cover; /* Maintain the aspect ratio and cover the container */
+  border-radius: 50%; /* Display the image in a circular shape */
 }
 
 .poll-list .poll-title-link {
@@ -481,6 +511,25 @@ button:focus {
   text-decoration: none;
   color: inherit;
 }
+
+/* poll details user styling */
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.profile-pic img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.profile-name {
+  margin-left: 10px;
+}
+
 
 
 /* second-header */
@@ -725,9 +774,4 @@ button:focus {
   display: none;
 }
 
-.profile-image {
-  width: 40px; /* Adjust the width as needed */
-  height: 40px; /* Adjust the height as needed */
-  object-fit: cover; /* Maintain the aspect ratio and cover the container */
-  border-radius: 50%; /* Display the image in a circular shape */
-}
+

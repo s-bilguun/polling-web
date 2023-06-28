@@ -67,13 +67,20 @@ const Settings = () => {
     e.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
-
+  
+    // Check if newPassword and confirmPassword match
+    if (newPassword !== confirmPassword) {
+      setErrorMessage('New password and confirm password do not match');
+      return;
+    }
+  
     try {
       await axios.put(
-        'http://localhost:8001/user/updatePassword',
+        'http://localhost:8001/auth/changePassword',
         {
-          oldPassword,
-          newPassword,
+          oldPass: oldPassword,
+          newPass: newPassword,
+          newPass2: confirmPassword,
         },
         {
           headers: {
@@ -87,7 +94,7 @@ const Settings = () => {
       console.log(error);
     }
   };
-
+  
   const dataURLtoFile = (dataUrl, filename) => {
     const arr = dataUrl.split(',');
     const mime = arr[0].match(/:(.*?);/)[1];
