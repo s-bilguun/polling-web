@@ -140,18 +140,18 @@ const handleRegister = async (e) => {
           duration: 0.75,
         }}
       >
-        <h1>Register</h1>
+        <h1>Бүртгүүлэх</h1>
         <form onSubmit={handleRegister}>
           <label>
-            Email:
+            И-мэйл:
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </label>
           <label>
-            Username:
+           Нэр:
             <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
           </label>
           <label>
-            Password:
+            Нууц үг:
             <input
               type="password"
               value={password}
@@ -160,7 +160,7 @@ const handleRegister = async (e) => {
             />
           </label>
           <label>
-            Confirm password:
+            Нууц үг (дахиад)
             <input
               type="password"
               value={password2}
@@ -169,7 +169,7 @@ const handleRegister = async (e) => {
             />
           </label>
           <label>
-            Profile Picture:
+            Профайл зураг
             <input type="file" accept="image/*" onChange={handleImageChange} />
           </label>
           {preview && (
@@ -194,7 +194,7 @@ const handleRegister = async (e) => {
           {preview && (
             <div>
               <label>
-                Zoom:
+                Томруулах:
                 <input
                   type="range"
                   min="1"
@@ -208,11 +208,11 @@ const handleRegister = async (e) => {
           )}
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           {verificationSent && (
-            <p className="verification-message">Verification email sent. Please check your email.</p>
+            <p className="verification-message">Баталгаажуулах и-мэйл илгээлээ. И-мэйлээ шалгана уу.</p>
           )}
-          {verificationSuccess && <p className="verification-success">Verification successful</p>}
+          {verificationSuccess && <p className="verification-success">Баталгаажуулалт амжилттай</p>}
 
-          <button type="submit">Register</button>
+          <button type="submit">Бүртгүүлэх</button>
         </form>
       </motion.div>
     </div>

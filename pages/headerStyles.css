@@ -158,6 +158,9 @@ nav ul li a:hover {
   --color-pagination-background: #edecec;
   --color-scheme: light;
   --color-inactive: rgb(114, 113, 113);
+  --color-table: #dddbdb;
+  --color-table-button: #a2b8e4;
+  --color-delete-button: #ec9c9c;
 }
 
 [data-theme='dark'] {
@@ -182,6 +185,9 @@ nav ul li a:hover {
   --color-pagination-background: #11038d;
   --color-scheme: dark;
   --color-inactive: rgb(173, 173, 173);
+  --color-table: #204a9e;
+  --color-table-button: #346bd8;
+  --color-delete-button: #e12c2c;
 }
 
 .logout-button {

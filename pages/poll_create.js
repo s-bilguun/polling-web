@@ -87,11 +87,11 @@ const AddPoll = () => {
       }}
       className="nav-bar"
       >
-      <h1>Add Poll</h1>
+      <h1>Санал асуулга нэмэх</h1>
       {user ? (
         <form onSubmit={handlePollSubmit}>
           <label>
-            Question:
+            Асуулт:
             <input
               type="text"
               value={question}
@@ -100,7 +100,7 @@ const AddPoll = () => {
             />
           </label>
           <label>
-            Start Date & Time:
+            Эхлэх өдөр & цаг:
             <input
               type="datetime-local"
               value={startDateTime}
@@ -109,7 +109,7 @@ const AddPoll = () => {
             />
           </label>
           <label>
-            End Date & Time:
+          Дуусах өдөр & цаг:
             <input
               type="datetime-local"
               value={endDateTime}
@@ -118,7 +118,7 @@ const AddPoll = () => {
             />
           </label>
           <label>
-            Choices:
+            Сонголтууд:
             {choices.map((choice, index) => (
               <div key={index} className='input-inline'>
                 <input
@@ -131,13 +131,13 @@ const AddPoll = () => {
               </div>
             ))}
             <button type="button" onClick={handleAddChoice}>
-              Add Choice
+              Сонголт нэмэх
             </button>
           </label>
-          <button type="submit">Submit</button>
+          <button type="submit">Үүсгэх</button>
         </form>
       ) : (
-        <p>You are not logged in</p>
+        <p>Санал асуулга үүсгэхийн тулд нэвтэрсэн байх хэрэгтэй!</p>
       )}
       </motion.div>
     </div>

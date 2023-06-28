@@ -30,7 +30,7 @@ const Login = () => {
         console.log(res);
       })
       .catch((err) => {
-        setErrorMessage("Login failed. Please check email or password"); // Set error message
+        setErrorMessage("И-мэйл болон нууц үгээ шалгана уу!"); // Set error message
         console.log(err);
       });
 
@@ -50,10 +50,10 @@ const Login = () => {
       }}
       className="nav-bar"
       >
-      <h1>Login</h1>
+      <h1>Нэвтрэх</h1>
       <form onSubmit={handleLogin}>
         <label>
-          Email:
+          И-майл:
           <input
             type="email"
             value={email}
@@ -62,7 +62,7 @@ const Login = () => {
           />
         </label>
         <label>
-          Password:
+          Нууц үг:
           <input
             type="password"
             value={password}
@@ -71,7 +71,7 @@ const Login = () => {
           />
         </label>
         <button onClick={handleLogin} type="submit">
-          Login
+          Нэвтрэх
         </button>
         {errorMessage && <p>{errorMessage}</p>} {/* Render error message */}
       </form>

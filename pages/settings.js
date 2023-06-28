@@ -55,10 +55,10 @@ const Settings = () => {
         updateUser({ ...user, image: preview });
         setSuccessMessage('Profile picture updated successfully');
       } else {
-        setErrorMessage('No image selected');
+        setErrorMessage('Зураг оруулаагүй байна!');
       }
     } catch (error) {
-      setErrorMessage('Failed to update profile picture');
+      setErrorMessage('Зураг солих бүтэлгүйтлээ');
       console.log(error);
     }
   };
@@ -88,9 +88,9 @@ const Settings = () => {
           },
         }
       );
-      setSuccessMessage('Password updated successfully');
+      setSuccessMessage('Амжилттай солигдлоо');
     } catch (error) {
-      setErrorMessage('Failed to update password');
+      setErrorMessage('Нууц үг солих бүтэлгүйтлээ');
       console.log(error);
     }
   };
@@ -117,11 +117,11 @@ const Settings = () => {
           duration: 0.75,
         }}
       >
-        <h1>Settings</h1>
+        <h1>Тохиргоо</h1>
 
         <form onSubmit={handleUpdateProfilePicture}>
           <label>
-            Profile Picture:
+            Профайл зураг:
             <input type="file" accept="image/*" onChange={handleImageChange} />
           </label>
           {preview && (
@@ -158,13 +158,13 @@ const Settings = () => {
               </label>
             </div>
           )}
-          <button type="submit">Update Profile Picture</button>
+          <button type="submit">Зургаа шинэчлэх</button>
         </form>
 
         <form onSubmit={handleUpdatePassword}>
-          <h2>Change Password</h2>
+          <h2>Нууц үг солих:</h2>
           <label>
-            Old Password:
+            Хуучин нууц үг:
             <input
               type="password"
               value={oldPassword}
@@ -172,7 +172,7 @@ const Settings = () => {
             />
           </label>
           <label>
-            New Password:
+           Шинэ нууц үг:
             <input
               type="password"
               value={newPassword}
@@ -180,14 +180,14 @@ const Settings = () => {
             />
           </label>
           <label>
-            Confirm New Password:
+           Шинэ нууц үг дахин бичнэ үү:
             <input
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </label>
-          <button type="submit">Change Password</button>
+          <button type="submit">Нууц үг солих</button>
         </form>
 
         {errorMessage && <p className="error-message">{errorMessage}</p>}

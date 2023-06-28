@@ -105,10 +105,10 @@ const Header = () => {
                 {dropdownVisible && (
                   <ul className="dropdown-menu">
                     <li>
-                      <Link href="/my_polls"><FontAwesomeIcon icon={faPollH} className="icon" /> My polls</Link>
+                      <Link href="/my_polls"><FontAwesomeIcon icon={faPollH} className="icon" /> Минийх</Link>
                     </li>
                     <li>
-                      <Link href="/settings"><FontAwesomeIcon icon={faCog} className="icon" /> Settings</Link>
+                      <Link href="/settings"><FontAwesomeIcon icon={faCog} className="icon" /> Тохиргоо</Link>
                     </li>
                     <li>
                       <button className="logout-button" onClick={() => logout()}>
