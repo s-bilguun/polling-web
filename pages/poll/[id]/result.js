@@ -125,7 +125,7 @@
   return (
   <div className="container mx-auto p-4">
       <Header />
-      <h1 className="text-3xl font-bold mb-4">Poll Result</h1>
+      <h1 className="text-3xl font-bold mb-4">Санал асуулгын үр дүн:</h1>
 
       <h2 className="text-xl font-bold mb-2 poll-question"></h2>
           
@@ -141,7 +141,7 @@
       <div className="result-buttons">
           <button className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={handleGoBack}>
-              Go Back
+             Буцах
           </button>
           <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               onClick={handleRefresh}

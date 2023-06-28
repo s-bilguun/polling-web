@@ -138,7 +138,7 @@ const Poll = () => {
 
       if (response.status === 200) {
         // setSelectedAnswer('');
-        setErrorMessage('Answer updated successfully.');
+        setErrorMessage('Сонголт амжилттай шинэчлэгдлээ');
         setHasSubmitted(true); // Set hasSubmitted to true
       }
     } catch (err) {
@@ -179,7 +179,7 @@ const Poll = () => {
         }
       );
 
-      setErrorMessage('Successfully submitted');
+      setErrorMessage('Амжилттай сонгогдлоо');
       setHasSubmitted(true); // Set hasSubmitted to true
 
       // setSelectedAnswer('');
@@ -315,7 +315,7 @@ const Poll = () => {
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
-                {hasSubmitted ? 'Update Answer' : 'Submit Answer'}
+                {hasSubmitted ? 'Сонголт шинэчлэх' : 'Сонголт оруулах'}
               </button>
             )}
 
@@ -362,7 +362,7 @@ Avoiding Bias: Showing poll results before submission can create bias among part
 
 Encouraging Authentic Responses: By hiding the poll results, participants are more likely to provide authentic responses based on their own thoughts and beliefs. They won't be swayed by the opinions of others or feel pressured to conform to certain choices. This promotes a more accurate representation of individual perspectives.
 
-Enhancing Engagement: When poll results are hidden, participants are encouraged to actively engage in the poll by making their own independent decisions. They can focus on their own preferences without external influence, fostering critical thinking and thoughtful decision-making.
+Enhancing Engagement: When poll results are hidden, unux participants are encouraged to actively engage in the poll by making their own independent decisions. They can focus on their own preferences without external influence, fostering critical thinking and thoughtful decision-making.
 
 Maintaining Privacy: Hiding poll results respects the privacy of individual participants. Some individuals may prefer not to disclose their choices publicly until the poll is complete. By keeping the results hidden, participants can feel more comfortable expressing their opinions without concerns about judgment or scrutiny.
 

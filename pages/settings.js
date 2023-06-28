@@ -108,91 +108,107 @@ const Settings = () => {
   };
 
   return (
-    <div className="card">
-      <Header />
-      <motion.div
-        initial={{ y: 25, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{
-          duration: 0.75,
-        }}
-      >
-        <h1>Тохиргоо</h1>
-
-        <form onSubmit={handleUpdateProfilePicture}>
-          <label>
-            Профайл зураг:
-            <input type="file" accept="image/*" onChange={handleImageChange} />
-          </label>
-          {preview && (
-            <div style={{ marginTop: '1rem' }}>
-              <AvatarEditor
-                ref={editorRef}
-                image={preview}
-                width={200}
-                height={200}
-                border={10}
-                borderRadius={100}
-                color={[255, 255, 255, 0.6]} // RGBA
-                scale={scale}
-                rotate={0}
-                onPositionChange={() => {
-                  // Handle position change if needed
-                }}
-                style={{ borderRadius: '50%' }}
-              />
-            </div>
-          )}
-          {preview && (
-            <div>
-              <label>
-                Zoom:
-                <input
-                  type="range"
-                  min="1"
-                  max="3"
-                  step="0.1"
-                  value={scale}
-                  onChange={handleZoomChange}
+    <div className="card-container">
+      <div className="card">
+        <Header />
+        <motion.div
+          initial={{ y: 25, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            duration: 0.75,
+          }}
+        >
+          <h1>Тохиргоо</h1>
+  
+          <form onSubmit={handleUpdateProfilePicture}>
+            <label>
+              Профайл зураг:
+              <input type="file" accept="image/*" onChange={handleImageChange} />
+            </label>
+            {preview && (
+              <div style={{ marginTop: '1rem' }}>
+                <AvatarEditor
+                  ref={editorRef}
+                  image={preview}
+                  width={200}
+                  height={200}
+                  border={10}
+                  borderRadius={100}
+                  color={[255, 255, 255, 0.6]} // RGBA
+                  scale={scale}
+                  rotate={0}
+                  onPositionChange={() => {
+                    // Handle position change if needed
+                  }}
+                  style={{ borderRadius: '50%' }}
                 />
-              </label>
-            </div>
-          )}
-          <button type="submit">Зургаа шинэчлэх</button>
-        </form>
-
-        <form onSubmit={handleUpdatePassword}>
-          <h2>Нууц үг солих:</h2>
-          <label>
-            Хуучин нууц үг:
-            <input
-              type="password"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-            />
-          </label>
-          <label>
-           Шинэ нууц үг:
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-          </label>
-          <label>
-           Шинэ нууц үг дахин бичнэ үү:
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </label>
-          <button type="submit">Нууц үг солих</button>
-        </form>
-
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        {successMessage && <p className="success-message">{successMessage}</p>}
-      </motion.div>
+              </div>
+            )}
+            {preview && (
+              <div>
+                <label>
+                  Zoom:
+                  <input
+                    type="range"
+                    min="1"
+                    max="3"
+                    step="0.1"
+                    value={scale}
+                    onChange={handleZoomChange}
+                  />
+                </label>
+              </div>
+            )}
+            <button type="submit">Зургаа шинэчлэх</button>
+          </form>
+  
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {successMessage && <p className="success-message">{successMessage}</p>}
+        </motion.div>
+      </div>
+  
+      <div className="card2">
+        <motion.div
+          initial={{ y: 25, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            duration: 0.75,
+          }}
+        >
+          <h1>Нууц үг солих</h1>
+  
+          <form onSubmit={handleUpdatePassword}>
+            <label>
+              Хуучин нууц үг:
+              <input
+                type="password"
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+              />
+            </label>
+            <label>
+             Шинэ нууц үг:
+              <input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+            </label>
+            <label>
+             Шинэ нууц үг дахин бичнэ үү:
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </label>
+            <button type="submit">Нууц үг солих</button>
+          </form>
+  
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {successMessage && <p className="success-message">{successMessage}</p>}
+        </motion.div>
+      </div>
     </div>
   );
 };
