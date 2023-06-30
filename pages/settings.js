@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
 import Header from './Header';
@@ -16,6 +16,24 @@ const Settings = () => {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentProfilePicture, setCurrentProfilePicture] = useState('');
+  useEffect(() => {
+    const fetchCurrentProfilePicture = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8001/image/${user.username}/getOwnPro`, {
+          responseType: 'blob',
+        });
+        if (response.status === 200) {
+          const imageURL = URL.createObjectURL(response.data);
+          setCurrentProfilePicture(imageURL);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchCurrentProfilePicture();
+  }, [user]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -23,7 +41,7 @@ const Settings = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(file);
-        setPreview(reader.result);
+        setPreview(reader.result); // Update the preview with the reader's result
       };
       reader.readAsDataURL(file);
     }
@@ -39,8 +57,15 @@ const Settings = () => {
     setSuccessMessage('');
 
     try {
-      if (image) {
-        const canvas = editorRef.current.getImageScaledToCanvas().toDataURL();
+      if (image || currentProfilePicture) {
+        let canvas;
+        if (image) {
+          // If a new image file is selected, use that for cropping
+          canvas = editorRef.current.getImageScaledToCanvas().toDataURL();
+        } else {
+          // If no new image file is selected, use the current profile picture for cropping
+          canvas = editorRef.current.getImage().toDataURL();
+        }
         const croppedImage = dataURLtoFile(canvas, `croppedImage_${Date.now()}.png`);
 
         const formData = new FormData();
@@ -52,8 +77,14 @@ const Settings = () => {
             Authorization: `Bearer ${user.token}`,
           },
         });
-        updateUser({ ...user, image: preview });
-        setSuccessMessage('Profile picture updated successfully');
+
+        // Update the preview state with the cropped image URL
+        setPreview(canvas);
+
+        // Update the user's image in the context
+        updateUser({ ...user, image: canvas });
+
+        setSuccessMessage('Зураг амжилттай солигдлоо.');
       } else {
         setErrorMessage('Зураг оруулаагүй байна!');
       }
@@ -67,13 +98,13 @@ const Settings = () => {
     e.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
-  
+
     // Check if newPassword and confirmPassword match
     if (newPassword !== confirmPassword) {
-      setErrorMessage('New password and confirm password do not match');
+      setErrorMessage('Шинэ нууц үг болон шинэ нууц үг давтан ижил биш байна.');
       return;
     }
-  
+
     try {
       await axios.put(
         'http://localhost:8001/auth/changePassword',
@@ -94,7 +125,7 @@ const Settings = () => {
       console.log(error);
     }
   };
-  
+
   const dataURLtoFile = (dataUrl, filename) => {
     const arr = dataUrl.split(',');
     const mime = arr[0].match(/:(.*?);/)[1];
@@ -119,17 +150,17 @@ const Settings = () => {
           }}
         >
           <h1>Тохиргоо</h1>
-  
+
           <form onSubmit={handleUpdateProfilePicture}>
             <label>
               Профайл зураг:
               <input type="file" accept="image/*" onChange={handleImageChange} />
             </label>
-            {preview && (
+            {(preview || currentProfilePicture) && (
               <div style={{ marginTop: '1rem' }}>
                 <AvatarEditor
                   ref={editorRef}
-                  image={preview}
+                  image={preview || currentProfilePicture} // Use the preview image if available, or fall back to the current profile picture
                   width={200}
                   height={200}
                   border={10}
@@ -144,7 +175,7 @@ const Settings = () => {
                 />
               </div>
             )}
-            {preview && (
+            {(preview || currentProfilePicture) && (
               <div>
                 <label>
                   Zoom:
@@ -161,12 +192,12 @@ const Settings = () => {
             )}
             <button type="submit">Зургаа шинэчлэх</button>
           </form>
-  
+
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           {successMessage && <p className="success-message">{successMessage}</p>}
         </motion.div>
       </div>
-  
+
       <div className="card2">
         <motion.div
           initial={{ y: 25, opacity: 0 }}
@@ -176,7 +207,7 @@ const Settings = () => {
           }}
         >
           <h1>Нууц үг солих</h1>
-  
+
           <form onSubmit={handleUpdatePassword}>
             <label>
               Хуучин нууц үг:
@@ -187,7 +218,7 @@ const Settings = () => {
               />
             </label>
             <label>
-             Шинэ нууц үг:
+              Шинэ нууц үг:
               <input
                 type="password"
                 value={newPassword}
@@ -195,7 +226,7 @@ const Settings = () => {
               />
             </label>
             <label>
-             Шинэ нууц үг дахин бичнэ үү:
+              Шинэ нууц үг дахин бичнэ үү:
               <input
                 type="password"
                 value={confirmPassword}
@@ -204,7 +235,7 @@ const Settings = () => {
             </label>
             <button type="submit">Нууц үг солих</button>
           </form>
-  
+
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           {successMessage && <p className="success-message">{successMessage}</p>}
         </motion.div>
