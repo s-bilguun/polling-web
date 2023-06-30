@@ -131,10 +131,10 @@
           
       <div className="chart-container">
           <div className="chart">
-              <ApexChart options={barChartOptions} series={barChartSeries} type="bar" height={350} />
+              <ApexChart options={barChartOptions} series={barChartSeries} type="bar" height={450} width={350} />
           </div>
           <div className="chart">
-              <ApexChart options={pieChartOptions} series={pieChartSeries} type="pie" width={350} height={250} />
+              <ApexChart options={pieChartOptions} series={pieChartSeries} type="pie" width={450} height={350} />
           </div>
       </div>
 

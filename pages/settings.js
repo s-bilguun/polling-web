@@ -42,20 +42,21 @@ const Settings = () => {
       reader.onloadend = () => {
         setImage(file);
         setPreview(reader.result); // Update the preview with the reader's result
+       
       };
       reader.readAsDataURL(file);
     }
+    
   };
 
   const handleZoomChange = (e) => {
     setScale(parseFloat(e.target.value));
   };
-
   const handleUpdateProfilePicture = async (e) => {
     e.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
-
+  
     try {
       if (image || currentProfilePicture) {
         let canvas;
@@ -67,24 +68,27 @@ const Settings = () => {
           canvas = editorRef.current.getImage().toDataURL();
         }
         const croppedImage = dataURLtoFile(canvas, `croppedImage_${Date.now()}.png`);
-
+  
         const formData = new FormData();
         formData.append('image', croppedImage);
-
+  
         await axios.put('http://localhost:8001/image/updateImage', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${user.token}`,
           },
         });
-
+  
         // Update the preview state with the cropped image URL
         setPreview(canvas);
-
+  
         // Update the user's image in the context
         updateUser({ ...user, image: canvas });
-
+  
         setSuccessMessage('Зураг амжилттай солигдлоо.');
+  
+        // Reset the zoom slider and value
+        setScale(1);
       } else {
         setErrorMessage('Зураг оруулаагүй байна!');
       }
@@ -93,6 +97,7 @@ const Settings = () => {
       console.log(error);
     }
   };
+  
 
   const handleUpdatePassword = async (e) => {
     e.preventDefault();

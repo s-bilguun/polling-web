@@ -4,7 +4,7 @@ import Header from '../Header';
 import { AuthContext } from '../AuthContext';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faComments } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faComments, faPlus } from '@fortawesome/free-solid-svg-icons';
 import Profile from '../Profile';
 import { motion } from "framer-motion";
 
@@ -155,13 +155,13 @@ const Poll = () => {
           },
         }
       );
-    
+
       // Handle the response and update the answers state accordingly
       const createdAnswer = response.data.answer; // Get the answer from the response data
       setAnswers((prevAnswers) => [...prevAnswers, createdAnswer]);
       setSelectedAnswer(createdAnswer.id); // Set selectedAnswer to the new answer's id
       setNewAnswer(''); // Clear the input field
-  
+
       // Update the attendance with the new answer
       const updateResponse = await axios.put(
         `http://localhost:8001/attendance/${id}/updatePollAttendance/${createdAnswer.id}`,
@@ -172,7 +172,7 @@ const Poll = () => {
           },
         }
       );
-  
+
       // Handle update response
       if (updateResponse.status === 200) {
         setHasSubmitted(true); // Set hasSubmitted to true
@@ -182,7 +182,7 @@ const Poll = () => {
       // Handle error message or display error to the user
     }
   };
-  
+
   const handleAnswerUpdate = async (e) => {
     e.preventDefault();
     // setSelectedAnswer()
@@ -353,19 +353,20 @@ const Poll = () => {
                 </div>
               ))}
             </div>
-
             {poll.type === 'opinion' && (
-              <div className="create-answer">
+              <div className="create-answer-container">
                 <input
                   type="text"
                   value={newAnswer}
                   onChange={handleNewAnswerChange}
                   placeholder="Enter new answer"
+                  className="create-answer"
                 />
-                <button onClick={handleNewAnswerSubmit}>Сонголт нэмэх</button>
+                <button onClick={handleNewAnswerSubmit}>
+                  <FontAwesomeIcon icon={faPlus} />
+                </button>
               </div>
             )}
-
 
             {selectedAnswer && (
               <button

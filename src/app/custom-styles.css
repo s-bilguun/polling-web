@@ -390,14 +390,8 @@ button:focus {
 }
 
 .apexcharts-legend-text {
-  color: rgb(var(--foreground-rgb));
-}
-
-@media (prefers-color-scheme: dark) {
-  .apexcharts-legend-text {
-    color: white !important;
-    /* Set the legend text color to white in dark mode */
-  }
+  color: var(--foreground-rgb) !important;
+  /* Set the legend text color to white in dark mode */
 }
 
 .apexcharts-yaxis-label,
@@ -940,3 +934,16 @@ button:focus {
 }
 
 
+.create-answer-container {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+}
+
+.create-answer {
+  flex-grow: 1; /* Take remaining horizontal space */
+  padding: 0.5rem; /* Adjust padding as needed */
+}
+
+.create-answer button {
+  margin-left: 0.5rem; /* Add margin to the left of the button */
+}
