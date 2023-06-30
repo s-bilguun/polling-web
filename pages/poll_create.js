@@ -15,7 +15,7 @@ const AddPoll = () => {
   const [startDateTime, setStartDateTime] = useState(moment().format('YYYY-MM-DDTHH:mm'));
   const [endDateTime, setEndDateTime] = useState('');
   const [choices, setChoices] = useState(['', '']);
-  const [isNewType, setIsNewType] = useState(true);
+  const [isOpinionPoll, setIsOpinionPoll] = useState(false);
   const [visibility, setVisibility] = useState(false);
 
   const handleAddChoice = () => {
@@ -35,7 +35,7 @@ const AddPoll = () => {
   };
 
   const handleToggle = () => {
-    setIsNewType(!isNewType);
+    setIsOpinionPoll(!isOpinionPoll);
   };
 
   const handlePollSubmit = async (e) => {
@@ -59,7 +59,9 @@ const AddPoll = () => {
           question: question,
           startdate: startDateTimeFormatted,
           expiredate: endDateTimeFormatted,
-          answer: isNewType ? visibility.toString() : choices,
+          answer: isOpinionPoll ? null : choices,
+          type: isOpinionPoll ? 'opinion' : 'original',
+          visibility: isOpinionPoll ? visibility : false,
         },
         {
           headers: {
@@ -68,12 +70,13 @@ const AddPoll = () => {
         }
       );
 
+
       // Reset the form
       setQuestion('');
       setStartDateTime('');
       setEndDateTime('');
       setChoices(['', '']);
-      setIsNewType(true);
+      setIsOpinionPoll(false);
       setVisibility(false);
 
       // Go back to the index page or any other desired page
@@ -84,99 +87,98 @@ const AddPoll = () => {
   };
 
   const router = useRouter();
- return (
-  <>
-    <Header />
-    <div className="card">
-      <motion.div
-        initial={{ y: 25, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{
-          duration: 0.75,
-        }}
-        className="nav-bar"
-      >
-        {user ? (
-          <>
-            <div className="custom-checkbox">
-              <input id="status" type="checkbox" name="status" />
-              <label htmlFor="status">
-                <div
-                  className="status-switch"
-                  data-unchecked="Сонголттой"
-                  data-checked="Бичих"
-                  onClick={() => setIsNewType(!isNewType)}
-                ></div>
-              </label>
-            </div>
-            <form onSubmit={handlePollSubmit}>
-              <label>
-                Асуулт:
-                <input type="text" value={question} onChange={(e) => setQuestion(e.target.value)} required />
-              </label>
-              <label>
-                Эхлэх өдөр & цаг:
-                <input
-                  type="datetime-local"
-                  value={startDateTime}
-                  onChange={(e) => setStartDateTime(e.target.value)}
-                  required
-                />
-              </label>
-              <label>
-                Дуусах өдөр & цаг:
-                <input
-                  type="datetime-local"
-                  value={endDateTime}
-                  onChange={(e) => setEndDateTime(e.target.value)}
-                  required
-                />
-              </label>
-
-              {!isNewType ? (
-                <div className="toggle-container">
-                  <div className="toggle-label">Оролцогчдын харагдац:</div>
-                  <div onClick={() => setVisibility(!visibility)}>
-                    <FontAwesomeIcon icon={visibility ? faToggleOn : faToggleOff} className="toggle-icon" />
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <label>
-                    Сонголтууд:
-                    {choices.map((choice, index) => (
-                      <div key={index} className="input-inline">
-                        <input
-                          type="text"
-                          value={choice}
-                          onChange={(e) => handleChoiceChange(index, e.target.value)}
-                          required
-                        />
-                        <button onClick={() => handleDeleteChoice(index)}>
-                          <FontAwesomeIcon icon={faTrashCan} />
-                        </button>
-                      </div>
-                    ))}
-                  </label>
-                  <button type="button" onClick={handleAddChoice}>
-                    Сонголт нэмэх
-                  </button>
-                </div>
-              )}
-
-              <div style={{ marginTop: '1rem' }}>
-                <button type="submit">Үүсгэх</button>
+  return (
+    <>
+      <Header />
+      <div className="card">
+        <motion.div
+          initial={{ y: 25, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            duration: 0.75,
+          }}
+          className="nav-bar"
+        >
+          {user ? (
+            <>
+              <div className="custom-checkbox">
+                <input id="status" type="checkbox" name="status" />
+                <label htmlFor="status">
+                  <div
+                    className="status-switch"
+                    data-unchecked="Сонголттой"
+                    data-checked="Бичих"
+                    onClick={handleToggle}
+                  ></div>
+                </label>
               </div>
-            </form>
-          </>
-        ) : (
-          <p>Санал асуулга үүсгэхийн тулд нэвтэрсэн байх хэрэгтэй!</p>
-        )}
-      </motion.div>
-    </div>
-  </>
-);
+              <form onSubmit={handlePollSubmit}>
+                <label>
+                  Асуулт:
+                  <input type="text" value={question} onChange={(e) => setQuestion(e.target.value)} required />
+                </label>
+                <label>
+                  Эхлэх өдөр & цаг:
+                  <input
+                    type="datetime-local"
+                    value={startDateTime}
+                    onChange={(e) => setStartDateTime(e.target.value)}
+                    required
+                  />
+                </label>
+                <label>
+                  Дуусах өдөр & цаг:
+                  <input
+                    type="datetime-local"
+                    value={endDateTime}
+                    onChange={(e) => setEndDateTime(e.target.value)}
+                    required
+                  />
+                </label>
 
+                {isOpinionPoll ? (
+                  <div className="toggle-container">
+                    <div className="toggle-label">Оролцогчдын харагдац:</div>
+                    <div onClick={() => setVisibility(!visibility)}>
+                      <FontAwesomeIcon icon={visibility ? faToggleOn : faToggleOff} className="toggle-icon" />
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <label>
+                      Сонголтууд:
+                      {choices.map((choice, index) => (
+                        <div key={index} className="input-inline">
+                          <input
+                            type="text"
+                            value={choice}
+                            onChange={(e) => handleChoiceChange(index, e.target.value)}
+                            required
+                          />
+                          <button onClick={() => handleDeleteChoice(index)}>
+                            <FontAwesomeIcon icon={faTrashCan} />
+                          </button>
+                        </div>
+                      ))}
+                    </label>
+                    <button type="button" onClick={handleAddChoice}>
+                      Сонголт нэмэх
+                    </button>
+                  </div>
+                )}
+
+                <div style={{ marginTop: '1rem' }}>
+                  <button type="submit">Үүсгэх</button>
+                </div>
+              </form>
+            </>
+          ) : (
+            <p>Санал асуулга үүсгэхийн тулд нэвтэрсэн байх хэрэгтэй!</p>
+          )}
+        </motion.div>
+      </div>
+    </>
+  );
 };
 
 export default AddPoll;

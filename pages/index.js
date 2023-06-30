@@ -149,7 +149,6 @@ const Page = () => {
         ...prevState,
         [username]: imageUrl,
       }));
-      console.log('Updated profileImages:', updatedProfileImages);
     } catch (error) {
       console.error('Error fetching profile image:', error);
     }

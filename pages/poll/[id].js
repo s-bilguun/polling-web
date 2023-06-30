@@ -33,7 +33,11 @@ const Poll = () => {
   const [comments, setComments] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [newAnswer, setNewAnswer] = useState('');
 
+  const handleNewAnswerChange = (e) => {
+    setNewAnswer(e.target.value);
+  };
 
   useEffect(() => {
     if (id) {
@@ -109,16 +113,18 @@ const Poll = () => {
         const response = await axios.get(`http://localhost:8001/image/displayWithUsername/${poll.username}`, {
           responseType: 'blob', // Set the response type to 'blob'
         });
-  
+
         const imageUrl = URL.createObjectURL(response.data); // Create an object URL from the blob
-  
-  
+
+
         setProfileImage(imageUrl);
       } catch (error) {
         console.log('Error fetching profile image:', error);
       }
     };
-  
+
+
+
     fetchProfileImage();
     fetchAnswer();
     fetchComment();
@@ -138,7 +144,45 @@ const Poll = () => {
   const handleCommentChange = (e) => {
     setComment(e.target.value);
   };
-
+  const handleNewAnswerSubmit = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8001/answers/createAnswer/opinion/${id}`,
+        { answer: newAnswer },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+    
+      // Handle the response and update the answers state accordingly
+      const createdAnswer = response.data.answer; // Get the answer from the response data
+      setAnswers((prevAnswers) => [...prevAnswers, createdAnswer]);
+      setSelectedAnswer(createdAnswer.id); // Set selectedAnswer to the new answer's id
+      setNewAnswer(''); // Clear the input field
+  
+      // Update the attendance with the new answer
+      const updateResponse = await axios.put(
+        `http://localhost:8001/attendance/${id}/updatePollAttendance/${createdAnswer.id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+  
+      // Handle update response
+      if (updateResponse.status === 200) {
+        setHasSubmitted(true); // Set hasSubmitted to true
+      }
+    } catch (error) {
+      console.error('Error creating answer:', error);
+      // Handle error message or display error to the user
+    }
+  };
+  
   const handleAnswerUpdate = async (e) => {
     e.preventDefault();
     // setSelectedAnswer()
@@ -202,9 +246,9 @@ const Poll = () => {
       // setSelectedAnswer('');
     } catch (err) {
       if (err.response && err.response.status === 500) {
-        setErrorMessage('You have already submitted this poll.');
+        setErrorMessage('');
       } else {
-        setErrorMessage('An error occurred while submitting the poll attendance.');
+        setErrorMessage('');
       }
     }
   };
@@ -294,23 +338,34 @@ const Poll = () => {
               </div>
               <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>
 
-
               {answers.map((answer) => (
                 <div key={answer.id} className="poll-answer">
                   <label>
                     <input
                       type="radio"
-                      name={answer.answername}
+                      name={poll.id}
                       value={answer.answername}
                       checked={selectedAnswer === answer.id}
                       onChange={() => handleAnswerSelection(answer.id)}
                     />
                     <p className="poll-username">{answer.answername}</p>
-                    {/* {answers.text}  */}
                   </label>
                 </div>
               ))}
             </div>
+
+            {poll.type === 'opinion' && (
+              <div className="create-answer">
+                <input
+                  type="text"
+                  value={newAnswer}
+                  onChange={handleNewAnswerChange}
+                  placeholder="Enter new answer"
+                />
+                <button onClick={handleNewAnswerSubmit}>Сонголт нэмэх</button>
+              </div>
+            )}
+
 
             {selectedAnswer && (
               <button
@@ -337,55 +392,55 @@ const Poll = () => {
           </form>
 
 
-       <div className="comment-container">
-  <form onSubmit={handleCommentSubmit} className="comment-form">
-    <div className="mb-4">
-      <label htmlFor="comment">Сэтгэгдэл </label>
-      <textarea
-        id="comment"
-        className="text-input"
-        value={comment}
-        onChange={handleCommentChange}
-        placeholder="Сэтгэгдэл бичих..."
-      ></textarea>
-    </div>
-    <button
-      type="submit"
-      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-    >
-      Илгээх 
-    </button>
-  </form>
-  <div className="comment-list">
-    <h3 className="text-lg font-bold mb-2">
-      <FontAwesomeIcon icon={faComments} /> Сэтгэгдлүүд
-    </h3>
-    {comments.map((comment, index) => (
-      <div key={index} className="mb-4 comment-item">
-        <div className="comment-profile">
-          {comment.profileImage ? (
-            <img className="comment-profile-pic" src={comment.profileImage} alt="User profile" />
-          ) : (
-            <FontAwesomeIcon icon={faUser} className="fa-user-icon" />
-          )}
-        </div>
-        <div className="comment-content">
-  <div className="comment-inline">
-    {comment.username && (
-      <div className="username">{comment.username}</div>
-    )}
-    <div className="datetime"> {formatDateTime(comment.createdAt)}</div>
-  </div>
-  <div className="comment-and-date">
-    <div className="comment">{comment.comment}</div>
-    <div className="datetime-posted text-sm text-gray-500">{comment.datetime_posted}</div>
-  </div>
-</div>
+          <div className="comment-container">
+            <form onSubmit={handleCommentSubmit} className="comment-form">
+              <div className="mb-4">
+                <label htmlFor="comment">Сэтгэгдэл </label>
+                <textarea
+                  id="comment"
+                  className="text-input"
+                  value={comment}
+                  onChange={handleCommentChange}
+                  placeholder="Сэтгэгдэл бичих..."
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Илгээх
+              </button>
+            </form>
+            <div className="comment-list">
+              <h3 className="text-lg font-bold mb-2">
+                <FontAwesomeIcon icon={faComments} /> Сэтгэгдлүүд
+              </h3>
+              {comments.map((comment, index) => (
+                <div key={index} className="mb-4 comment-item">
+                  <div className="comment-profile">
+                    {comment.profileImage ? (
+                      <img className="comment-profile-pic" src={comment.profileImage} alt="User profile" />
+                    ) : (
+                      <FontAwesomeIcon icon={faUser} className="fa-user-icon" />
+                    )}
+                  </div>
+                  <div className="comment-content">
+                    <div className="comment-inline">
+                      {comment.username && (
+                        <div className="username">{comment.username}</div>
+                      )}
+                      <div className="datetime"> {formatDateTime(comment.createdAt)}</div>
+                    </div>
+                    <div className="comment-and-date">
+                      <div className="comment">{comment.comment}</div>
+                      <div className="datetime-posted text-sm text-gray-500">{comment.datetime_posted}</div>
+                    </div>
+                  </div>
 
-      </div>
-    ))}
-  </div>
-</div>
+                </div>
+              ))}
+            </div>
+          </div>
 
         </motion.div>
       </div>
