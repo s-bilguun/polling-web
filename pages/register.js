@@ -55,7 +55,7 @@ const handleRegister = async (e) => {
 
     setVerificationSent(true);
   } catch (error) {
-    setErrorMessage('Registration failed.');
+    setErrorMessage('Алдаа гарлаа');
     console.log(error);
   }
 };

@@ -161,6 +161,8 @@ nav ul li a:hover {
   --color-table: #dddbdb;
   --color-table-button: #a2b8e4;
   --color-delete-button: #ec9c9c;
+  --color-checkbox-bg: rgb(56, 95, 221); 
+
 }
 
 [data-theme='dark'] {
@@ -188,6 +190,8 @@ nav ul li a:hover {
   --color-table: #204a9e;
   --color-table-button: #346bd8;
   --color-delete-button: #e12c2c;
+  --color-checkbox-bg: rgb(28, 59, 159); 
+
 }
 
 .logout-button {
