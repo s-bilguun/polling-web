@@ -961,7 +961,7 @@ button:focus {
   width: 400px;
   max-height: 600px;
   overflow: auto;
-  background-color: #fff;
+  background-color: var(--color-333);
   z-index: 2;
 }
 
