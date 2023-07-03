@@ -358,10 +358,10 @@ const Poll = () => {
   const handleCloseUsernames = (event, answerId) => {
     event.preventDefault(); // Prevent default behavior
     event.stopPropagation(); // Prevent event propagation
-  
+
     const usernameList = document.getElementById(`username-list-${answerId}`);
     const overlay = document.getElementById('overlay');
-  
+
     if (usernameList && overlay) {
       usernameList.classList.remove('visible');
       overlay.classList.remove('visible');
@@ -414,52 +414,55 @@ const Poll = () => {
               </div>
               <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>
 
-
-
               {answers.map((answer, index) => (
-                <div key={answer.id} className="poll-answer">
-                  <label>
-                    <input
-                      type="radio"
-                      name={poll.id}
-                      value={answer.answername}
-                      checked={selectedAnswer === answer.id}
-                      onChange={() => handleAnswerSelection(answer.id)}
-                    />
-                <div className="poll__option">
-        <div className='poll__option-info'>
-          <div>
-            <p className="poll__label">{answer.answername}</p>
-          </div>
-          <div>
-            <p className='poll__percentage'>{(attendance[i++] / sum * 100).toFixed(1)}%</p>
-          </div>
-          
-          <a onClick={() => handleShowUsernames(answer.id)}>
-            <FontAwesomeIcon icon={faChevronRight} className='faChevronRightbutton' />
-          </a>
-        </div>
-        <div className="progress" style={{ "--progress-width": `${attendance[index] / sum}` }}></div>
+  <div key={answer.id} className="poll-answer">
+    <label>
+      <input
+        type="radio"
+        name={poll.id}
+        value={answer.answername}
+        checked={selectedAnswer === answer.id}
+        onChange={() => handleAnswerSelection(answer.id)}
+      />
+      <div className="poll__option">
+
+<div className="poll__option-info">
+  <div>
+    <p className="poll__label">{answer.answername}</p>
+  </div>
+  <div>
+    <p 
+      className="poll__percentage" 
+      onClick={() => handleShowUsernames(answer.id)}
+    >
+      {(attendance[i++] / sum * 100).toFixed(1)}%
+    </p>
+  </div>
+</div>
+        <div
+          className="progress-bar"
+          style={{
+            backgroundSize: `${(attendance[index] / sum) * 100}% 100%`
+          }}
+        ></div>
       </div>
     </label>
-                  {poll.visibility && safeUsernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
-                    <div id={`username-list-${answer.id}`} className="username-list">
-                     <button className="close-button" onClick={(event) => handleCloseUsernames(event, answer.id)}>X</button>
-
-                      <p className="answer-name">{answer.answername}</p>
-                      <div className="username-list-content">
-                        {safeUsernames.find(item => item.answerid === answer.id)?.usernames.map((username) => (
-                          <div className="username-row">
-                            <img src={userImages[username]} alt={username} className="profile-pic" />
-                            <p className="username">{username}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-
+    {poll.visibility && safeUsernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
+      <div id={`username-list-${answer.id}`} className="username-list">
+        <button className="close-button" onClick={(event) => handleCloseUsernames(event, answer.id)}>X</button>
+        <p className="answer-name">{answer.answername}</p>
+        <div className="username-list-content">
+          {safeUsernames.find(item => item.answerid === answer.id)?.usernames.map((username) => (
+            <div className="username-row">
+              <img src={userImages[username]} alt={username} className="profile-pic" />
+              <p className="username">{username}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+))}
 
             </div>
             {poll.type === 'opinion' && (
@@ -468,7 +471,7 @@ const Poll = () => {
                   type="text"
                   value={newAnswer}
                   onChange={handleNewAnswerChange}
-                  placeholder="Enter new answer"
+                  placeholder="Шинэ сонголт оруулах..."
                   className="create-answer"
                 />
                 <button onClick={handleNewAnswerSubmit}>

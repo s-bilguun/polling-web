@@ -15,7 +15,7 @@ header {
   padding: 0 1rem;
   margin: auto;
   box-shadow: 0 0.5px 2px var(--color-dark);
-  z-index: 2; 
+  z-index: 3; 
 }
 
 a[href="/login"] {
@@ -162,7 +162,8 @@ nav ul li a:hover {
   --color-table-button: #a2b8e4;
   --color-delete-button: #ec9c9c;
   --color-checkbox-bg: rgb(56, 95, 221); 
-
+  --progress-bar-color: rgb(210, 237, 247); 
+  --border-color: #59b8d7;
 }
 
 [data-theme='dark'] {
@@ -191,7 +192,8 @@ nav ul li a:hover {
   --color-table-button: #346bd8;
   --color-delete-button: #e12c2c;
   --color-checkbox-bg: rgb(28, 59, 159); 
-
+  --progress-bar-color: rgb(18, 49, 151);
+  --border-color: #ddd;
 }
 
 .logout-button {
