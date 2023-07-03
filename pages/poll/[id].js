@@ -435,7 +435,7 @@ const Poll = () => {
       className="poll__percentage" 
       onClick={() => handleShowUsernames(answer.id)}
     >
-      {(attendance[i++] / sum * 100).toFixed(1)}%
+      {(sum !== 0 ? (attendance[i++] / sum * 100).toFixed(1) : 0)}%
     </p>
   </div>
 </div>
