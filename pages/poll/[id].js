@@ -391,12 +391,12 @@ const Poll = () => {
                     />
                     <p className="poll-username">{answer.answername}</p>
                   </label>
-                  {usernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
-  <p onClick={() => handleShowUsernames(answer.id)} className="user-count">
-    {usernames.find(item => item.answerid === answer.id)?.usernames.length} users
-  </p>
-)}
-                  {usernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
+                  {poll.visibility && usernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
+                    <p onClick={() => handleShowUsernames(answer.id)} className="user-count">
+                      {usernames.find(item => item.answerid === answer.id)?.usernames.length} users
+                    </p>
+                  )}
+                  {poll.visibility && usernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
                     <div id={`username-list-${answer.id}`} className="username-list">
                       <button className="close-button" onClick={() => handleCloseUsernames(answer.id)}>X</button>
                       <p className="answer-name">{answer.answername}</p>
