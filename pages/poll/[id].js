@@ -463,7 +463,7 @@ const Poll = () => {
 
             </div>
             {poll.type === 'opinion' && (
-              <div className="create-answer-container">
+              <div className="input-inline">
                 <input
                   type="text"
                   value={newAnswer}
