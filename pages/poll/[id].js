@@ -34,6 +34,8 @@ const Poll = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [newAnswer, setNewAnswer] = useState('');
+  const [usernames, setUsernames] = useState({});
+  const [userImages, setUserImages] = useState({});
 
   const handleNewAnswerChange = (e) => {
     setNewAnswer(e.target.value);
@@ -123,8 +125,23 @@ const Poll = () => {
       }
     };
 
+    const fetchOpinionAttendancy = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8001/attendance/${id}/getOpinionAttendancy`);
+        if (response.status >= 200 && response.status < 300) {
+          const data = response.data;
+          setUsernames(data);
+          console.log('a = ', data);
+        } else {
+          console.error('Failed to fetch opinion attendance');
+        }
+      } catch (error) {
+        console.error('Error fetching opinion attendance:', error);
+      }
+    };
 
-
+    // Inside the useEffect hook, update the fetchOpinionAttendancy call
+    fetchOpinionAttendancy();
     fetchProfileImage();
     fetchAnswer();
     fetchComment();
@@ -290,9 +307,32 @@ const Poll = () => {
   const handleViewResults = () => {
     router.push(`/poll/${id}/result`);
   };
+  const handleShowUsernames = async (answerId) => {
+    const newImages = { ...userImages };
+    const usernamesToFetch = usernames.find(item => item.answerid === answerId)?.usernames;
+    for (const username of usernamesToFetch) {
+      if (!newImages[username]) {
+        newImages[username] = await fetchProfileImageByUsername(username);
+      }
+    }
+    setUserImages(newImages);
+    const usernameList = document.getElementById(`username-list-${answerId}`);
+    const overlay = document.getElementById('overlay');
+    if (usernameList && overlay) {
+      usernameList.classList.toggle('visible');
+      overlay.classList.toggle('visible');
+    }
+  };
 
 
-
+  const handleCloseUsernames = (answerId) => {
+    const usernameList = document.getElementById(`username-list-${answerId}`);
+    const overlay = document.getElementById('overlay');
+    if (usernameList && overlay) {
+      usernameList.classList.remove('visible');
+      overlay.classList.remove('visible');
+    }
+  };
 
   const fetchProfileImageByUsername = async (username) => {
     try {
@@ -300,7 +340,7 @@ const Poll = () => {
 
         responseType: 'blob',
       });
-      console.log('co,met', comment.username);
+      console.log('comment', comment.username);
       const imageUrl = URL.createObjectURL(response.data);
       console.log('Fetched profile image URL:', imageUrl);
       return imageUrl;
@@ -309,6 +349,8 @@ const Poll = () => {
       return null;
     }
   };
+
+
 
   return (
     poll ?
@@ -337,7 +379,6 @@ const Poll = () => {
                 <div className="profile-name">{poll.username}</div>
               </div>
               <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>
-
               {answers.map((answer) => (
                 <div key={answer.id} className="poll-answer">
                   <label>
@@ -350,8 +391,28 @@ const Poll = () => {
                     />
                     <p className="poll-username">{answer.answername}</p>
                   </label>
+                  {usernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
+  <p onClick={() => handleShowUsernames(answer.id)} className="user-count">
+    {usernames.find(item => item.answerid === answer.id)?.usernames.length} users
+  </p>
+)}
+                  {usernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
+                    <div id={`username-list-${answer.id}`} className="username-list">
+                      <button className="close-button" onClick={() => handleCloseUsernames(answer.id)}>X</button>
+                      <p className="answer-name">{answer.answername}</p>
+                      <div className="username-list-content">
+                        {usernames.find(item => item.answerid === answer.id)?.usernames.map((username) => (
+                          <div className="username-row">
+                            <img src={userImages[username]} alt={username} className="profile-pic" />
+                            <p className="username">{username}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
+
             </div>
             {poll.type === 'opinion' && (
               <div className="create-answer-container">
@@ -442,10 +503,12 @@ const Poll = () => {
               ))}
             </div>
           </div>
-
+          <div id="overlay" class="overlay"></div>
         </motion.div>
       </div>
       : "loading..."
+
+
   );
 
 };
