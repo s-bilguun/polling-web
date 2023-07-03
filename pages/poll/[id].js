@@ -336,7 +336,7 @@ const Poll = () => {
                           <p className='poll__percentage'>{(attendance[i++]/sum*100).toFixed(1)}%</p>
                           
                        </div>
-                       <button className='faChevronRightbutton' onClick={null}><FontAwesomeIcon icon={faChevronRight} /></button>
+                       <a><FontAwesomeIcon icon={faChevronRight} className='faChevronRightbutton'/></a>
                         
                       </div>
                     </div>
@@ -394,24 +394,7 @@ const Poll = () => {
   </form>
   <div className="comment-list">
     <h3 className="text-lg font-bold mb-2">
-      <FontAwesomeIcon icon={faComments} /> СэтгэгдлүүдHiding poll results until after the submission has several advantages over showing the results beforehand. Here are some key points to consider:
-
-Avoiding Bias: Showing poll results before submission can create bias among participants. When participants see the current results, they may be influenced by popular choices or feel compelled to align with the majority. This can distort the true opinions and preferences of individuals, leading to inaccurate results.
-
-Encouraging Authentic Responses: By hiding the poll results, participants are more likely to provide authentic responses based on their own thoughts and beliefs. They won't be swayed by the opinions of others or feel pressured to conform to certain choices. This promotes a more accurate representation of individual perspectives.
-
-Enhancing Engagement: When poll results are hidden, unux participants are encouraged to actively engage in the poll by making their own independent decisions. They can focus on their own preferences without external influence, fostering critical thinking and thoughtful decision-making.
-
-Maintaining Privacy: Hiding poll results respects the privacy of individual participants. Some individuals may prefer not to disclose their choices publicly until the poll is complete. By keeping the results hidden, participants can feel more comfortable expressing their opinions without concerns about judgment or scrutiny.
-
-Generating Excitement and Anticipation: Hiding poll results can build anticipation and excitement among participants. When the results are revealed after the submission, it creates a sense of curiosity and interest. This can enhance the overall engagement and enjoyment of the polling experience.
-
-Preventing Bandwagon Effect: The bandwagon effect occurs when individuals tend to adopt the majority opinion or follow the popular choice. By hiding poll results, you reduce the likelihood of participants simply joining the majority without giving thoughtful consideration to the options. This helps to ensure a more diverse range of responses.
-
-Facilitating Meaningful Discussions: When poll results are hidden, participants have an opportunity to discuss and debate their choices without being influenced by the current standings. This can lead to more meaningful conversations, as participants can provide reasoning and insights based on their personal perspectives.
-
-In conclusion, hiding poll results until after submission promotes unbiased responses, encourages authentic engagement, maintains privacy, generates excitement, prevents the bandwagon effect, and facilitates meaningful discussions. By incorporating this approach, you can obtain more accurate and valuable insights from your polls.
-    </h3>
+      <FontAwesomeIcon icon={faComments} /> Сэтгэгдлүүд</h3>
     {comments.map((comment, index) => (
       <div key={index} className="mb-4 comment-item">
         <div className="comment-profile">
