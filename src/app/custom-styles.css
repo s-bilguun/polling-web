@@ -948,25 +948,28 @@ button:focus {
   margin-left: 0.5rem; /* Add margin to the left of the button */
 }
 
+
 .username-list {
   display: none;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border-radius: 10px; /* Add rounded corners */
-  padding: 20px; /* Add some padding */
-  box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Add a subtle shadow */
-  width: 300px; /* Set a fixed width for the username list */
-  height: 400px; /* Set a fixed height for the username list */
-  overflow: auto; /* Add scroll if content is more than the fixed size */
-  background-color: #fff; /* Set a background color */
-  /* Other styling like background, padding etc. */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  max-height: 600px;
+  overflow: auto;
+  background-color: #fff;
   z-index: 2;
 }
 
+
 .username-list-content {
-  margin-top: 20px; /* Add some space above the usernames */
+  margin-top: 20px;
+  border-top: 1px solid #ccc; /* Add a top border */
+  padding-top: 10px; /* Add some space above the usernames */
 }
 
 .username-list.visible {
@@ -978,12 +981,11 @@ button:focus {
 }
 
 .answer-name {
-  font-size: 20px; /* Make the answer name larger */
-  font-weight: bold; /* Make the answer name bold */
-  margin-bottom: 10px; /* Add some space below the answer name */
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
-
-
 .overlay {
   display: none;
   position: fixed;
@@ -1005,7 +1007,7 @@ button:focus {
   top: 0;
   right: 0;
   padding: 10px;
-  background-color: #f00;
+  background-color: rgba(255, 0, 0, 0.712);
   color: #fff;
   border: none;
   cursor: pointer;
@@ -1023,11 +1025,7 @@ button:focus {
   margin-bottom: 5px;
 }
 
-.user-count {
-  color: blue;
-  text-decoration: underline;
-  cursor: pointer;
-}
+
 
 
 .poll__option{

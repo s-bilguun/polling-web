@@ -44,6 +44,7 @@ const Poll = () => {
     setNewAnswer(e.target.value);
   };
 
+
   useEffect(() => {
     if (id) {
       axios
@@ -162,14 +163,14 @@ const Poll = () => {
     fetchComment();
     fetchAttendance();
     fetchAttendanceResult();
-    const interval = setInterval(()=>{
+    const interval = setInterval(() => {
       fetchOpinionAttendancy();
       fetchProfileImage();
       fetchAnswer();
       fetchComment();
- 
+
       fetchAttendanceResult();
-        
+
     }, 1000);
 
     // Cleanup interval on component unmount
@@ -338,7 +339,7 @@ const Poll = () => {
   };
   const handleShowUsernames = async (answerId) => {
     const newImages = { ...userImages };
-    const usernamesToFetch = usernames.find(item => item.answerid === answerId)?.usernames;
+    const usernamesToFetch = usernames.find((item) => item.answerid === answerId)?.usernames;
     for (const username of usernamesToFetch) {
       if (!newImages[username]) {
         newImages[username] = await fetchProfileImageByUsername(username);
@@ -354,15 +355,18 @@ const Poll = () => {
   };
 
 
-  const handleCloseUsernames = (answerId) => {
+  const handleCloseUsernames = (event, answerId) => {
+    event.preventDefault(); // Prevent default behavior
+    event.stopPropagation(); // Prevent event propagation
+  
     const usernameList = document.getElementById(`username-list-${answerId}`);
     const overlay = document.getElementById('overlay');
+  
     if (usernameList && overlay) {
       usernameList.classList.remove('visible');
       overlay.classList.remove('visible');
     }
   };
-
   const fetchProfileImageByUsername = async (username) => {
     try {
       const response = await axios.get(`http://localhost:8001/image/displayWithUsername/${username}`, {
@@ -379,6 +383,7 @@ const Poll = () => {
     }
   };
 
+  let safeUsernames = Array.isArray(usernames) ? usernames : [];
 
 
   return (
@@ -408,46 +413,50 @@ const Poll = () => {
                 <div className="profile-name">{poll.username}</div>
               </div>
               <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>
+
+
+
               {answers.map((answer) => (
-  <div key={answer.id} className="poll-answer">
-    <label>
-      <input
-        type="radio"
-        name={poll.id}
-        value={answer.answername}
-        checked={selectedAnswer === answer.id}
-        onChange={() => handleAnswerSelection(answer.id)}
-      />
-      <div className="poll__option">
-        <div className='poll__option-info'>
-          <div>
-            <p className="poll__label">{answer.answername}</p>
-          </div>
-          <div>
-            <p className='poll__percentage'>{(attendance[i++]/sum*100).toFixed(1)}%</p>
-          </div>
-          <a onClick={() => handleShowUsernames(answer.id)}>
-            <FontAwesomeIcon icon={faChevronRight} className='faChevronRightbutton'/>
-          </a>
-        </div>
-      </div>
-    </label>
-    {poll.visibility && usernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
-      <div id={`username-list-${answer.id}`} className="username-list">
-        <button className="close-button" onClick={() => handleCloseUsernames(answer.id)}>X</button>
-        <p className="answer-name">{answer.answername}</p>
-        <div className="username-list-content">
-          {usernames.find(item => item.answerid === answer.id)?.usernames.map((username) => (
-            <div className="username-row">
-              <img src={userImages[username]} alt={username} className="profile-pic" />
-              <p className="username">{username}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
-  </div>
-))}
+                <div key={answer.id} className="poll-answer">
+                  <label>
+                    <input
+                      type="radio"
+                      name={poll.id}
+                      value={answer.answername}
+                      checked={selectedAnswer === answer.id}
+                      onChange={() => handleAnswerSelection(answer.id)}
+                    />
+                    <div className="poll__option">
+                      <div className='poll__option-info'>
+                        <div>
+                          <p className="poll__label">{answer.answername}</p>
+                        </div>
+                        <div>
+                          <p className='poll__percentage'>{(attendance[i++] / sum * 100).toFixed(1)}%</p>
+                        </div>
+                        <a onClick={() => handleShowUsernames(answer.id)}>
+                          <FontAwesomeIcon icon={faChevronRight} className='faChevronRightbutton' />
+                        </a>
+                      </div>
+                    </div>
+                  </label>
+                  {poll.visibility && safeUsernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
+                    <div id={`username-list-${answer.id}`} className="username-list">
+                     <button className="close-button" onClick={(event) => handleCloseUsernames(event, answer.id)}>X</button>
+
+                      <p className="answer-name">{answer.answername}</p>
+                      <div className="username-list-content">
+                        {safeUsernames.find(item => item.answerid === answer.id)?.usernames.map((username) => (
+                          <div className="username-row">
+                            <img src={userImages[username]} alt={username} className="profile-pic" />
+                            <p className="username">{username}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
 
 
             </div>
@@ -471,7 +480,7 @@ const Poll = () => {
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
-                {hasSubmitted ? 'Сонголт шинэчлэх' : 'Сонголт оруулах'}
+                {hasSubmitted ? 'Сонголт шинчлэх' : 'Сонголт оруулах'}
               </button>
             )}
 

@@ -52,6 +52,16 @@
       
       fetchAnswer();
       fetchAttendance();
+
+      const interval = setInterval(()=>{
+        fetchAnswer();
+        fetchAttendance();
+          
+      }, 1000);
+  
+      // Cleanup interval on component unmount
+      return () => clearInterval(interval);
+
     }, [id]);
 
 
