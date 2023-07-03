@@ -1092,13 +1092,16 @@ button:focus {
   position: absolute;
   content: "";
   height: 100%;
+  
   background: #ccc;
-  width: calc(1% * var(--w));
+  width: calc(var(--progress-width) * var(--w));
   border-radius: inherit;
   transition: all 0.2s ease;
 }
+
 
 .faChevronRightbutton {
   padding: 2.5px 5px;
   margin-left: 8px;
 }
+

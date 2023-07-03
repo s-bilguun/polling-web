@@ -416,7 +416,7 @@ const Poll = () => {
 
 
 
-              {answers.map((answer) => (
+              {answers.map((answer, index) => (
                 <div key={answer.id} className="poll-answer">
                   <label>
                     <input
@@ -426,20 +426,22 @@ const Poll = () => {
                       checked={selectedAnswer === answer.id}
                       onChange={() => handleAnswerSelection(answer.id)}
                     />
-                    <div className="poll__option">
-                      <div className='poll__option-info'>
-                        <div>
-                          <p className="poll__label">{answer.answername}</p>
-                        </div>
-                        <div>
-                          <p className='poll__percentage'>{(attendance[i++] / sum * 100).toFixed(1)}%</p>
-                        </div>
-                        <a onClick={() => handleShowUsernames(answer.id)}>
-                          <FontAwesomeIcon icon={faChevronRight} className='faChevronRightbutton' />
-                        </a>
-                      </div>
-                    </div>
-                  </label>
+                <div className="poll__option">
+        <div className='poll__option-info'>
+          <div>
+            <p className="poll__label">{answer.answername}</p>
+          </div>
+          <div>
+            <p className='poll__percentage'>{(attendance[i++] / sum * 100).toFixed(1)}%</p>
+          </div>
+          
+          <a onClick={() => handleShowUsernames(answer.id)}>
+            <FontAwesomeIcon icon={faChevronRight} className='faChevronRightbutton' />
+          </a>
+        </div>
+        <div className="progress" style={{ "--progress-width": `${attendance[index] / sum}` }}></div>
+      </div>
+    </label>
                   {poll.visibility && safeUsernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
                     <div id={`username-list-${answer.id}`} className="username-list">
                      <button className="close-button" onClick={(event) => handleCloseUsernames(event, answer.id)}>X</button>
