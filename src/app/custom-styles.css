@@ -1028,3 +1028,79 @@ button:focus {
   text-decoration: underline;
   cursor: pointer;
 }
+
+
+.poll__option{
+  display: flex;
+  justify-content: space-between;
+}
+
+.poll__option:hover {
+  cursor: pointer;
+}
+
+.poll__option:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+
+.poll__option-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.poll__percentage{
+  margin-left: 10px;
+}
+
+.poll-answer label {
+  margin-bottom: 10px;
+  border-radius: 5px;
+  padding: 8px 15px;
+  border: 1px solid #e6e6e6;
+  border-width: 100%;
+  transition: all 0.2s ease;
+}
+
+.poll-answer label:hover {
+  border-color: #ddd;
+}
+
+.poll-answer label .poll__option {
+  display: flex;
+  justify-content: space-between;
+}
+
+.poll-answer label .poll__option-info {
+  display: flex;
+  /* align-items: center; */
+}
+
+.poll-answer label .poll__option-info .poll__label {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+
+.poll-answer label .progress {
+  height: 7px;
+  width: 100%;
+  position: relative;
+  background: #f0f0f0;
+  margin: 8px 0 3px 0;  
+  border-radius: 30px;
+}
+
+.poll-answer label .progress:after {
+  position: absolute;
+  content: "";
+  height: 100%;
+  background: #ccc;
+  width: calc(1% * var(--w));
+  border-radius: inherit;
+  transition: all 0.2s ease;
+}
+
+.faChevronRightbutton {
+  padding: 2.5px 5px;
+  margin-left: 8px;
+}

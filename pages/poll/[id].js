@@ -4,7 +4,7 @@ import Header from '../Header';
 import { AuthContext } from '../AuthContext';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faComments, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faComments, faPlus, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import Profile from '../Profile';
 import { motion } from "framer-motion";
 
@@ -36,6 +36,9 @@ const Poll = () => {
   const [newAnswer, setNewAnswer] = useState('');
   const [usernames, setUsernames] = useState({});
   const [userImages, setUserImages] = useState({});
+  const [attendance, setAttendance] = useState([]);
+  let i = 0;
+  const [sum, setSum] = useState(0);
 
   const handleNewAnswerChange = (e) => {
     setNewAnswer(e.target.value);
@@ -140,13 +143,39 @@ const Poll = () => {
       }
     };
 
-    // Inside the useEffect hook, update the fetchOpinionAttendancy call
+    const fetchAttendanceResult = async () => {
+      const response = await fetch(`http://localhost:8001/attendance/${id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setAttendance(data);
+        const total = data.reduce((accumulator, item) => accumulator + item, 0);
+        setSum(total);
+      } else {
+        console.error("failed to fetch attendance");
+      }
+    };
+
+    // Inside the useEffect hook, update the fetchOpinionAttendancy cal`l
     fetchOpinionAttendancy();
     fetchProfileImage();
     fetchAnswer();
     fetchComment();
     fetchAttendance();
+    fetchAttendanceResult();
+    const interval = setInterval(()=>{
+      fetchOpinionAttendancy();
+      fetchProfileImage();
+      fetchAnswer();
+      fetchComment();
+ 
+      fetchAttendanceResult();
+        
+    }, 1000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
   }, [id, poll.username]);
+
 
 
   // replace with comment data logic
@@ -380,38 +409,46 @@ const Poll = () => {
               </div>
               <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>
               {answers.map((answer) => (
-                <div key={answer.id} className="poll-answer">
-                  <label>
-                    <input
-                      type="radio"
-                      name={poll.id}
-                      value={answer.answername}
-                      checked={selectedAnswer === answer.id}
-                      onChange={() => handleAnswerSelection(answer.id)}
-                    />
-                    <p className="poll-username">{answer.answername}</p>
-                  </label>
-                  {poll.visibility && usernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
-                    <p onClick={() => handleShowUsernames(answer.id)} className="user-count">
-                      {usernames.find(item => item.answerid === answer.id)?.usernames.length} users
-                    </p>
-                  )}
-                  {poll.visibility && usernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
-                    <div id={`username-list-${answer.id}`} className="username-list">
-                      <button className="close-button" onClick={() => handleCloseUsernames(answer.id)}>X</button>
-                      <p className="answer-name">{answer.answername}</p>
-                      <div className="username-list-content">
-                        {usernames.find(item => item.answerid === answer.id)?.usernames.map((username) => (
-                          <div className="username-row">
-                            <img src={userImages[username]} alt={username} className="profile-pic" />
-                            <p className="username">{username}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
+  <div key={answer.id} className="poll-answer">
+    <label>
+      <input
+        type="radio"
+        name={poll.id}
+        value={answer.answername}
+        checked={selectedAnswer === answer.id}
+        onChange={() => handleAnswerSelection(answer.id)}
+      />
+      <div className="poll__option">
+        <div className='poll__option-info'>
+          <div>
+            <p className="poll__label">{answer.answername}</p>
+          </div>
+          <div>
+            <p className='poll__percentage'>{(attendance[i++]/sum*100).toFixed(1)}%</p>
+          </div>
+          <a onClick={() => handleShowUsernames(answer.id)}>
+            <FontAwesomeIcon icon={faChevronRight} className='faChevronRightbutton'/>
+          </a>
+        </div>
+      </div>
+    </label>
+    {poll.visibility && usernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
+      <div id={`username-list-${answer.id}`} className="username-list">
+        <button className="close-button" onClick={() => handleCloseUsernames(answer.id)}>X</button>
+        <p className="answer-name">{answer.answername}</p>
+        <div className="username-list-content">
+          {usernames.find(item => item.answerid === answer.id)?.usernames.map((username) => (
+            <div className="username-row">
+              <img src={userImages[username]} alt={username} className="profile-pic" />
+              <p className="username">{username}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+))}
+
 
             </div>
             {poll.type === 'opinion' && (
