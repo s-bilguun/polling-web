@@ -336,7 +336,7 @@ const Poll = () => {
                           <p className='poll__percentage'>{(attendance[i++]/sum*100).toFixed(1)}%</p>
                           
                        </div>
-                       <a><FontAwesomeIcon icon={faChevronRight} className='faChevronRightbutton'/></a>
+                       <button className='faChevronRightbutton' ><FontAwesomeIcon icon={faChevronRight} /></button>
                         
                       </div>
                     </div>
