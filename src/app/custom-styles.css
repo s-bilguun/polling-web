@@ -424,10 +424,13 @@ button:focus {
 
 /* poll feed styling */
 
-.poll-list {
-  display: grid;
+.poll-list { 
+  display: flex;
   margin-top: 80px;
-  width: 100%;
+  flex-direction: column;
+  justify-content: flex-start; /* changed from space-between to flex-start */
+  width: 1000px;  /* adjust value according to your needs */
+  min-height: 800px;  /* adjust value according to your needs */
 }
 
 .poll-list h2 {
@@ -436,7 +439,6 @@ button:focus {
 }
 
 .poll-list .poll-item {
-  flex-grow: 1;
   flex-basis: auto;
   width: 1000px;
   display: flex;
@@ -469,16 +471,26 @@ button:focus {
   .poll-list .poll-item {
     width: 800px;
   }
+
+  .poll-list {
+    width: 800px;
+  }
 }
 
 @media (max-width: 900px) {
   .poll-list .poll-item {
     width: 600px;
   }
+  .poll-list {
+    width: 600px;
+  }
 }
 
 @media (max-width: 600px) {
   .poll-list .poll-item {
+    width: 400px;
+  }
+  .poll-list {
     width: 400px;
   }
 }
@@ -570,10 +582,9 @@ button:focus {
 .second-header {
   display: flex;
   justify-content: space-between;
+  align-items: center; /* added this line */
   flex-direction: row;
-  /* justify-content: center; */
-  /* flex-direction: column;
-  align-items: flex-end; */
+  padding-bottom: 15px; /* adjust as needed */
 }
 
 /* search-bar style */
@@ -582,9 +593,9 @@ button:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* flex-direction: row; */
-  /* position: fixed; */
+  margin-right: 20px; /* adjust as needed */
 }
+
 
 .search-bar__input {
   /* flex: 2; */
@@ -598,33 +609,10 @@ button:focus {
   width: max-content;
 }
 
-/* .search-bar__button {
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: #fff;
-  border: 1px solid #ccc;;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  outline: none;
-}
-
-.search-bar__button:hover {
-  background-color: #0056b3;
-}
-
-@media (prefers-color-scheme: dark) {
-  .search-bar__button {
-    background-color: #fff;
-    color: #333;
-  }
-} */
-
 
 /* DropdownSort style */
 
 .dropdown-sort {
-  margin-top: 15px;
   display: inline-block;
   /* position: relative; */
 }
