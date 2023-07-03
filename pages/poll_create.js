@@ -90,6 +90,7 @@ const AddPoll = () => {
   return (
     <>
       <Header />
+      
       <div className="card">
         <motion.div
           initial={{ y: 25, opacity: 0 }}

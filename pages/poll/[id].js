@@ -409,45 +409,46 @@ const Poll = () => {
               </div>
               <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>
               {answers.map((answer) => (
-  <div key={answer.id} className="poll-answer">
-    <label>
-      <input
-        type="radio"
-        name={poll.id}
-        value={answer.answername}
-        checked={selectedAnswer === answer.id}
-        onChange={() => handleAnswerSelection(answer.id)}
-      />
-      <div className="poll__option">
-        <div className='poll__option-info'>
-          <div>
-            <p className="poll__label">{answer.answername}</p>
-          </div>
-          <div>
-            <p className='poll__percentage'>{(attendance[i++]/sum*100).toFixed(1)}%</p>
-          </div>
-          <a onClick={() => handleShowUsernames(answer.id)}>
-            <FontAwesomeIcon icon={faChevronRight} className='faChevronRightbutton'/>
-          </a>
-        </div>
-      </div>
-    </label>
-    {poll.visibility && usernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
-      <div id={`username-list-${answer.id}`} className="username-list">
-        <button className="close-button" onClick={() => handleCloseUsernames(answer.id)}>X</button>
-        <p className="answer-name">{answer.answername}</p>
-        <div className="username-list-content">
-          {usernames.find(item => item.answerid === answer.id)?.usernames.map((username) => (
-            <div className="username-row">
-              <img src={userImages[username]} alt={username} className="profile-pic" />
-              <p className="username">{username}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
-  </div>
-))}
+                <div key={answer.id} className="poll-answer">
+                  <label>
+                    <input
+                      type="radio"
+                      name={poll.id}
+                      value={answer.answername}
+                      checked={selectedAnswer === answer.id}
+                      onChange={() => handleAnswerSelection(answer.id)}
+                    />
+                    <div className="poll__option">
+                      <div className='poll__option-info'>
+                        <div>
+                          <p className="poll__label">{answer.answername}</p>
+                        </div>
+                        <div>
+                        <p className='poll__percentage'>{isNaN((attendance[i] / sum * 100).toFixed(1)) ? '0' : (attendance[i] / sum * 100).toFixed(1)}%</p>
+                        </div>
+                        <a onClick={() => handleShowUsernames(answer.id)}>
+                          <FontAwesomeIcon icon={faChevronRight} className='faChevronRightbutton'/>
+                        </a>
+                      </div>
+                    </div>
+                  </label>
+                  {poll.visibility && usernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
+                    <div id={`username-list-${answer.id}`} className="username-list">
+                      <button className="close-button" onClick={() => handleCloseUsernames(answer.id)}>X</button>
+                      <p className="answer-name">{answer.answername}</p>
+                      <div className="username-list-content">
+                        {usernames.find(item => item.answerid === answer.id)?.usernames.map((username) => (
+                          // eslint-disable-next-line react/jsx-key
+                          <div className="username-row">
+                            <img src={userImages[username]} alt={username} className="profile-pic" />
+                            <p className="username">{username}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
 
 
             </div>
