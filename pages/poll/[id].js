@@ -4,7 +4,7 @@ import Header from '../Header';
 import { AuthContext } from '../AuthContext';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faComments } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faComments, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import Profile from '../Profile';
 import { motion } from "framer-motion";
 
@@ -33,6 +33,9 @@ const Poll = () => {
   const [comments, setComments] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [attendance, setAttendance] = useState([]);
+  const [sum, setSum] = useState(0);
+  let i = 0;
 
 
   useEffect(() => {
@@ -85,6 +88,18 @@ const Poll = () => {
       }
     };
 
+    const fetchAttendanceResult = async () => {
+      const response = await fetch(`http://localhost:8001/attendance/${id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setAttendance(data);
+        const total = data.reduce((accumulator, item) => accumulator + item, 0);
+        setSum(total);
+      } else {
+        console.error("failed to fetch attendance");
+      }
+    };
+
     const fetchComment = async () => {
       const response = await fetch(`http://localhost:8001/comment/${id}`);
       if (response.ok) {
@@ -123,6 +138,13 @@ const Poll = () => {
     fetchAnswer();
     fetchComment();
     fetchAttendance();
+    fetchAttendanceResult();
+
+    // Fetch data every 2 seconds
+    const interval = setInterval(fetchAttendanceResult, 500);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
   }, [id, poll.username]);
 
 
@@ -305,9 +327,22 @@ const Poll = () => {
                       checked={selectedAnswer === answer.id}
                       onChange={() => handleAnswerSelection(answer.id)}
                     />
-                    <p className="poll-username">{answer.answername}</p>
+                    <div className="poll__option">
+                      <div className='poll__option-info'>
+                        <div>
+                          <p className="poll__label">{answer.answername} - </p>
+                        </div>
+                       <div>
+                          <p className='poll__percentage'>{(attendance[i++]/sum*100).toFixed(1)}%</p>
+                          
+                       </div>
+                       <button className='faChevronRightbutton' onClick={null}><FontAwesomeIcon icon={faChevronRight} /></button>
+                        
+                      </div>
+                    </div>
                     {/* {answers.text}  */}
                   </label>
+                  {/* <div class="progress" style='width: 30%'></div> */}
                 </div>
               ))}
             </div>
@@ -316,18 +351,19 @@ const Poll = () => {
               <button
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                
               >
                 {hasSubmitted ? 'Сонголт шинэчлэх' : 'Сонголт оруулах'}
               </button>
             )}
 
             <button
-              type="button"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={handleViewResults}
-            >
-              Үр дүн
-            </button>
+            type="button"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleViewResults}
+          >
+            Үр дүн
+          </button>
 
             {errorMessage && (
               <div className="error-message">
@@ -340,7 +376,7 @@ const Poll = () => {
        <div className="comment-container">
   <form onSubmit={handleCommentSubmit} className="comment-form">
     <div className="mb-4">
-      <label htmlFor="comment">Сэтгэгдэл </label>
+      <label htmlFor="comment">Сэтгэгдэл</label>
       <textarea
         id="comment"
         className="text-input"
@@ -358,24 +394,7 @@ const Poll = () => {
   </form>
   <div className="comment-list">
     <h3 className="text-lg font-bold mb-2">
-      <FontAwesomeIcon icon={faComments} /> СэтгэгдлүүдHiding poll results until after the submission has several advantages over showing the results beforehand. Here are some key points to consider:
-
-Avoiding Bias: Showing poll results before submission can create bias among participants. When participants see the current results, they may be influenced by popular choices or feel compelled to align with the majority. This can distort the true opinions and preferences of individuals, leading to inaccurate results.
-
-Encouraging Authentic Responses: By hiding the poll results, participants are more likely to provide authentic responses based on their own thoughts and beliefs. They won't be swayed by the opinions of others or feel pressured to conform to certain choices. This promotes a more accurate representation of individual perspectives.
-
-Enhancing Engagement: When poll results are hidden, unux participants are encouraged to actively engage in the poll by making their own independent decisions. They can focus on their own preferences without external influence, fostering critical thinking and thoughtful decision-making.
-
-Maintaining Privacy: Hiding poll results respects the privacy of individual participants. Some individuals may prefer not to disclose their choices publicly until the poll is complete. By keeping the results hidden, participants can feel more comfortable expressing their opinions without concerns about judgment or scrutiny.
-
-Generating Excitement and Anticipation: Hiding poll results can build anticipation and excitement among participants. When the results are revealed after the submission, it creates a sense of curiosity and interest. This can enhance the overall engagement and enjoyment of the polling experience.
-
-Preventing Bandwagon Effect: The bandwagon effect occurs when individuals tend to adopt the majority opinion or follow the popular choice. By hiding poll results, you reduce the likelihood of participants simply joining the majority without giving thoughtful consideration to the options. This helps to ensure a more diverse range of responses.
-
-Facilitating Meaningful Discussions: When poll results are hidden, participants have an opportunity to discuss and debate their choices without being influenced by the current standings. This can lead to more meaningful conversations, as participants can provide reasoning and insights based on their personal perspectives.
-
-In conclusion, hiding poll results until after submission promotes unbiased responses, encourages authentic engagement, maintains privacy, generates excitement, prevents the bandwagon effect, and facilitates meaningful discussions. By incorporating this approach, you can obtain more accurate and valuable insights from your polls.
-    </h3>
+      <FontAwesomeIcon icon={faComments} /> Сэтгэгдлүүд </h3>
     {comments.map((comment, index) => (
       <div key={index} className="mb-4 comment-item">
         <div className="comment-profile">
