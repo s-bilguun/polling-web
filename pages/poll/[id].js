@@ -39,11 +39,11 @@ const Poll = () => {
   const [attendance, setAttendance] = useState([]);
   let i = 0;
   const [sum, setSum] = useState(0);
+  let safeUsernames = Array.isArray(usernames) ? usernames : [];
 
   const handleNewAnswerChange = (e) => {
     setNewAnswer(e.target.value);
   };
-
 
   useEffect(() => {
     if (id) {
@@ -156,6 +156,7 @@ const Poll = () => {
       }
     };
 
+
     // Inside the useEffect hook, update the fetchOpinionAttendancy cal`l
     fetchOpinionAttendancy();
     fetchProfileImage();
@@ -168,7 +169,6 @@ const Poll = () => {
       fetchProfileImage();
       fetchAnswer();
       fetchComment();
-
       fetchAttendanceResult();
 
     }, 1000);
@@ -176,6 +176,32 @@ const Poll = () => {
     // Cleanup interval on component unmount
     return () => clearInterval(interval);
   }, [id, poll.username]);
+
+  useEffect(() => {
+    // Fetch initial profile images
+    const fetchInitialProfileImages = async () => {
+      const newImages = {};
+      await Promise.all(
+        safeUsernames.map(async (item) => {
+          const { answerid, usernames } = item;
+          await Promise.all(
+            usernames.map(async (username) => {
+              if (!userImages[username]) {
+                const image = await fetchProfileImageByUsername(username);
+                newImages[username] = image;
+              } else {
+                newImages[username] = userImages[username];
+              }
+            })
+          );
+        })
+      );
+      setUserImages((prevUserImages) => ({ ...prevUserImages, ...newImages }));
+    };
+
+    fetchInitialProfileImages();
+  }, [safeUsernames]);
+
 
 
 
@@ -383,7 +409,7 @@ const Poll = () => {
     }
   };
 
-  let safeUsernames = Array.isArray(usernames) ? usernames : [];
+
 
 
   return (
@@ -414,55 +440,74 @@ const Poll = () => {
               </div>
               <h2 className="text-xl font-bold mb-2 poll-question">{poll.question}</h2>
 
-              {answers.map((answer, index) => (
-  <div key={answer.id} className="poll-answer">
-    <label>
-      <input
-        type="radio"
-        name={poll.id}
-        value={answer.answername}
-        checked={selectedAnswer === answer.id}
-        onChange={() => handleAnswerSelection(answer.id)}
-      />
-      <div className="poll__option">
 
-<div className="poll__option-info">
-  <div>
-    <p className="poll__label">{answer.answername}</p>
-  </div>
-  <div>
-    <p 
-      className="poll__percentage" 
-      onClick={() => handleShowUsernames(answer.id)}
-    >
-      {(sum !== 0 ? (attendance[i++] / sum * 100).toFixed(1) : 0)}%
-    </p>
-  </div>
-</div>
-        <div
-          className="progress-bar"
-          style={{
-            backgroundSize: `${(attendance[index] / sum) * 100}% 100%`
-          }}
-        ></div>
-      </div>
-    </label>
-    {poll.visibility && safeUsernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
-      <div id={`username-list-${answer.id}`} className="username-list">
-        <button className="close-button" onClick={(event) => handleCloseUsernames(event, answer.id)}>X</button>
-        <p className="answer-name">{answer.answername}</p>
-        <div className="username-list-content">
-          {safeUsernames.find(item => item.answerid === answer.id)?.usernames.map((username) => (
-            <div className="username-row">
-              <img src={userImages[username]} alt={username} className="profile-pic" />
-              <p className="username">{username}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
-  </div>
-))}
+              {answers.map((answer, index) => (
+                <div key={answer.id} className="poll-answer">
+                  
+                  <label>
+                    <input
+                      type="radio"
+                      name={poll.id}
+                      value={answer.answername}
+                      checked={selectedAnswer === answer.id}
+                      onChange={() => handleAnswerSelection(answer.id)}
+                    />
+                    
+                    <div className="poll__option">
+                      <div className="poll__option-info">
+                        <div>
+                          <p className="poll__label">{answer.answername}</p>
+                        </div>
+                        <div
+                          className="clickable-area"
+                          onClick={() => handleShowUsernames(answer.id)}
+                        >
+                         {poll.visibility && safeUsernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
+                            <div className="profile-pics">
+                              {safeUsernames.find(item => item.answerid === answer.id)?.usernames.slice(0, 4).map((username) => (
+                                <div className="username-row">
+                                  <img src={userImages[username]} alt={username} className="profile-pic" />
+                                </div>
+                              ))}
+                              {safeUsernames.find(item => item.answerid === answer.id)?.usernames.length > 4 && (
+                                <div className="username-row">
+                                  <p className="more-profile-pics">...</p>
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          <div>
+                            <p className="poll__percentage">
+                              {attendance[i++]}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="progress-bar"
+                        style={{
+                          backgroundSize: `${(attendance[index] / sum) * 100}% 100%`
+                        }}
+                      ></div>
+                    </div>
+                  </label>
+                  {poll.visibility && safeUsernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
+                    <div id={`username-list-${answer.id}`} className="username-list">
+                      <button className="close-button" onClick={(event) => handleCloseUsernames(event, answer.id)}>X</button>
+                      <p className="answer-name">{answer.answername}</p>
+                      <div className="username-list-content">
+                        {safeUsernames.find(item => item.answerid === answer.id)?.usernames.map((username) => (
+                          <div className="username-row">
+                            <img src={userImages[username]} alt={username} className="profile-pic" />
+                            <p className="username">{username}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
 
             </div>
             {poll.type === 'opinion' && (

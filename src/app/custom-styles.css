@@ -1005,11 +1005,15 @@ button:focus {
 }
 .username-row {
   display: flex; /* This makes the profile picture and the username display in a row */
-  align-items: center; /* This vertically aligns the profile picture and the username in the middle */
+  align-items: center; /*f This vertically aligns the profile picture and the username in the middle */
   margin-bottom: 5px;
 }
 
-
+.profile-pics {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 100px;
+}
 
 .poll-answer {
   display: flex;
@@ -1099,7 +1103,6 @@ button:focus {
 }
 
 .poll-answer label .poll__option-info .poll__percentage {
-  margin-left: 10px;
   text-align: right;
   flex-shrink: 0;
   width: 50px; /* Adjust the width as needed */
@@ -1110,13 +1113,15 @@ button:focus {
     text-decoration: underline;
 }
 
-.progress {
-  height: 7px;
-  width: 100%;
-  background: linear-gradient(to right, #ccc 0%, #f0f0f0 0%);
-  margin: 8px 0 3px 0;
-  border-radius: 30px;
-  transition: all 0.2s ease;
+
+
+.poll-option-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-
-
+.clickable-area {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
