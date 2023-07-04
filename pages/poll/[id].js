@@ -363,7 +363,8 @@ const Poll = () => {
   const handleViewResults = () => {
     router.push(`/poll/${id}/result`);
   };
-  const handleShowUsernames = async (answerId) => {
+  const handleShowUsernames = async (answerId, event) => {
+    event.preventDefault();
     const newImages = { ...userImages };
     const usernamesToFetch = usernames.find((item) => item.answerid === answerId)?.usernames;
     for (const username of usernamesToFetch) {
@@ -443,7 +444,6 @@ const Poll = () => {
 
               {answers.map((answer, index) => (
                 <div key={answer.id} className="poll-answer">
-                  
                   <label>
                     <input
                       type="radio"
@@ -452,16 +452,15 @@ const Poll = () => {
                       checked={selectedAnswer === answer.id}
                       onChange={() => handleAnswerSelection(answer.id)}
                     />
-                    
                     <div className="poll__option">
                       <div className="poll__option-info">
                         <div>
                           <p className="poll__label">{answer.answername}</p>
                         </div>
                         <div
-                          className="clickable-area"
-                          onClick={() => handleShowUsernames(answer.id)}
-                        >
+  className="clickable-area"
+  onClick={(event) => handleShowUsernames(answer.id, event)}
+>
                          {poll.visibility && safeUsernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
                             <div className="profile-pics">
                               {safeUsernames.find(item => item.answerid === answer.id)?.usernames.slice(0, 4).map((username) => (

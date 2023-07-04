@@ -15,8 +15,8 @@ const AddPoll = () => {
   const [startDateTime, setStartDateTime] = useState(moment().format('YYYY-MM-DDTHH:mm'));
   const [endDateTime, setEndDateTime] = useState('');
   const [choices, setChoices] = useState(['', '']);
-  const [isOpinionPoll, setIsOpinionPoll] = useState(false);
-  const [visibility, setVisibility] = useState(false);
+  const [pollType, setPollType] = useState('original');
+  const [visible, setVisible] = useState(false);
 
   const handleAddChoice = () => {
     setChoices([...choices, '']);
@@ -35,7 +35,11 @@ const AddPoll = () => {
   };
 
   const handleToggle = () => {
-    setIsOpinionPoll(!isOpinionPoll);
+    setPollType(pollType === 'original' ? 'opinion' : 'original');
+  };
+
+  const handleToggleVisibility = () => {
+    setVisible(!visible);
   };
 
   const handlePollSubmit = async (e) => {
@@ -59,9 +63,9 @@ const AddPoll = () => {
           question: question,
           startdate: startDateTimeFormatted,
           expiredate: endDateTimeFormatted,
-          answer: isOpinionPoll ? null : choices,
-          type: isOpinionPoll ? 'opinion' : 'original',
-          visibility: isOpinionPoll ? visibility : false,
+          answer: pollType === 'opinion' ? null : choices,
+          type: pollType,
+          visibility: visible,
         },
         {
           headers: {
@@ -70,14 +74,13 @@ const AddPoll = () => {
         }
       );
 
-
       // Reset the form
       setQuestion('');
       setStartDateTime('');
       setEndDateTime('');
       setChoices(['', '']);
-      setIsOpinionPoll(false);
-      setVisibility(false);
+      setPollType('original');
+      setVisible(false);
 
       // Go back to the index page or any other desired page
       router.push('/');
@@ -103,13 +106,18 @@ const AddPoll = () => {
           {user ? (
             <>
               <div className="custom-checkbox">
-                <input id="status" type="checkbox" name="status" />
+                <input
+                  id="status"
+                  type="checkbox"
+                  name="status"
+                  checked={pollType === 'opinion'}
+                  onChange={handleToggle}
+                />
                 <label htmlFor="status">
                   <div
                     className="status-switch"
                     data-unchecked="Сонголттой"
                     data-checked="Бичих"
-                    onClick={handleToggle}
                   ></div>
                 </label>
               </div>
@@ -137,14 +145,14 @@ const AddPoll = () => {
                   />
                 </label>
 
-                {isOpinionPoll ? (
-                  <div className="toggle-container">
-                    <div className="toggle-label">Оролцогчдын харагдац:</div>
-                    <div onClick={() => setVisibility(!visibility)}>
-                      <FontAwesomeIcon icon={visibility ? faToggleOn : faToggleOff} className="toggle-icon" />
-                    </div>
+                <div className="toggle-container">
+                  <div className="toggle-label">Оролцогчдын харагдац:</div>
+                  <div onClick={handleToggleVisibility}>
+                    <FontAwesomeIcon icon={visible ? faToggleOn : faToggleOff} className="toggle-icon" />
                   </div>
-                ) : (
+                </div>
+
+                {pollType === 'original' ? (
                   <div>
                     <label>
                       Сонголтууд:
@@ -166,7 +174,7 @@ const AddPoll = () => {
                       Сонголт нэмэх
                     </button>
                   </div>
-                )}
+                ) : null}
 
                 <div style={{ marginTop: '1rem' }}>
                   <button type="submit">Үүсгэх</button>
