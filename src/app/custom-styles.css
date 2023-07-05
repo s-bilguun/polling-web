@@ -10,17 +10,6 @@
   /* White */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 40, 39, 59;
-    /* Dark blue */
-    --background-end-rgb: 62, 87, 130;
-    /* Lighter blue */
-  }
-}
-
-
 
 body {
   color: rgb(var(--foreground-rgb));
@@ -189,14 +178,21 @@ button:focus {
 
 
 .container {
-  max-width: 600px;
+
+  width: 600px;
   margin: 0 auto;
-  min-width: 600px;
   box-sizing: border-box;
   margin-top: 80px;
-  
 }
 
+/* Media query for smaller devices */
+@media (max-width: 600px) {
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 20px; /* Optional: Add some padding for smaller devices */
+  }
+}
 .poll-question {
   font-size: 1.5rem;
   font-weight: bold;
@@ -224,11 +220,6 @@ button:focus {
   color: #030303;
 }
 
-@media (prefers-color-scheme: dark) {
-  .comment-container {
-    background-color: var(--color-comment-background);
-  }
-}
 
 .comment-form button {
   margin-top: 0;
@@ -456,32 +447,67 @@ button:focus {
 .poll-list .poll-item.expired * {
   color: var(--color-inactive);
 }
-
 @media (max-width: 1200px) {
   .poll-list .poll-item {
     width: 800px;
+    margin-left: 10px;
+    margin-right: 10px;
   }
 
   .poll-list {
     width: 800px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .error-container {
+    width: 800px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .second-header {
+    margin-left:10px;
   }
 }
 
 @media (max-width: 900px) {
   .poll-list .poll-item {
     width: 600px;
+    margin-left: 10px;
+    margin-right: 10px;
   }
   .poll-list {
     width: 600px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .error-container {
+    width: 600px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .second-header {
+    margin-left:10px;
   }
 }
 
 @media (max-width: 600px) {
   .poll-list .poll-item {
     width: 400px;
+    margin-left: 10px;
+    margin-right: 10px;
   }
   .poll-list {
     width: 400px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .error-container {
+    width: 400px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .second-header {
+    margin-left:10px;
   }
 }
 
@@ -675,34 +701,11 @@ button:focus {
   /* Add black border */
 }
 
-
-
-/* Dark mode styles */
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: var(--color-333);
-    color: var(--color-primary);
-    ;
-  }
-
-  .pagination button {
-    background-color: var(--color-primary);
-    ;
-    color: var(--color-333);
-  }
-
-  .pagination button.active {
-    background-color: var(--color-pagination-background);
-    color: var(--color-primary);
-  }
-}
-
 .poll-answer {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
-
 
 .poll-answer input[type="radio"] {
   appearance: none;
@@ -764,7 +767,7 @@ button:focus {
 
 
 .error-container {
-  min-width: 800px; /* Add a minimum height to prevent the content from being bunched up */
+ 
   min-height: 100px;
   display: flex;
   align-items: center; /* Vertically center the error message */
@@ -842,6 +845,9 @@ button:focus {
   color: var(--color-checkbox-bg);
 }
 
+.toggle-label {
+  margin-right: 5px;
+}
 .toggle-container {
   display: flex;
   align-items: center;
@@ -1047,7 +1053,7 @@ button:focus {
   display: flex;
   align-items: center;
   cursor: pointer;
-  width: 800px;
+  width: 100%;
   height: 50px;
   margin-bottom: 10px;
   border-radius: 5px;
@@ -1072,6 +1078,7 @@ button:focus {
   background-repeat: no-repeat;
   transition: background-size 0.2s ease;
   z-index: 1;
+  border-radius: 5px;
 }
 
 

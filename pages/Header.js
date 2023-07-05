@@ -78,20 +78,20 @@ const Header = () => {
         setClickInside(false);
         return;
       }
-  
+
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownVisible(false);
       }
     };
-  
+
     // Use 'click' event instead of 'mousedown'
     document.addEventListener('click', handleClickOutside);
-  
+
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
   }, [clickInside]);
-  
+
 
   return (
     <header>
@@ -112,7 +112,10 @@ const Header = () => {
             </div>
           </li>
           <li>
-            <Link href="/poll_create"><FontAwesomeIcon icon={faPlus} className="icon-initial" /> Санал асуулга үүсгэх</Link>
+            <Link href="/poll_create">
+              <FontAwesomeIcon icon={faPlus} className="icon-initial plus-icon" />
+              <span className="text-hide-on-mobile">Санал асуулга үүсгэх</span>
+            </Link>
           </li>
           {isLoggedIn ? (
             <>

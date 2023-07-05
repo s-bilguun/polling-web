@@ -75,16 +75,19 @@ const MyPolls = () => {
 
     const handleDelete = async (pollId) => {
         try {
+          const confirmed = window.confirm('Энэ санал асуулгыг устгахдаа итгэлтэй байна уу?');
+          if (confirmed) {
             await axios.delete(`http://localhost:8001/poll/${pollId}/deletePoll`, {
-                headers: {
-                    Authorization: `Bearer ${user.token}`,
-                },
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
             });
             setPolls((prevPolls) => prevPolls.filter((poll) => poll.id !== pollId));
+          }
         } catch (error) {
-            console.log(error);
+          console.log(error);
         }
-    };
+      };
 
 
     const handleInputChange = (event, pollId) => {

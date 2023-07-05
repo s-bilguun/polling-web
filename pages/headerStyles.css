@@ -38,6 +38,7 @@ a[href="/poll_create"] {
   margin-left: 20px;
   padding: 10px;
   height: 90px;
+  object-fit: contain;
 }
 
 nav ul {
@@ -70,6 +71,7 @@ nav ul li a:hover {
 .toggle-container {
   display: flex;
   align-items: center;
+  margin-top: 5px;
 }
 
 .toggle-icon {
@@ -216,6 +218,7 @@ nav .mybrand {
   align-items: center;
   cursor: pointer;
   position: relative; /* Add this line to position the dropdown relative to the profile container */
+  margin-top: 5px;
 }
 .profile-container:hover {
   /* Add the desired effect when hovering over the profile container */
@@ -261,35 +264,28 @@ nav .mybrand {
 .dropdown-menu li a:not(:last-child) {
   margin-bottom: 4px;
 }
-@media screen and (max-width: 768px) {
-  .logo {
-    display: none; /* Hide the logo on mobile devices */
-  }
-  
-  .header-text {
-    display: none; /* Hide the header text on mobile devices */
-  }
-  
-  nav ul li:nth-child(2) a {
-    display: flex; /* Ensure the poll creation button is displayed */
-    align-items: center;
-  }
-  
-  nav ul li:nth-child(2) svg {
-    margin-right: 0; /* Remove the right margin for the icon */
-  }
-  
-  nav ul li:nth-child(2) span {
-    display: none; /* Hide the text for the poll creation button */
-  }
+
+.plus-icon {
+  margin-right: 5px;
 }
 
-@media screen and (max-width: 480px) {
-  nav ul li:not(:first-child) {
-    display: none; /* Hide all list items except the first one on smaller mobile devices */
+
+@media (max-width: 600px) { 
+  .text-hide-on-mobile {
+    display: none;
   }
-  
-  nav ul li:first-child {
-    margin-right: 0; /* Remove the right margin for the first list item on smaller mobile devices */
+  .plus-icon {
+    font-size: 1.75em; /* adjust this value as needed */
+  }
+  .plus-icon {
+    font-size: 1.75em; /* adjust this value as needed */
+  }
+
+  .logo img {
+    margin-left: 1px;
+  }
+  nav ul li {
+    margin-left: 0.5rem;
+    margin-right: 1rem;
   }
 }
