@@ -4,7 +4,7 @@ import Header from '../Header';
 import { AuthContext } from '../AuthContext';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faComments, faPlus, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faComments, faPlus } from '@fortawesome/free-solid-svg-icons';
 import Profile from '../Profile';
 import { motion } from "framer-motion";
 

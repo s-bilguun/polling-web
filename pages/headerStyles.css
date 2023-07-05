@@ -94,6 +94,8 @@ nav ul li a:hover {
 .toggle-icon {
   cursor: pointer;
   transition: color 0.3s ease; 
+  color: var(--color-checkbox-bg);
+  padding: 5px;
 }
 
 .toggle-icon.sun {
