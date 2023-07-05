@@ -458,10 +458,10 @@ const Poll = () => {
                           <p className="poll__label">{answer.answername}</p>
                         </div>
                         <div
-  className="clickable-area"
-  onClick={(event) => handleShowUsernames(answer.id, event)}
->
-                         {poll.visibility && safeUsernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
+                          className="clickable-area"
+                          onClick={(event) => handleShowUsernames(answer.id, event)}
+                        >
+                          {poll.visibility && safeUsernames.find(item => item.answerid === answer.id)?.usernames.length > 0 && (
                             <div className="profile-pics">
                               {safeUsernames.find(item => item.answerid === answer.id)?.usernames.slice(0, 4).map((username) => (
                                 <div className="username-row">

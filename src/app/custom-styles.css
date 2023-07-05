@@ -562,7 +562,7 @@ button:focus {
 }
 
 .profile-name {
-  margin-left: 10px;
+  margin-left: 1px;
 }
 
 
@@ -1012,7 +1012,7 @@ button:focus {
 .profile-pics {
   display: flex;
   justify-content: space-between;
-  margin-left: 100px;
+  margin-left: 110px;
 }
 
 .poll-answer {
@@ -1105,7 +1105,8 @@ button:focus {
 .poll-answer label .poll__option-info .poll__percentage {
   text-align: right;
   flex-shrink: 0;
-  width: 50px; /* Adjust the width as needed */
+  /* Adjust the width as needed */
+  margin-left: 10px;
   color: var(--color-table-button);
 }
 
