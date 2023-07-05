@@ -1070,6 +1070,7 @@ button:focus {
   background-size: 0% 100%;
   background-repeat: no-repeat;
   transition: background-size 0.2s ease;
+  border-radius: 4px;
   z-index: 1;
 }
 
