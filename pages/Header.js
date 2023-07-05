@@ -1,7 +1,7 @@
-import React, { useEffect, useLayoutEffect, useState, useContext } from 'react';
+import React, { useEffect, useLayoutEffect, useState, useContext, useRef } from 'react';
 import Link from 'next/link';
 import './headerStyles.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 
 import { faMoon, faSun, faPlus, faUserPlus, faRightFromBracket, faRightToBracket, faPollH, faCog } from "@fortawesome/free-solid-svg-icons";
@@ -9,13 +9,15 @@ import { AuthContext } from './AuthContext';
 
 const Header = () => {
   const [darkTheme, setDarkTheme] = useState(false);
+  const [clickInside, setClickInside] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [profileImage, setProfileImage] = useState('/placeholder.jpg'); // Set the default placeholder image path
-
+  const dropdownRef = useRef(null);
   const { user, logout } = useContext(AuthContext);
   const isLoggedIn = !!user;
 
   const handleDropdownToggle = () => {
+    setClickInside(true);
     setDropdownVisible(!dropdownVisible);
   };
 
@@ -56,20 +58,41 @@ const Header = () => {
           const response = await axios.get(`http://localhost:8001/image/displayImage/${user.id}`, {
             responseType: 'blob', // Set the response type to 'blob'
           });
-    
+
           const imageUrl = URL.createObjectURL(response.data); // Create an object URL from the blob
-    
+
           console.log('Fetched profile image URL:', imageUrl);
           setProfileImage(imageUrl);
         } catch (error) {
           console.log('Error fetching profile image:', error);
         }
       };
-    
+
       fetchProfileImage();
     }
-    }, [isLoggedIn, user]);
-    
+  }, [isLoggedIn, user]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (clickInside) {
+        setClickInside(false);
+        return;
+      }
+  
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownVisible(false);
+      }
+    };
+  
+    // Use 'click' event instead of 'mousedown'
+    document.addEventListener('click', handleClickOutside);
+  
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [clickInside]);
+  
+
   return (
     <header>
       <Link href="/">
@@ -102,22 +125,21 @@ const Header = () => {
                   />
                   {user && <span>{user.username}</span>}
                 </div>
-                {dropdownVisible && (
-                  <ul className="dropdown-menu">
-                    <li>
-                      <Link href="/my_polls"><FontAwesomeIcon icon={faPollH} className="icon" /> Минийх</Link>
-                    </li>
-                    <li>
-                      <Link href="/settings"><FontAwesomeIcon icon={faCog} className="icon" /> Тохиргоо</Link>
-                    </li>
-                    <li>
-                      <button className="logout-button" onClick={() => logout()}>
-                        <FontAwesomeIcon icon={faRightFromBracket} className="icon" /> Гарах
-                      </button>
-                    </li>
-                  </ul>
-                )}
+                <ul className={`dropdown-menu ${dropdownVisible ? 'dropdown-menu-visible' : ''}`} ref={dropdownRef}>
+                  <li>
+                    <Link href="/my_polls"><FontAwesomeIcon icon={faPollH} className="icon" /> Минийх</Link>
+                  </li>
+                  <li>
+                    <Link href="/settings"><FontAwesomeIcon icon={faCog} className="icon" /> Тохиргоо</Link>
+                  </li>
+                  <li>
+                    <button className="logout-button" onClick={() => logout()}>
+                      <FontAwesomeIcon icon={faRightFromBracket} className="icon" /> Гарах
+                    </button>
+                  </li>
+                </ul>
               </li>
+
             </>
           ) : (
             <>

@@ -839,6 +839,7 @@ button:focus {
 .toggle-icon {
   font-size: 36px;
   margin-right: 8px;
+  color: var(--color-checkbox-bg);
 }
 
 .toggle-container {

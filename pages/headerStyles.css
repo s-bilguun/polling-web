@@ -172,8 +172,8 @@ nav ul li a:hover {
   --color-table: #204a9e;
   --color-table-button: #346bd8;
   --color-delete-button: #e12c2c;
-  --color-checkbox-bg: rgb(28, 59, 159); 
-  --progress-bar-color: rgb(18, 49, 151);
+  --color-checkbox-bg: rgb(77, 43, 215); 
+  --progress-bar-color: rgb(63, 22, 186);
   --border-color: #ddd;
 }
 
@@ -230,7 +230,7 @@ nav .mybrand {
   display: flex;
   align-items: flex-start;
   position: absolute;
-  background-color: var(--color-pagination-background);
+  background: var(--header-background);
   border: 1px solid var(--color-dark);
   border-radius: 0 0 4px 4px;
   padding: 8px;
@@ -242,6 +242,12 @@ nav .mybrand {
   min-width: 150px;
   top: 100%;
   border-top: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+.dropdown-menu-visible {
+  opacity: 1;
+  visibility: visible;
 }
 
 .dropdown-menu li a {
