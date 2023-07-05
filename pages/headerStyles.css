@@ -32,25 +32,6 @@ a[href="/poll_create"] {
   color: var(--color-dark); /* Change the color as per your preference */
 }
 
-@media (prefers-color-scheme: dark) {
-  header {
-    background: var(--header-background);
-    color: var(--color-dark);
-  }
-  a[href="/login"] {
-    color: var(--color-dark); /* Change the color as per your preference */
-  }
-  
-  a[href="/register"] {
-    color: var(--color-dark); /* Change the color as per your preference */
-  }
-
-  a[href="/poll_create"] {
-    color: var(--color-dark); 
-    margin-left: auto;
-  }
-}
-
 
 .logo img {
   filter: drop-shadow(0 0 1px #000000);
@@ -275,4 +256,36 @@ nav .mybrand {
 
 .dropdown-menu li a:not(:last-child) {
   margin-bottom: 4px;
+}
+@media screen and (max-width: 768px) {
+  .logo {
+    display: none; /* Hide the logo on mobile devices */
+  }
+  
+  .header-text {
+    display: none; /* Hide the header text on mobile devices */
+  }
+  
+  nav ul li:nth-child(2) a {
+    display: flex; /* Ensure the poll creation button is displayed */
+    align-items: center;
+  }
+  
+  nav ul li:nth-child(2) svg {
+    margin-right: 0; /* Remove the right margin for the icon */
+  }
+  
+  nav ul li:nth-child(2) span {
+    display: none; /* Hide the text for the poll creation button */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  nav ul li:not(:first-child) {
+    display: none; /* Hide all list items except the first one on smaller mobile devices */
+  }
+  
+  nav ul li:first-child {
+    margin-right: 0; /* Remove the right margin for the first list item on smaller mobile devices */
+  }
 }
