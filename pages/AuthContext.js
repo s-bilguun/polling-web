@@ -37,6 +37,9 @@ const AuthProvider = ({ children }) => {
   
   const logout = () => {
     // Remove the token from the cookie
+    const name = user.username;
+    axios.delete(`http://localhost:8001/auth/disconnect/${name}`);
+    
     Cookies.remove('token');
     // Reset the user state
     setUser(null);
