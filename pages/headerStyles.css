@@ -162,7 +162,7 @@ nav ul li a:hover {
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 40, 39, 59; /* Dark blue */
   --background-end-rgb: 62, 87, 130; 
-  --header-background: linear-gradient(to right, #1e1361, #2b3497);
+  --header-background: linear-gradient(to right, #1e1361, #1e1361);
   --card-background-color: rgba(35, 37, 65, 0.75);
   --poll-background-color: rgba(38, 41, 82, 0.75);
   --color-submit-buttom: #1e1361;

@@ -26,6 +26,7 @@ const Login = () => {
     })
       .then((res) => {
         console.log("Connected to pollweb 2023");
+        fetchLoggedUsers();
         login(res.data.token); // call the login function from AuthContext
         router.push("/");
         console.log(res);
@@ -59,6 +60,22 @@ const Login = () => {
     setEmail("");
     setPassword("");
   };
+
+  const fetchLoggedUsers = async () => {
+    try {
+      const response = await axios.get('http://localhost:8001/auth/loggedUsers');
+      if (response.status >= 200 && response.status < 300) {
+        const data = response.data;
+        console.log('Fetched logged user list:', data);
+        setUserList(data);
+      } else {
+        console.error('Failed to fetch logged user list');
+      }
+    } catch (error) {
+      console.error('Error fetching logged user list:', error);
+    }
+  };
+  
 
   return (
     <div className="card">

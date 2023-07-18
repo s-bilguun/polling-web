@@ -4,7 +4,7 @@ import './themescript.js';
 import { Inter } from 'next/font/google';
 import { AuthProvider } from './AuthContext';
 import LoadingScreen from './loadingScreen';
-import { motion, AnimatePresence } from "framer-motion";
+import ChatComponent from './ChatComponent';
 import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ['latin'] });
@@ -28,6 +28,7 @@ function MyApp({ Component, pageProps }) {
     <AuthProvider>
       {isLoading ? <LoadingScreen /> : null}
       {isContentVisible ? <Component {...pageProps} /> : null}
+      <ChatComponent />
     </AuthProvider>
     
   );
