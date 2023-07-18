@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { AuthContext } from './AuthContext'; 
 import { motion } from "framer-motion";
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const router = useRouter();
@@ -28,9 +29,29 @@ const Login = () => {
         login(res.data.token); // call the login function from AuthContext
         router.push("/");
         console.log(res);
+        toast.success('Амжилттай нэвтэрлээ 😎', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
       })
       .catch((err) => {
-        setErrorMessage("И-мэйл болон нууц үгээ шалгана уу!"); // Set error message
+        setErrorMessage("И-мэйл болон нууц үгээ шалгана уу!");
+        toast.error('И-мэйл болон нууц үгээ шалгана уу!', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         console.log(err);
       });
 
@@ -73,7 +94,7 @@ const Login = () => {
         <button onClick={handleLogin} type="submit">
           Нэвтрэх
         </button>
-        {errorMessage && <p>{errorMessage}</p>} {/* Render error message */}
+        {errorMessage && <p>{errorMessage}</p>}
       </form>
       </motion.div>
     </div>

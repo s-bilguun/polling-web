@@ -12,6 +12,8 @@ import axios from 'axios';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faArrowDownWideShort } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const formatDateTime = (dateTimeString) => {
   const dateTime = new Date(dateTimeString);
@@ -225,6 +227,7 @@ const Page = () => {
           ))}
         </div>
       </motion.div>
+      <ToastContainer />
       <Footer />
     </div>
   );
