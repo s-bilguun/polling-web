@@ -293,12 +293,12 @@ const Poll = () => {
     const expireDate = new Date(poll.expiredate);
 
     if (now < startDate) {
-      setErrorMessage('The poll has not started yet.');
+      setErrorMessage('Санал асуулга эхлэх цаг болоогүй байна!');
       return;
     }
 
     if (now > expireDate) {
-      setErrorMessage('The poll has expired.');
+      setErrorMessage('Санал асуулгын хугацаа дууссан байна.');
       return;
     }
 
