@@ -7,6 +7,7 @@ import moment from 'moment';
 import { AuthContext } from './AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'react-toastify';
 
 const AddPoll = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -73,7 +74,6 @@ const AddPoll = () => {
           },
         }
       );
-
       // Reset the form
       setQuestion('');
       setStartDateTime('');
@@ -84,6 +84,16 @@ const AddPoll = () => {
 
       // Go back to the index page or any other desired page
       router.push('/');
+      toast.success('Санал асуулга амжилттай үүслээ 😎', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
     } catch (error) {
       console.log('Error submitting poll:', error);
     }
