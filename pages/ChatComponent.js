@@ -13,6 +13,7 @@ const ChatComponent = () => {
   const [userInput, setUserInput] = useState('');
   const [searchInput, setSearchInput] = useState(''); // New state for search input
   const [searchVisible, setSearchVisible] = useState(false); // New state for search visibility
+  const [globalChatExpanded, setGlobalChatExpanded] = useState(false); // New state for global chat
   const textareaRef = useRef(null);
 
   useEffect(() => {
@@ -93,15 +94,22 @@ const ChatComponent = () => {
 
   const closeChat = () => {
     setChatExpanded(false);
+    setGlobalChatExpanded(false); // Close global chat when closing the chat window
   };
 
   const toggleChat = () => {
     setChatExpanded(!chatExpanded);
+    setGlobalChatExpanded(false); // Close global chat when toggling chat window
   };
 
   const toggleSearch = () => {
     setSearchVisible(!searchVisible);
     setSearchInput(''); // Clear search input when toggling search
+  };
+
+  const toggleGlobalChat = () => {
+    setGlobalChatExpanded(!globalChatExpanded);
+    setSelectedUser(null); // Deselect user when opening global chat
   };
 
   if (!user) {
@@ -135,17 +143,26 @@ const ChatComponent = () => {
               </button>
             </div>
 
+            {searchVisible && (
+              <input
+                type="username"
+                value={searchInput}
+                onChange={handleSearchInputChange}
+                placeholder="Нэрээр хайх..."
+              />
+            )}
+
             <div className="chatContent">
               <div className="userList">
-                {searchVisible && (
-                  <input
-                    type="username"
-                    value={searchInput}
-                    onChange={handleSearchInputChange}
-                    placeholder="Нэрээр хайх..."
-                  />
-                )}
                 <ul>
+                  <li onClick={toggleGlobalChat} className={!selectedUser && globalChatExpanded ? 'selectedUser' : ''}>
+                    <div className="userProfileImage">
+                      <img src="/global.png" alt="Global Chat" className="chat-profile-image" />
+                    </div>
+                    <div className="userInfo">
+                      <span className="chat_username">Нийтийн чат</span>
+                    </div>
+                  </li>
                   {filteredUserList.length > 0 ? (
                     filteredUserList.map((user) => (
                       <li
@@ -168,7 +185,7 @@ const ChatComponent = () => {
                       </li>
                     ))
                   ) : (
-                    <li>Хэрэглэгч олдсонгүй.</li>
+                    <li>No users found</li>
                   )}
                 </ul>
               </div>
@@ -184,6 +201,42 @@ const ChatComponent = () => {
                 />
                 <h3>{selectedUser.username}</h3>
                 <button className="chat-close" onClick={() => setSelectedUser(null)}>
+                  X
+                </button>
+              </div>
+              <div className="chatContent">
+                <div className="userChatContent">
+                  <ul>
+                    {chatMessages.map((message, index) => (
+                      <li key={index}>{message}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="userChatInput">
+                  <textarea
+                    ref={textareaRef}
+                    value={userInput}
+                    onChange={handleTextareaChange}
+                    placeholder="Мессежээ бичнэ үү..."
+                  />
+                  <img
+                    src="/send.png"
+                    alt="Send"
+                    className="sendChatIcon"
+                    onClick={handleSendChat}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+          {globalChatExpanded && (
+            <div className="userChatWindow">
+              <div className="userChatHeader">
+                <div className="userProfileImage">
+                  <img src="/global.png" alt="Global Chat" className="chat-profile-image" />
+                </div>
+                <h3>Нийтийн Чат</h3>
+                <button className="chat-close" onClick={toggleGlobalChat}>
                   X
                 </button>
               </div>

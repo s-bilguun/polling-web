@@ -1368,9 +1368,10 @@ button:focus {
 
 input[type="username"]
 {
-  width: 100%;
+  width: 95%;
   padding: 0.5rem;
-  margin-bottom: 1rem;
+  margin: 0.5rem;
+
   border-radius: 0.25rem;
   border: 1px solid var(--color-border);
   appearance: none;
@@ -1378,4 +1379,5 @@ input[type="username"]
   color: rgb(var(--foreground-rgb));
   color-scheme: var(--color-scheme);
   font-size: 14px;
+  
 }
