@@ -147,6 +147,7 @@ nav ul li a:hover {
   --color-checkbox-bg: rgb(56, 95, 221); 
   --progress-bar-color: rgb(210, 237, 247); 
   --border-color: #59b8d7;
+  --color-hover: #e4e4e4;
 }
 
 [data-theme='dark'] {
@@ -177,6 +178,7 @@ nav ul li a:hover {
   --color-checkbox-bg: rgb(77, 43, 215); 
   --progress-bar-color: rgb(63, 22, 186);
   --border-color: #ddd;
+  --color-hover: #251a6f;
 }
 
 .logout-button {

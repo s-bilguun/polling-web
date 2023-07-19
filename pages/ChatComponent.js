@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext'; // Update the path to your AuthContext file
 
@@ -9,12 +9,19 @@ const ChatComponent = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
+  const textareaRef = useRef(null);
 
   useEffect(() => {
     if (user) {
       fetchUserList();
     }
   }, [user]);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      adjustTextareaHeight();
+    }
+  }, [userInput]);
 
   const fetchUserList = async () => {
     try {
@@ -53,11 +60,25 @@ const ChatComponent = () => {
     }
   };
 
+  const adjustTextareaHeight = () => {
+    const textarea = textareaRef.current;
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+    textarea.scrollTop = textarea.scrollHeight; // Scroll to bottom to show new content
+  };
+
+  const handleTextareaChange = (e) => {
+    setUserInput(e.target.value);
+    adjustTextareaHeight();
+  };
 
   const handleSendChat = () => {
     // Add your logic to send the chat message
     // You can append the message to the chatMessages state
     // and clear the userInput state
+    // For now, let's log the userInput to the console
+    console.log(userInput);
+    setUserInput(''); // Clear the userInput after sending the message
   };
 
   const closeChat = () => {
@@ -84,7 +105,7 @@ const ChatComponent = () => {
           <div className="chatWindow">
             <div className="chatHeader">
               <h3>Чат</h3>
-              <button className="closeButton" onClick={closeChat}>
+              <button className="chat-close" onClick={closeChat}>
                 X
               </button>
             </div>
@@ -113,7 +134,7 @@ const ChatComponent = () => {
                       </li>
                     ))
                   ) : (
-                    <li>No users found</li>
+                    <li>Хэрэглэгч олдсонгүй.</li>
                   )}
                 </ul>
               </div>
@@ -128,7 +149,7 @@ const ChatComponent = () => {
                   className="chat-profile-image"
                 />
                 <h3>{selectedUser.username}</h3>
-                <button className="closeButton" onClick={() => setSelectedUser(null)}>
+                <button className="chat-close" onClick={() => setSelectedUser(null)}>
                   X
                 </button>
               </div>
@@ -141,14 +162,18 @@ const ChatComponent = () => {
                   </ul>
                 </div>
                 <div className="userChatInput">
-                  <input
-                    type="text"
+                  <textarea
+                    ref={textareaRef}
                     value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
+                    onChange={handleTextareaChange}
+                    placeholder="Type your message..."
                   />
-                  <button className="sendChat" onClick={handleSendChat}>
-                    Send
-                  </button>
+                  <img
+                    src="/send.png"
+                    alt="Send"
+                    className="sendChatIcon"
+                    onClick={handleSendChat}
+                  />
                 </div>
               </div>
             </div>

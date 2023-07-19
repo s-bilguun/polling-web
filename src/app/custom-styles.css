@@ -1197,8 +1197,8 @@ button:focus {
   align-items: center;
   padding: 5px;
   padding-left: 10px;
-  background-color: #365c9eaf;
-  color: #fff;
+  background-color: var(--progress-bar-color);
+  color: var(--color-primary);
   font-size: 14px;
 }
 
@@ -1254,9 +1254,10 @@ button:focus {
   cursor: pointer;
 }
 
-.userList li.selectedUser {
-  background-color: #dcdcdc;
+.userList li:hover {
+  background-color: var(--color-hover);
 }
+
 
 .userChatWindow {
   position: fixed;
@@ -1264,7 +1265,7 @@ button:focus {
   right: 100px;
   width: 300px;
   height: 400px; /* Adjust the height as needed */
-  background-color: #fff;
+  background-color: var(--color-comment-background);
   border: 1px solid #9a98985b;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   z-index: 9999;
@@ -1277,14 +1278,19 @@ button:focus {
   align-items: center;
   padding: 5px;
   padding-left: 10px;
-  background-color: #365c9eaf;
-  color: #fff;
+  background-color: var(--progress-bar-color);
+  color: var(--color-primary);
   font-size: 14px;
 }
 
 .userChatHeader h3 {
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
 }
+
 
 .chatContent {
   flex-grow: 1;
@@ -1295,31 +1301,52 @@ button:focus {
   flex-grow: 1;
   padding: 10px;
 }
-
 .userChatInput {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 10px;
-  width: 100%;
-  background-color: #f2f2f2;
+  background: var(--header-background);
   position: absolute;
   bottom: 0;
+  left: 0;
+  right: 0;
 }
 
-.userChatInput input[type="text"] {
+.userChatInput textarea {
   flex-grow: 1;
   padding: 5px;
+  margin-right: 5px;
+  resize: none;
+  background-color: var(--color-comment-background);
+  border: 1px solid #333;
+  height: 36px; /* Height for a single line of text */
+  min-height: 36px; /* Minimum height of the textarea */
+  max-height: 72px; /* Maximum height of the textarea */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  overflow-y: auto;
 }
 
-.sendChat {
-  padding: 5px 10px; /* Adjust the padding as needed */
-  margin-left: 10px;
+.sendChatIcon {
+  width: 25px;
+  height: 20px;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
+
 
 .chat-profile-image {
   width: 35px; /* Adjust the width as needed */
   height: 35px; /* Adjust the height as needed */
   object-fit: cover; /* Maintain the aspect ratio and cover the container */
   border-radius: 50%; /* Display the image in a circular shape */
+  margin-left: 2px;
 }
+
+.chat-close {
+  background-color: transparent;
+  color: var(--color-primary);
+}
+
+
