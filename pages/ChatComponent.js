@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext'; // Update the path to your AuthContext file
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const ChatComponent = () => {
   const [chatExpanded, setChatExpanded] = useState(false);
@@ -9,19 +11,23 @@ const ChatComponent = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
+  const [searchInput, setSearchInput] = useState(''); // New state for search input
+  const [searchVisible, setSearchVisible] = useState(false); // New state for search visibility
   const textareaRef = useRef(null);
 
   useEffect(() => {
-    if (user) {
-      fetchUserList();
-    }
-  }, [user]);
+    fetchUserList();
+  }, []);
 
   useEffect(() => {
     if (textareaRef.current) {
       adjustTextareaHeight();
     }
   }, [userInput]);
+
+  useEffect(() => {
+    setUserInput(''); // Reset the textarea when selectedUser changes
+  }, [selectedUser]);
 
   const fetchUserList = async () => {
     try {
@@ -72,6 +78,10 @@ const ChatComponent = () => {
     adjustTextareaHeight();
   };
 
+  const handleSearchInputChange = (e) => {
+    setSearchInput(e.target.value);
+  };
+
   const handleSendChat = () => {
     // Add your logic to send the chat message
     // You can append the message to the chatMessages state
@@ -89,9 +99,19 @@ const ChatComponent = () => {
     setChatExpanded(!chatExpanded);
   };
 
+  const toggleSearch = () => {
+    setSearchVisible(!searchVisible);
+    setSearchInput(''); // Clear search input when toggling search
+  };
+
   if (!user) {
     return null; // Return null or any other component when user is not logged in
   }
+
+  // Filter the userList based on searchInput
+  const filteredUserList = userList.filter((user) =>
+    user.username.toLowerCase().includes(searchInput.toLowerCase())
+  );
 
   return (
     <div className="chatContainer">
@@ -105,15 +125,29 @@ const ChatComponent = () => {
           <div className="chatWindow">
             <div className="chatHeader">
               <h3>Чат</h3>
+              <button className="chat-search" onClick={toggleSearch}>
+                <span className="search-icon">
+                  <FontAwesomeIcon icon={faSearch} />
+                </span>
+              </button>
               <button className="chat-close" onClick={closeChat}>
                 X
               </button>
             </div>
+
             <div className="chatContent">
               <div className="userList">
+                {searchVisible && (
+                  <input
+                    type="username"
+                    value={searchInput}
+                    onChange={handleSearchInputChange}
+                    placeholder="Нэрээр хайх..."
+                  />
+                )}
                 <ul>
-                  {userList.length > 0 ? (
-                    userList.map((user) => (
+                  {filteredUserList.length > 0 ? (
+                    filteredUserList.map((user) => (
                       <li
                         key={user.username}
                         onClick={() => setSelectedUser(user)}
@@ -166,7 +200,7 @@ const ChatComponent = () => {
                     ref={textareaRef}
                     value={userInput}
                     onChange={handleTextareaChange}
-                    placeholder="Type your message..."
+                    placeholder="Мессежээ бичнэ үү..."
                   />
                   <img
                     src="/send.png"
