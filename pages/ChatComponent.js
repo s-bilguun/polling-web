@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext'; // Update the path to your AuthContext file
-import io from 'socket.io-client';
-import { cors } from 'cors'; // Import the cors library (make sure it's installed)
+import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:4242', {
-  // Pass the cors option to the socket.io-client configuration
-  transports: ['polling', 'websocket'],
-  extraHeaders: {
-    'Access-Control-Allow-Origin': 'http://localhost:3000', // Allow requests from your frontend origin
-    'Access-Control-Allow-Credentials': true, // Set this to true if you need to send cookies
-  },
+
+const socket = io("http://localhost:4242", {
+  withCredentials: true
 });
+
 
 // Use the socket object for further interactions with the Socket.IO server
 const ChatComponent = () => {
@@ -85,17 +81,13 @@ const ChatComponent = () => {
   };
 
   const handleSendChat = () => {
-    // Add your logic to send the chat message
-    // You can append the message to the chatMessages state
-    // and clear the userInput state
-    // For now, let's log the userInput to the console
-    
-    //gotta find someway to send user and userinput to back with magic 
-    console.log("------------------"+userInput, user);
-    socket.emit("chat",user,userInput);
-    
-    setUserInput(''); // Clear the userInput after sending the message
+    // console.log("------------------"+userInput, user.username);
+    const usero = user.username;
+    socket.emit('chat message', usero, userInput);
+    setUserInput('');
   };
+  
+  
 
   const closeChat = () => {
     setChatExpanded(false);
