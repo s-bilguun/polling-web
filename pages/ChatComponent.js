@@ -185,7 +185,7 @@ const ChatComponent = () => {
                       </li>
                     ))
                   ) : (
-                    <li>No users found</li>
+                    <li>Хэрэглэгч олдсонгүй.</li>
                   )}
                 </ul>
               </div>
