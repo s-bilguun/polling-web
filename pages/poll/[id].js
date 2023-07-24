@@ -171,7 +171,7 @@ const Poll = () => {
       fetchComment();
       fetchAttendanceResult();
 
-    }, 1000);
+    }, 10000);
 
     // Cleanup interval on component unmount
     return () => clearInterval(interval);
@@ -361,7 +361,6 @@ const Poll = () => {
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await axios({
         url: `http://localhost:8001/comment/createComment/${id}`,
