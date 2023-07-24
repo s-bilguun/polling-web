@@ -90,13 +90,15 @@ const ChatComponent = () => {
 
   const handleSendChat = () => {
     const usero = user.id;
-    let reciept = selectedUser.username;
     let branch;
-    if (!reciept) {
+    let reciept
+    if (!selectedUser) {
       reciept = "GLOBAL";
       branch = 1; // Set to "GLOBAL" if selectedUser is null
     } else {  
       console.log("-------------"+reciept);
+     reciept = selectedUser.username;
+    
       branch = 2;
     }
     
@@ -121,6 +123,7 @@ const ChatComponent = () => {
 
   const toggleChat = () => {
     setChatExpanded(!chatExpanded);
+    socket.emit('Login',user.username);
     setGlobalChatExpanded(false); // Close global chat when toggling chat window
   };
 
