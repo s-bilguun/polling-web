@@ -92,6 +92,7 @@ const ChatComponent = () => {
     const usero = user.id;
     let reciept;
     let branch;
+
     if (!selectedUser) {
       reciept = "GLOBAL";
       branch = 1; // Set to "GLOBAL" if selectedUser is null
