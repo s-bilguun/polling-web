@@ -218,6 +218,22 @@ const Poll = () => {
     setComment(e.target.value);
   };
   const handleNewAnswerSubmit = async () => {
+
+    
+    const now = new Date();
+    const startDate = new Date(poll.startdate);
+    const expireDate = new Date(poll.expiredate);
+
+    if (now < startDate) {
+      setErrorMessage('Санал асуулга эхлэх цаг болоогүй байна!');
+      return;
+    }
+
+    if (now > expireDate) {
+      setErrorMessage('Санал асуулгын хугацаа дууссан байна.');
+      return;
+    }
+
     try {
       const response = await axios.post(
         `http://localhost:8001/answers/createAnswer/opinion/${id}`,
@@ -259,6 +275,23 @@ const Poll = () => {
   const handleAnswerUpdate = async (e) => {
     e.preventDefault();
     // setSelectedAnswer()
+    
+    const now = new Date();
+    const startDate = new Date(poll.startdate);
+    const expireDate = new Date(poll.expiredate);
+
+    if (now < startDate) {
+      setErrorMessage('Санал асуулга эхлэх цаг болоогүй байна!');
+      return;
+    }
+
+    if (now > expireDate) {
+      setErrorMessage('Санал асуулгын хугацаа дууссан байна.');
+      return;
+    }
+
+
+    
     try {
       const response = await axios.put(
         `http://localhost:8001/attendance/${id}/updatePollAttendance/${selectedAnswer}`,
