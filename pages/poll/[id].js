@@ -171,7 +171,7 @@ const Poll = () => {
       fetchComment();
       fetchAttendanceResult();
 
-    }, 10000);
+    }, 2000);
 
     // Cleanup interval on component unmount
     return () => clearInterval(interval);
@@ -358,11 +358,30 @@ const Poll = () => {
       }
     }
   };
-
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios({
+      // Create the new comment object with the current user and comment content
+      const newComment = {
+        username: user.username,
+        comment: comment,
+        createdAt: new Date().toISOString(), // Add the current timestamp
+      };
+  
+      // Fetch the profile image for the new comment's username
+      const profileImage = await fetchProfileImageByUsername(user.username);
+  
+      // Add the profile image to the new comment object
+      const commentWithProfileImage = { ...newComment, profileImage };
+  
+      // Append the newly created comment to the beginning of the comments state
+      setComments((prevComments) => [commentWithProfileImage, ...prevComments]);
+  
+      // Clear the comment input field
+      setComment('');
+  
+      // Make the API call to create the comment
+      await axios({
         url: `http://localhost:8001/comment/createComment/${id}`,
         method: "POST",
         headers: {
@@ -372,26 +391,12 @@ const Poll = () => {
           comment: comment,
         },
       });
-
-      const newComment = response.data.commento;
-
-      // Fetch the profile image for the new comment's username
-      const profileImage = await fetchProfileImageByUsername(newComment.username);
-
-      // Add the profile image to the new comment object
-      const commentWithProfileImage = { ...newComment, profileImage };
-
-      // Add the newly created comment to the beginning of the comments state
-      setComments((prevComments) => [commentWithProfileImage, ...prevComments]);
-
-      // Clear the comment input field
-      setComment('');
     } catch (err) {
       // Set error message or handle error
       console.log(err);
     }
   };
-
+  
   const handleViewResults = () => {
     router.push(`/poll/${id}/result`);
   };
