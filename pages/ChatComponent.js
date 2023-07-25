@@ -6,7 +6,8 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { io } from 'socket.io-client';
 
 const socket = io("http://localhost:4242", {
-  withCredentials: true
+  withCredentials: true,
+
 });
 
 const ChatComponent = () => {
@@ -19,6 +20,8 @@ const ChatComponent = () => {
   const [searchInput, setSearchInput] = useState(''); // New state for search input
   const [searchVisible, setSearchVisible] = useState(false); // New state for search visibility
   const [globalChatExpanded, setGlobalChatExpanded] = useState(false); // New state for global chat
+  const [globalChatSelected, setGlobalChatSelected] = useState(false);
+  
   const textareaRef = useRef(null);
 
   useEffect(() => {
@@ -34,6 +37,14 @@ const ChatComponent = () => {
   useEffect(() => {
     setUserInput(''); // Reset the textarea when selectedUser changes
   }, [selectedUser]);
+
+  useEffect(() => {
+    // Listen for incoming chat messages
+    socket.on('newMessage', (messageData) => {
+      // Update the chatMessages state with the new message
+      setChatMessages((prevChatMessages) => [...prevChatMessages, messageData]);
+    });
+  }, []);
 
   const fetchUserList = async () => {
     try {
@@ -95,26 +106,26 @@ const ChatComponent = () => {
     if (!selectedUser) {
       reciept = "GLOBAL";
       branch = 1; // Set to "GLOBAL" if selectedUser is null
-    } else {  
-      console.log("-------------"+reciept);
-     reciept = selectedUser.username;
-    
+    } else {
+      console.log("-------------" + reciept);
+      reciept = selectedUser.username;
+
       branch = 2;
     }
-    
+
     const messageData = {
-      sender: usero,  
+      sender: usero,
       reciept: reciept,
       content: userInput,
     };
-  
+
     console.log('userInput:', userInput);
     console.log('messageData:', messageData);
-    if(branch ===1){socket.emit('all chat', messageData);}
-    else{socket.emit('dm', messageData);}
+    if (branch === 1) { socket.emit('all chat', messageData); }
+    else { socket.emit('dm', messageData); }
     setUserInput(''); // Clear the userInput after sending the message
   };
-  
+
   const closeChat = () => {
     setChatExpanded(false);
     setGlobalChatExpanded(false); // Close global chat when closing the chat window
@@ -123,7 +134,7 @@ const ChatComponent = () => {
 
   const toggleChat = () => {
     setChatExpanded(!chatExpanded);
-    socket.emit('Login',user.username);
+    socket.emit('Login', user.username);
     setGlobalChatExpanded(false); // Close global chat when toggling chat window
   };
 
@@ -133,13 +144,107 @@ const ChatComponent = () => {
   };
 
   const toggleGlobalChat = () => {
-    setGlobalChatExpanded(!globalChatExpanded);
-    setSelectedUser(null); // Deselect user when opening global chat
+    if (globalChatExpanded) {
+      // If the global chat is already expanded, close it
+      setGlobalChatExpanded(false);
+      setSelectedUser(null);
+      setGlobalChatSelected(false); // Reset the global chat selection state
+    } else {
+      // If global chat is not expanded, fetch global chat history
+      setGlobalChatExpanded(true);
+      setSelectedUser(null); // Deselect user when opening global chat
+      setGlobalChatSelected(true); // Set the global chat as selected
+      fetchGlobalChatHistory();
+    }
   };
+
+    const fetchGlobalChatHistory = async () => {
+      try {
+        const response = await axios.get('http://localhost:8001/socket/getAllChat', {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+    
+        console.log('Global Chat history response:', response.data);
+    
+        if (response.status === 200) {
+          const data = response.data.data;
+          console.log('Fetched global chat history:', data);
+    
+          // Map through the chat messages and update the sender name for global chat messages
+          const updatedChatMessages = data.map((message) => {
+            // For global chat messages, set the sender name as "GLOBAL"
+            if (message.reciept === "GLOBAL") {
+              return { ...message, sender: "GLOBAL" };
+            } else {
+              return message;
+            }
+          });
+    
+          // Update the chatMessages state with the modified global chat history
+          setChatMessages(updatedChatMessages);
+        } else {
+          console.error('Failed to fetch global chat history');
+        }
+      } catch (error) {
+        console.error('Error fetching global chat history:', error);
+      }
+    };
+
+
+    useEffect(() => {
+      if (selectedUser) {
+        // Function to fetch chat history for the selected user
+        const fetchChatHistory = async () => {
+          try {
+            const response = await axios.get(`http://localhost:8001/socket/${selectedUser.id}/getChats`, {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            });
+
+            console.log('Chat history response:', response.data);
+
+            if (response.status === 200) {
+              const data = response.data.data;
+              console.log('Fetched chat history:', data);
+
+              // Update the chatMessages state with the fetched chat history
+              setChatMessages(data);
+            } else {
+              console.error('Failed to fetch chat history');
+            }
+          } catch (error) {
+            console.error('Error fetching chat history:', error);
+          }
+        };
+        // Fetch chat history for the selected user
+        fetchChatHistory();
+        
+
+        // Listen for incoming chat messages for the selected user
+        socket.on('display dm', (sender, reciept) => {
+          if (selectedUser.id === sender || selectedUser.id === reciept) {
+            fetchChatHistory();
+          }
+        });
+
+        socket.on('display all chat', (messageData) => {
+          // Update the chatMessages state with the new global chat message
+          fetchGlobalChatHistory().then((globalChatHistory) => {
+            // Append the new message to the global chat history
+            setChatMessages([...globalChatHistory, messageData]);
+          });
+        });
+      }
+    }, [selectedUser]);
 
   if (!user) {
     return null; // Return null or any other component when user is not logged in
   }
+
+
 
   // Filter the userList based on searchInput
   const filteredUserList = userList.filter((user) =>
@@ -216,24 +321,24 @@ const ChatComponent = () => {
               </div>
             </div>
           </div>
-          {selectedUser && (
+          {selectedUser && !globalChatSelected && (
             <div className="userChatWindow">
-              <div className="userChatHeader">
-                <img
-                  src={selectedUser.imageUrl}
-                  alt="Profile"
-                  className="chat-profile-image"
-                />
-                <h3>{selectedUser.username}</h3>
-                <button className="chat-close" onClick={() => setSelectedUser(null)}>
-                  X
-                </button>
-              </div>
+     <div className="userChatHeader">
+  <img src={selectedUser.imageUrl} alt="Profile" className="chat-profile-image" />
+  <h3>{selectedUser.username}</h3>
+  <button className="chat-close" onClick={() => setSelectedUser(null)}>
+    X
+  </button>
+</div>
               <div className="chatContent">
                 <div className="userChatContent">
                   <ul>
                     {chatMessages.map((message, index) => (
-                      <li key={index}>{message}</li>
+                      <li key={index}>
+                        
+                        <div>{message.content}</div>
+                        <div>{message.createdAt}</div>
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -254,42 +359,49 @@ const ChatComponent = () => {
               </div>
             </div>
           )}
-          {globalChatExpanded && (
-            <div className="userChatWindow">
-              <div className="userChatHeader">
-                <div className="userProfileImage">
-                  <img src="/global.png" alt="Global Chat" className="chat-profile-image" />
-                </div>
-                <h3>Нийтийн Чат</h3>
-                <button className="chat-close" onClick={toggleGlobalChat}>
-                  X
-                </button>
+           {globalChatExpanded && globalChatSelected && (
+  <div className="userChatWindow">
+    <div className="userChatHeader">
+      <div className="userProfileImage">
+        <img src="/global.png" alt="Global Chat" className="chat-profile-image" />
+      </div>
+      <h3>Нийтийн Чат</h3>
+      <button className="chat-close" onClick={toggleGlobalChat}>
+        X
+      </button>
+    </div>
+    <div className="chatContent">
+      <div className="userChatContent">
+        <ul>
+          {chatMessages.map((message, index) => (
+            <li key={index}>
+              <div>
+                <span>{message.sender === 'GLOBAL' ? 'GLOBAL' : message.username}</span>
               </div>
-              <div className="chatContent">
-                <div className="userChatContent">
-                  <ul>
-                    {chatMessages.map((message, index) => (
-                      <li key={index}>{message}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="userChatInput">
-                  <textarea
-                    ref={textareaRef}
-                    value={userInput}
-                    onChange={handleTextareaChange}
-                    placeholder="Мессежээ бичнэ үү..."
-                  />
-                  <img
-                    src="/send.png"
-                    alt="Send"
-                    className="sendChatIcon"
-                    onClick={handleSendChat}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
+              <div>{message.content}</div>
+              <div>{message.createdAt}</div>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="userChatInput">
+        <textarea
+          ref={textareaRef}
+          value={userInput}
+          onChange={handleTextareaChange}
+          placeholder="Мессежээ бичнэ үү..."
+        />
+        <img
+          src="/send.png"
+          alt="Send"
+          className="sendChatIcon"
+          onClick={handleSendChat}
+        />
+      </div>
+    </div>
+  </div>
+)}
+
         </>
       )}
     </div>
