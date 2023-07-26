@@ -193,6 +193,7 @@ const ChatComponent = () => {
     };
 
 
+    
     useEffect(() => {
       if (selectedUser) {
         // Function to fetch chat history for the selected user
@@ -224,19 +225,26 @@ const ChatComponent = () => {
         
 
         // Listen for incoming chat messages for the selected user
-        socket.on('display dm', (sender, reciept) => {
-          if (selectedUser.id === sender || selectedUser.id === reciept) {
-            fetchChatHistory();
+        socket.on('display dm', (data) => {
+          console.log(data);
+          // Check if the received data matches the selected user's data
+          if (
+            (data.sender_id === user.id && data.recipient_id=== selectedUser.id) ||
+            (data.sender_id === selectedUser.id && data.recipient_id === user.id)
+          ) {
+            console.log("end ajillaj bnuu?");
+            // Update the chatMessages state with the new message
+            setChatMessages((chatMessages) => [...chatMessages, data]);
           }
         });
 
-        socket.on('display all chat', (messageData) => {
-          // Update the chatMessages state with the new global chat message
-          fetchGlobalChatHistory().then((globalChatHistory) => {
-            // Append the new message to the global chat history
-            setChatMessages([...globalChatHistory, messageData]);
-          });
-        });
+        // socket.on('display all chat', (messageData) => {
+        //   // Update the chatMessages state with the new global chat message
+        //   fetchGlobalChatHistory().then((globalChatHistory) => {
+        //     // Append the new message to the global chat history
+        //     setChatMessages([...globalChatHistory, messageData]);
+        //   });
+        // });
       }
     }, [selectedUser]);
 
