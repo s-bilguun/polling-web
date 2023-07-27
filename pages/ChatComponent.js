@@ -107,9 +107,9 @@ const ChatComponent = () => {
       reciept = "GLOBAL";
       branch = 1; // Set to "GLOBAL" if selectedUser is null
     } else {
+      reciept = selectedUser.id;
       console.log("-------------" + reciept);
-      reciept = selectedUser.username;
-
+      
       branch = 2;
     }
 
@@ -128,6 +128,7 @@ const ChatComponent = () => {
 
   const closeChat = () => {
     setChatExpanded(false);
+    setChatMessages('');
     setGlobalChatExpanded(false); // Close global chat when closing the chat window
     socket.emit("close", user.username);
   };
@@ -190,63 +191,59 @@ const ChatComponent = () => {
       } catch (error) {
         console.error('Error fetching global chat history:', error);
       }
+      socket.on("display all chat", data =>{
+            setChatMessages((chatMessages) => [...chatMessages, data]);
+      });
     };
 
 
     
-    useEffect(() => {
-      if (selectedUser) {
-        // Function to fetch chat history for the selected user
-        const fetchChatHistory = async () => {
-          try {
-            const response = await axios.get(`http://localhost:8001/socket/${selectedUser.id}/getChats`, {
-              headers: {
-                Authorization: `Bearer ${user.token}`,
-              },
-            });
-
-            console.log('Chat history response:', response.data);
-
-            if (response.status === 200) {
-              const data = response.data.data;
-              console.log('Fetched chat history:', data);
-
-              // Update the chatMessages state with the fetched chat history
-              setChatMessages(data);
-            } else {
-              console.error('Failed to fetch chat history');
-            }
-          } catch (error) {
-            console.error('Error fetching chat history:', error);
-          }
-        };
-        // Fetch chat history for the selected user
-        fetchChatHistory();
-        
-
-        // Listen for incoming chat messages for the selected user
-        socket.on('display dm', (data) => {
-          console.log(data);
-          // Check if the received data matches the selected user's data
-          if (
-            (data.sender_id === user.id && data.recipient_id=== selectedUser.id) ||
-            (data.sender_id === selectedUser.id && data.recipient_id === user.id)
-          ) {
-            console.log("end ajillaj bnuu?");
-            // Update the chatMessages state with the new message
-            setChatMessages((chatMessages) => [...chatMessages, data]);
-          }
+   useEffect(() => {
+  if (selectedUser) {
+    // Function to fetch chat history for the selected user
+    const fetchChatHistory = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8001/socket/${selectedUser.id}/getChats`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
         });
 
-        // socket.on('display all chat', (messageData) => {
-        //   // Update the chatMessages state with the new global chat message
-        //   fetchGlobalChatHistory().then((globalChatHistory) => {
-        //     // Append the new message to the global chat history
-        //     setChatMessages([...globalChatHistory, messageData]);
-        //   });
-        // });
+        console.log('Chat history response:', response.data);
+
+        if (response.status === 200) {
+          const data = response.data.data;
+          console.log('Fetched chat history:', data);
+
+          // Update the chatMessages state by concatenating the new chat history
+          setChatMessages((prevChatMessages) => [...prevChatMessages, ...data]);
+        } else {
+          console.error('Failed to fetch chat history');
+        }
+      } catch (error) {
+        console.error('Error fetching chat history:', error);
       }
-    }, [selectedUser]);
+    };
+
+    // Fetch chat history for the selected user
+    fetchChatHistory();
+
+    // Listen for incoming chat messages for the selected user
+    socket.on('display dm', (data) => {
+      console.log(data);
+      // Check if the received data matches the selected user's data
+      if (
+        (data.sender_id === user.id && data.recipient_id === selectedUser.id) ||
+        (data.sender_id === selectedUser.id && data.recipient_id === user.id)
+      ) {
+        console.log("end ajillaj bnuu?");
+        // Update the chatMessages state with the new message
+        setChatMessages((prevChatMessages) => [data, ...prevChatMessages]);
+        console.log("yaltchgui ene bolq bhin hmm");
+      }
+    });
+  }
+}, [selectedUser]);
 
   if (!user) {
     return null; // Return null or any other component when user is not logged in
