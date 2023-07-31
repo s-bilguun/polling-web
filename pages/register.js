@@ -23,6 +23,11 @@ const Register = () => {
 const handleRegister = async (e) => {
   e.preventDefault();
 
+  if (password !== password2) {
+    setErrorMessage('Нууц үг таарахгүй байна.');
+    return;
+  }
+
   try {
     const response = await axios.post('http://localhost:8001/user/createUser', {
       email: email,
