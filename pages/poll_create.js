@@ -84,7 +84,7 @@ const AddPoll = () => {
 
       // Go back to the index page or any other desired page
       router.push('/');
-      toast.success('Санал асуулга амжилттай үүслээ 😎', {
+      toast.success('Амжилттай үүссэн 😎', {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,

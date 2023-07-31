@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { AuthContext } from './AuthContext'; 
 import { motion } from "framer-motion";
 import { toast } from 'react-toastify';
+import videoBg from '../pages/video/background.mp4'
 
 const Login = () => {
   const router = useRouter();
