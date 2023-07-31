@@ -23,6 +23,18 @@ const ChatComponent = () => {
 
   const textareaRef = useRef(null);
 
+  const formatDateTime = (dateTimeString) => {
+    const dateObj = new Date(dateTimeString);
+    const year = dateObj.getFullYear().toString().slice(-2); // Get the last two digits of the year
+    const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+    const day = dateObj.getDate().toString().padStart(2, '0');
+    const hours = dateObj.getHours().toString().padStart(2, '0');
+    const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
+
+
   useEffect(() => {
     fetchUserList();
   }, []);
@@ -353,10 +365,12 @@ const ChatComponent = () => {
               <div className="chatContent">
                 <div className="userChatContent">
                   <ul>
-                    {chatMessages.map((message, index) => (
+                    {chatMessages.slice().reverse().map((message, index) => (
                       <li key={index}>
-                        <div>{message.content}</div>
-                        <div>{message.createdAt}</div>
+                        <div className="messageContent">
+                          <div>{message.content}</div>
+                          <div className="chatTime">{formatDateTime(message.createdAt)}</div>
+                        </div>
                       </li>
                     ))}
                   </ul>
@@ -379,6 +393,7 @@ const ChatComponent = () => {
               </div>
             </div>
           )}
+
           {globalChatExpanded && globalChatSelected && (
             <div className="userChatWindow">
               <div className="userChatHeader">
@@ -393,13 +408,15 @@ const ChatComponent = () => {
               <div className="chatContent">
                 <div className="userChatContent">
                   <ul>
-                    {chatMessages.map((message, index) => (
+                    {chatMessages.slice().reverse().map((message, index) => (
                       <li key={index}>
-                        <div>
-                          <span>{message.sender === 'GLOBAL' ? 'GLOBAL' : message.username}</span>
+                        <div className="messageContent">
+                          <div>
+                            <span>{message.sender === 'GLOBAL' ? 'GLOBAL' : message.username}</span>
+                          </div>
+                          <div>{message.content}</div>
+                          <div className="chatTime">{formatDateTime(message.createdAt)}</div>
                         </div>
-                        <div>{message.content}</div>
-                        <div>{message.createdAt}</div>
                       </li>
                     ))}
                   </ul>

@@ -1373,3 +1373,28 @@ input[type="username"]
   font-size: 14px;
   
 }
+
+.messageContent {
+  position: relative;
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 10px; /* Add round edges to the message */
+  background-color: var(--progress-bar-color); /* Change this to the desired background color for the message */
+  border: 1px solid #ccc; /* Add a border to the message */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for a 3D effect */
+  display: inline-block;
+}
+
+.chatTime {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: var(--color-hover);
+  padding: 2px 4px;
+  border-radius: 4px;
+  display: none; /* Initially, the chat date and time are hidden */
+}
+
+.messageContent:hover .chatTime {
+  display: block; /* Show the chat date and time when hovering the message content */
+}
