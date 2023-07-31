@@ -1212,10 +1212,7 @@ button:focus {
   padding-left: 5px;
 }
 
-.chatContent {
-  flex-grow: 1;
-  display: flex;
-}
+
 
 .userList {
   width: 100%;
@@ -1263,21 +1260,19 @@ button:focus {
 .userList li:hover {
   background-color: var(--color-hover);
 }
-
-
 .userChatWindow {
   position: fixed;
   bottom: 20px;
   right: 100px;
   width: 300px;
-  height: 400px; /* Adjust the height as needed */
+  height: 400px; /* Set a fixed height for the chat window */
   background-color: var(--color-comment-background);
   border: 1px solid #9a98985b;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   z-index: 9999;
+  display: flex;
+  flex-direction: column; /* Make the userChatWindow a column container */
 }
-
-
 .userChatHeader {
   display: flex;
   justify-content: space-between;
@@ -1294,30 +1289,26 @@ button:focus {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  
 }
-
 
 .chatContent {
   flex-grow: 1;
   display: flex;
-  overflow: hidden;
+  flex-direction: column; /* Make chatContent a column container */
 }
 
 .userChatContent {
-  flex-grow: 1;
+  flex: 1;
   padding: 10px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 270px; /* Set the maximum height for the chat content */
 }
+
 .userChatInput {
-  position: relative;
   display: flex;
   align-items: center;
   padding: 10px;
   background: var(--header-background);
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
 }
 
 .userChatInput textarea {
@@ -1327,13 +1318,12 @@ button:focus {
   resize: none;
   background-color: var(--color-comment-background);
   border: 1px solid #333;
-  height: 36px; /* Height for a single line of text */
-  min-height: 36px; /* Minimum height of the textarea */
-  max-height: 72px; /* Maximum height of the textarea */
+  min-height: 36px;
+  max-height: 72px;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  overflow-y: auto;
 }
+
 
 .sendChatIcon {
   width: 25px;

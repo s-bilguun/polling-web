@@ -362,13 +362,13 @@ const ChatComponent = () => {
                   </ul>
                 </div>
                 <div className="userChatInput">
-                <textarea
-  ref={textareaRef}
-  value={userInput}
-  onChange={handleTextareaChange}
-  onKeyPress={handleKeyPress}
-  placeholder="Мессежээ бичнэ үү..."
-/>
+                  <textarea
+                    ref={textareaRef}
+                    value={userInput}
+                    onChange={handleTextareaChange}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Мессежээ бичнэ үү..."
+                  />
                   <img
                     src="/send.png"
                     alt="Send"
@@ -409,6 +409,7 @@ const ChatComponent = () => {
                     ref={textareaRef}
                     value={userInput}
                     onChange={handleTextareaChange}
+                    onKeyPress={handleKeyPress}
                     placeholder="Мессежээ бичнэ үү..."
                   />
                   <img
