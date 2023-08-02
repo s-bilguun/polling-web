@@ -425,7 +425,10 @@ const ChatComponent = () => {
                 <div className="userChatContent">
                   <ul>
                     {chatMessages.slice().reverse().map((message, index) => (
-                      <li key={index} className={message.sender_id === user.id ? 'ownMessage' : ''}>
+                      <li
+                      key={index}
+                      className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
+                    >
                         <div className="messageContent">
                           <div>
                             <span>{message.sender_id === 'GLOBAL' ? 'GLOBAL' : message.username}</span>
