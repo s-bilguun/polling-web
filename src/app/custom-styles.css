@@ -1298,12 +1298,13 @@ button:focus {
 }
 
 .userChatContent {
+  display: flex;
   flex: 1;
+  flex-direction: column; /* Stack messages from bottom to top */
   padding: 10px;
   overflow-y: auto; /* Enable vertical scrolling */
   max-height: 270px; /* Set the maximum height for the chat content */
 }
-
 .userChatInput {
   display: flex;
   align-items: center;
@@ -1374,25 +1375,58 @@ input[type="username"]
   
 }
 
+.messageItem {
+  display: flex;
+  justify-content: flex-start; /* Align messages to the left by default */
+}
+
+.messageItem.ownMessage {
+  justify-content: flex-end; /* Align own messages to the right */
+  
+}
 .messageContent {
   position: relative;
   margin: 8px 0;
   padding: 8px;
-  border-radius: 10px; /* Add round edges to the message */
-  background-color: var(--progress-bar-color); /* Change this to the desired background color for the message */
-  border: 1px solid #ccc; /* Add a border to the message */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for a 3D effect */
-  display: inline-block;
+  border-radius: 10px;
+  background-color: var(--progress-bar-color);
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  word-break: break-word;
+  font-size: 15px;
 }
+
+.ownMessage .messageContent {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Add margin for messages on the left side (other users' messages) */
+.messageItem:not(.ownMessage) .messageContent {
+  margin-right: 20px;
+}
+
+/* Add margin for messages on the right side (own messages) */
+.messageItem.ownMessage .messageContent {
+  margin-left: 20px;
+}
+
+
 
 .chatTime {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  top: 50%;
+  min-width: 100px;
+  left: -0px; /* Adjust this value to control the distance from the left side of the message */
+  transform: translateY(-50%);
   background-color: var(--color-hover);
   padding: 2px 4px;
   border-radius: 4px;
+  font-size: 12px; /* Adjust the font size as needed */
+  color: var(--color-primary); /* Set the font color for the time text */
   display: none; /* Initially, the chat date and time are hidden */
+  z-index: 1; /* Ensure the time appears above the message */
+  opacity: 0.8;
 }
 
 .messageContent:hover .chatTime {
