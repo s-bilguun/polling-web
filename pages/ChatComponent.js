@@ -22,7 +22,16 @@ const ChatComponent = () => {
   const [globalChatSelected, setGlobalChatSelected] = useState(false);
   const [notif, setNotification] = useState([]);
   const textareaRef = useRef(null);
+  const userChatContentRef = useRef(null);
 
+  useEffect(() => {
+    // Scroll to the bottom of the userChatContent when it is opened or chatMessages are updated
+    if (userChatContentRef.current) {
+      userChatContentRef.current.scrollTop = userChatContentRef.current.scrollHeight;
+    }
+  }, [userChatContentRef, chatMessages, globalChatExpanded]);
+
+  
   const formatDateTime = (dateTimeString) => {
     const dateObj = new Date(dateTimeString);
     const year = dateObj.getFullYear().toString().slice(-2); // Get the last two digits of the year
@@ -96,8 +105,8 @@ const ChatComponent = () => {
       // Listen for incoming chat messages for the selected user
       const displayDmListener = (data) => {
         // Check if the received data matches the selected user's data
-        if(data.sender_id !== selectedUser.id && data.recipient_id === user.id) {
-          setNotification((allNotification)=>[...allNotification, data]);
+        if (data.sender_id !== selectedUser.id && data.recipient_id === user.id) {
+          setNotification((allNotification) => [...allNotification, data]);
           console.log("chat added to notifications!!!");
         }
         else if (
@@ -160,8 +169,8 @@ const ChatComponent = () => {
     } catch (error) {
       console.error('Error fetching user list:', error);
     }
-    socket.on('onlineUsers',(users) => {
-      console.log("online Users: "+users);
+    socket.on('onlineUsers', (users) => {
+      console.log("online Users: " + users);
     });
   };
 
@@ -383,21 +392,21 @@ const ChatComponent = () => {
                 </button>
               </div>
               <div className="chatContent">
-      <div className="userChatContent">
-        <ul>
-          {chatMessages.slice().reverse().map((message, index) => (
-            <li
-              key={index}
-              className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
-            >
-              <div className="messageContent">
-                <div>{message.content}</div>
-              </div>
-              <div className="chatTime">{formatDateTime(message.createdAt)}</div>
-            </li>
-          ))}
-        </ul>
-      </div>
+                <div className="userChatContent" ref={userChatContentRef}>
+                  <ul>
+                    {chatMessages.slice().reverse().map((message, index) => (
+                      <li
+                        key={index}
+                        className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
+                      >
+                        <div className="messageContent">
+                          <div>{message.content}</div>
+                        </div>
+                        <div className="chatTime">{formatDateTime(message.createdAt)}</div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 <div className="userChatInput">
                   <textarea
                     ref={textareaRef}
@@ -429,13 +438,13 @@ const ChatComponent = () => {
                 </button>
               </div>
               <div className="chatContent">
-                <div className="userChatContent">
+                <div className="userChatContent" ref={userChatContentRef}>
                   <ul>
                     {chatMessages.slice().reverse().map((message, index) => (
                       <li
-                      key={index}
-                      className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
-                    >
+                        key={index}
+                        className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
+                      >
                         <div className="messageContent">
                           <div>
                             <span>{message.sender_id === 'GLOBAL' ? 'GLOBAL' : message.username}</span>
