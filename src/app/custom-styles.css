@@ -1191,6 +1191,7 @@ button:focus {
   height: 80vh; /* Adjust the height as needed */
   overflow: hidden;
   border: 1px solid #9a98985b;
+  border-radius: 10px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -1268,6 +1269,7 @@ button:focus {
   height: 400px; /* Set a fixed height for the chat window */
   background-color: var(--color-comment-background);
   border: 1px solid #9a98985b;
+  border-radius: 10px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   z-index: 9999;
   display: flex;
@@ -1282,6 +1284,7 @@ button:focus {
   background-color: var(--progress-bar-color);
   color: var(--color-primary);
   font-size: 14px;
+  border-radius: 10px;
 }
 
 .userChatHeader h3 {
@@ -1310,6 +1313,7 @@ button:focus {
   align-items: center;
   padding: 10px;
   background: var(--header-background);
+  border-radius: 10px;
 }
 
 .userChatInput textarea {
@@ -1319,6 +1323,7 @@ button:focus {
   resize: none;
   background-color: var(--color-comment-background);
   border: 1px solid #333;
+  border-radius: 10px;
   min-height: 36px;
   max-height: 72px;
   word-wrap: break-word;
@@ -1416,4 +1421,3 @@ input[type="username"]
 .messageContent:hover .chatTime {
   display: block; /* Show the chat date and time when hovering the message content */
 }
-
