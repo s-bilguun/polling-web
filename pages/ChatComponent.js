@@ -20,7 +20,7 @@ const ChatComponent = () => {
   const [searchVisible, setSearchVisible] = useState(false);
   const [globalChatExpanded, setGlobalChatExpanded] = useState(false);
   const [globalChatSelected, setGlobalChatSelected] = useState(false);
-
+  const [notif, setNotification] = useState([]);
   const textareaRef = useRef(null);
 
   const formatDateTime = (dateTimeString) => {
@@ -96,7 +96,11 @@ const ChatComponent = () => {
       // Listen for incoming chat messages for the selected user
       const displayDmListener = (data) => {
         // Check if the received data matches the selected user's data
-        if (
+        if(data.sender_id !== selectedUser.id && data.recipient_id === user.id) {
+          setNotification((allNotification)=>[...allNotification, data]);
+          console.log("chat added to notifications!!!");
+        }
+        else if (
           (data.sender_id === user.id && data.recipient_id === selectedUser.id) ||
           (data.sender_id === selectedUser.id && data.recipient_id === user.id)
         ) {
@@ -156,6 +160,9 @@ const ChatComponent = () => {
     } catch (error) {
       console.error('Error fetching user list:', error);
     }
+    socket.on('onlineUsers',(users) => {
+      console.log("online Users: "+users);
+    });
   };
 
   const fetchProfileImageByUsername = async (username) => {
@@ -223,12 +230,12 @@ const ChatComponent = () => {
     setChatExpanded(false);
     setChatMessages([]);
     setGlobalChatExpanded(false);
-    socket.emit("close", user.username);
+    socket.emit("close", user);
   };
 
   const toggleChat = () => {
     setChatExpanded(!chatExpanded);
-    socket.emit('Login', user.username);
+    socket.emit('Login', user);
     setGlobalChatExpanded(false);
   };
 
