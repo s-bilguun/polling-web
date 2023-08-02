@@ -86,13 +86,25 @@ const ChatComponent = () => {
           console.error('Error fetching chat history:', error);
         }
       };
-
+      
       // Clear chat messages when switching users
       setChatMessages([]);
 
       // Fetch chat history for the selected user
       fetchChatHistory();
-
+      const clearNotif = (data) => {
+        // Use the filter method to create a new array with elements that do not meet the condition
+        const filteredArray = notif.filter(item => {
+          // Check if the item has a non-null sender_id and if data.id is equal to the item's sender_id
+          return item.sender_id !== null && item.sender_id === data.id;
+        });
+      
+        // Now you can update the notifArray with the filteredArray
+        setNotification([]) 
+        setNotification(filteredArray) // Add the filtered elements back to the array
+      };
+      clearNotif(selectedUser, notif);
+ 
       // Listen for incoming chat messages for the selected user
       const displayDmListener = (data) => {
         // Check if the received data matches the selected user's data
@@ -236,6 +248,7 @@ const ChatComponent = () => {
   const toggleChat = () => {
     setChatExpanded(!chatExpanded);
     socket.emit('Login', user);
+    console.log("--------------------"+notif.length);
     setGlobalChatExpanded(false);
   };
 
@@ -432,10 +445,7 @@ const ChatComponent = () => {
                 <div className="userChatContent">
                   <ul>
                     {chatMessages.slice().reverse().map((message, index) => (
-                      <li
-                      key={index}
-                      className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
-                    >
+                      <li key={index} className={message.sender_id === user.id ? 'ownMessage' : ''}>
                         <div className="messageContent">
                           <div>
                             <span>{message.sender_id === 'GLOBAL' ? 'GLOBAL' : message.username}</span>
