@@ -93,17 +93,18 @@ const ChatComponent = () => {
       // Fetch chat history for the selected user
       fetchChatHistory();
       const clearNotif = (data) => {
+        console.log("how this not working?");
         // Use the filter method to create a new array with elements that do not meet the condition
         const filteredArray = notif.filter(item => {
           // Check if the item has a non-null sender_id and if data.id is equal to the item's sender_id
-          return item.sender_id !== null && item.sender_id === data.id;
+           item.sender_id !== null && item.sender_id === data.id;
         });
       
         // Now you can update the notifArray with the filteredArray
         setNotification([]) 
         setNotification(filteredArray) // Add the filtered elements back to the array
       };
-      clearNotif(selectedUser, notif);
+      clearNotif(selectedUser);
  
       // Listen for incoming chat messages for the selected user
       const displayDmListener = (data) => {
@@ -112,7 +113,7 @@ const ChatComponent = () => {
           setNotification((allNotification)=>[...allNotification, data]);
           console.log("chat added to notifications!!!");
         }
-        else if (
+        if (
           (data.sender_id === user.id && data.recipient_id === selectedUser.id) ||
           (data.sender_id === selectedUser.id && data.recipient_id === user.id)
         ) {
