@@ -52,7 +52,7 @@ const ChatComponent = () => {
   useEffect(() => {
     // Listen for incoming chat messages
     const newMessageListener = (messageData) => {
-      setChatMessages((prevChatMessages) => [...prevChatMessages, messageData]);
+      setChatMessages((prevChatMessages) => [messageData, ...prevChatMessages]);
     };
 
     socket.on('newMessage', newMessageListener);
@@ -75,8 +75,10 @@ const ChatComponent = () => {
 
           if (response.status === 200) {
             const data = response.data.data;
-
-            setChatMessages(data);
+            setChatMessages(data.map(message => ({
+              ...message,
+              sender: message.sender_id === user.id ? user.username : selectedUser.username,
+            })));
           } else {
             console.error('Failed to fetch chat history');
           }
@@ -100,6 +102,7 @@ const ChatComponent = () => {
         ) {
           // Update the chatMessages state with the new message
           setChatMessages((prevChatMessages) => [data, ...prevChatMessages]);
+          
         }
       };
 
@@ -109,6 +112,8 @@ const ChatComponent = () => {
       return () => {
         socket.off('display dm', displayDmListener);
       };
+
+      
     } else if (globalChatExpanded) {
       // Clear chat messages when switching to global chat
       setChatMessages([]);
@@ -118,8 +123,8 @@ const ChatComponent = () => {
 
       // Listen for incoming chat messages for global chat
       const displayAllChatListener = (data) => {
-        setChatMessages((chatMessages) => [...chatMessages, data]);
-      };
+        setChatMessages((chatMessages) => [data, ...chatMessages]);
+      };  
 
       socket.on('display all chat', displayAllChatListener);
 
@@ -205,6 +210,11 @@ const ChatComponent = () => {
       socket.emit('dm', messageData);
     }
     setUserInput('');
+
+    setTimeout(() => {
+      const chatWindow = document.querySelector('.userChatContent');
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }, 50);
   };
 
   const closeChat = () => {
@@ -282,6 +292,7 @@ const ChatComponent = () => {
       handleSendChat();
     }
   };
+  
 
   return (
     <div className="chatContainer">
@@ -360,19 +371,19 @@ const ChatComponent = () => {
                 <h3>{selectedUser.username}</h3>
                 <button className="chat-close" onClick={() => setSelectedUser(null)}>
                   X
-                </button>
+                </button> 
               </div>
               <div className="chatContent">
                 <div className="userChatContent">
                   <ul>
-                    {chatMessages.slice().reverse().map((message, index) => (
-                      <li key={index}>
-                        <div className="messageContent">
-                          <div>{message.content}</div>
-                          <div className="chatTime">{formatDateTime(message.createdAt)}</div>
-                        </div>
-                      </li>
-                    ))}
+                  {chatMessages.slice().reverse().map((message, index) => (
+  <li key={index} className={message.sender_id === user.id ? 'ownMessage' : ''}>
+    <div className="messageContent">
+      <div>{message.content}</div>
+      <div className="chatTime">{formatDateTime(message.createdAt)}</div>
+    </div>
+  </li>
+))}
                   </ul>
                 </div>
                 <div className="userChatInput">
