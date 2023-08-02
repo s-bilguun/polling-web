@@ -1298,12 +1298,13 @@ button:focus {
 }
 
 .userChatContent {
+  display: flex;
   flex: 1;
+  flex-direction: column; /* Stack messages from bottom to top */
   padding: 10px;
   overflow-y: auto; /* Enable vertical scrolling */
   max-height: 270px; /* Set the maximum height for the chat content */
 }
-
 .userChatInput {
   display: flex;
   align-items: center;
@@ -1384,21 +1385,19 @@ input[type="username"]
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: inline-block;
   word-break: break-word; /* Add this line to allow wrapping of long words */
-  justify-self: flex-end;
 }
 
-/* Add styles for own messages */
+.ownMessage li {
+  display: flex;
+  justify-content: flex-end; /* Align the whole message to the right */
+}
+
 .ownMessage .messageContent {
-  justify-self: flex-end;
+  align-self: flex-end; /* Align the content to the right */
   background-color: #007bff;
   color: #fff;
 }
 
-.ownMessage .messageContent .chatTime {
-  left: unset; /* Adjust this value to control the distance from the right side of the message */
-  right: -10px;
-  background-color: #333;
-}
 
 .chatTime {
   position: absolute;
