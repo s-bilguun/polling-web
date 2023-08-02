@@ -376,18 +376,21 @@ const ChatComponent = () => {
                 </button>
               </div>
               <div className="chatContent">
-                <div className="userChatContent">
-                  <ul>
-                    {chatMessages.slice().reverse().map((message, index) => (
-                      <li key={index} className={message.sender_id === user.id ? 'ownMessage' : ''}>
-                        <div className="messageContent">
-                          <div>{message.content}</div>
-                          <div className="chatTime">{formatDateTime(message.createdAt)}</div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+      <div className="userChatContent">
+        <ul>
+          {chatMessages.slice().reverse().map((message, index) => (
+            <li
+              key={index}
+              className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
+            >
+              <div className="messageContent">
+                <div>{message.content}</div>
+              </div>
+              <div className="chatTime">{formatDateTime(message.createdAt)}</div>
+            </li>
+          ))}
+        </ul>
+      </div>
                 <div className="userChatInput">
                   <textarea
                     ref={textareaRef}
