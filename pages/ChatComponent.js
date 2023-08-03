@@ -31,7 +31,7 @@ const ChatComponent = () => {
     }
   }, [userChatContentRef, chatMessages, globalChatExpanded]);
 
-  
+
   const formatDateTime = (dateTimeString) => {
     const dateObj = new Date(dateTimeString);
     const year = dateObj.getFullYear().toString().slice(-2); // Get the last two digits of the year
@@ -95,26 +95,29 @@ const ChatComponent = () => {
           console.error('Error fetching chat history:', error);
         }
       };
-      
+      setGlobalChatSelected(false);
+
       // Clear chat messages when switching users
       setChatMessages([]);
 
+
       // Fetch chat history for the selected user
+
       fetchChatHistory();
       const clearNotif = (data) => {
         console.log("how this not working?");
         // Use the filter method to create a new array with elements that do not meet the condition
         const filteredArray = notif.filter(item => {
           // Check if the item has a non-null sender_id and if data.id is equal to the item's sender_id
-           item.sender_id !== null && item.sender_id === data.id;
+          item.sender_id !== null && item.sender_id === data.id;
         });
-      
+
         // Now you can update the notifArray with the filteredArray
-        setNotification([]) 
+        setNotification([])
         setNotification(filteredArray) // Add the filtered elements back to the array
       };
       clearNotif(selectedUser);
- 
+
       // Listen for incoming chat messages for the selected user
       const displayDmListener = (data) => {
         // Check if the received data matches the selected user's data
@@ -218,6 +221,11 @@ const ChatComponent = () => {
   };
 
   const handleSendChat = () => {
+
+    if (!userInput.trim()) {
+      // If userInput is empty, return without sending the message
+      return;
+    }
     const usero = user.id;
     let branch;
     let reciept
@@ -258,7 +266,7 @@ const ChatComponent = () => {
   const toggleChat = () => {
     setChatExpanded(!chatExpanded);
     socket.emit('Login', user);
-    console.log("--------------------"+notif.length);
+    console.log("--------------------" + notif.length);
     setGlobalChatExpanded(false);
   };
 
@@ -270,7 +278,7 @@ const ChatComponent = () => {
   const toggleGlobalChat = () => {
     if (globalChatExpanded) {
       setGlobalChatExpanded(false);
-      setSelectedUser(null);
+      setSelectedUser();
       setGlobalChatSelected(false);
     } else {
       setGlobalChatExpanded(true);
@@ -325,6 +333,11 @@ const ChatComponent = () => {
     }
   };
 
+
+
+  if (!user) { // Makes chat not show up if user is not logged and there is no token
+    return null; // Return null or any other component when user is not logged in 
+  }
 
   return (
     <div className="chatContainer">
