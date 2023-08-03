@@ -20,9 +20,18 @@ const ChatComponent = () => {
   const [searchVisible, setSearchVisible] = useState(false);
   const [globalChatExpanded, setGlobalChatExpanded] = useState(false);
   const [globalChatSelected, setGlobalChatSelected] = useState(false);
-
+  const [notif, setNotification] = useState([]);
   const textareaRef = useRef(null);
+  const userChatContentRef = useRef(null);
 
+  useEffect(() => {
+    // Scroll to the bottom of the userChatContent when it is opened or chatMessages are updated
+    if (userChatContentRef.current) {
+      userChatContentRef.current.scrollTop = userChatContentRef.current.scrollHeight;
+    }
+  }, [userChatContentRef, chatMessages, globalChatExpanded]);
+
+  
   const formatDateTime = (dateTimeString) => {
     const dateObj = new Date(dateTimeString);
     const year = dateObj.getFullYear().toString().slice(-2); // Get the last two digits of the year
@@ -86,16 +95,33 @@ const ChatComponent = () => {
           console.error('Error fetching chat history:', error);
         }
       };
-
+      
       // Clear chat messages when switching users
       setChatMessages([]);
 
       // Fetch chat history for the selected user
       fetchChatHistory();
-
+      const clearNotif = (data) => {
+        console.log("how this not working?");
+        // Use the filter method to create a new array with elements that do not meet the condition
+        const filteredArray = notif.filter(item => {
+          // Check if the item has a non-null sender_id and if data.id is equal to the item's sender_id
+           item.sender_id !== null && item.sender_id === data.id;
+        });
+      
+        // Now you can update the notifArray with the filteredArray
+        setNotification([]) 
+        setNotification(filteredArray) // Add the filtered elements back to the array
+      };
+      clearNotif(selectedUser);
+ 
       // Listen for incoming chat messages for the selected user
       const displayDmListener = (data) => {
         // Check if the received data matches the selected user's data
+        if (data.sender_id !== selectedUser.id && data.recipient_id === user.id) {
+          setNotification((allNotification) => [...allNotification, data]);
+          console.log("chat added to notifications!!!");
+        }
         if (
           (data.sender_id === user.id && data.recipient_id === selectedUser.id) ||
           (data.sender_id === selectedUser.id && data.recipient_id === user.id)
@@ -156,6 +182,9 @@ const ChatComponent = () => {
     } catch (error) {
       console.error('Error fetching user list:', error);
     }
+    socket.on('onlineUsers', (users) => {
+      console.log("online Users: " + users);
+    });
   };
 
   const fetchProfileImageByUsername = async (username) => {
@@ -223,12 +252,13 @@ const ChatComponent = () => {
     setChatExpanded(false);
     setChatMessages([]);
     setGlobalChatExpanded(false);
-    socket.emit("close", user.username);
+    socket.emit("close", user);
   };
 
   const toggleChat = () => {
     setChatExpanded(!chatExpanded);
-    socket.emit('Login', user.username);
+    socket.emit('Login', user);
+    console.log("--------------------"+notif.length);
     setGlobalChatExpanded(false);
   };
 
@@ -376,14 +406,17 @@ const ChatComponent = () => {
                 </button>
               </div>
               <div className="chatContent">
-                <div className="userChatContent">
+                <div className="userChatContent" ref={userChatContentRef}>
                   <ul>
                     {chatMessages.slice().reverse().map((message, index) => (
-                      <li key={index} className={message.sender_id === user.id ? 'ownMessage' : ''}>
+                      <li
+                        key={index}
+                        className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
+                      >
                         <div className="messageContent">
                           <div>{message.content}</div>
-                          <div className="chatTime">{formatDateTime(message.createdAt)}</div>
                         </div>
+                        <div className="chatTime">{formatDateTime(message.createdAt)}</div>
                       </li>
                     ))}
                   </ul>
@@ -419,10 +452,13 @@ const ChatComponent = () => {
                 </button>
               </div>
               <div className="chatContent">
-                <div className="userChatContent">
+                <div className="userChatContent" ref={userChatContentRef}>
                   <ul>
                     {chatMessages.slice().reverse().map((message, index) => (
-                      <li key={index} className={message.sender_id === user.id ? 'ownMessage' : ''}>
+                      <li
+                        key={index}
+                        className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
+                      >
                         <div className="messageContent">
                           <div>
                             <span>{message.sender_id === 'GLOBAL' ? 'GLOBAL' : message.username}</span>

@@ -1191,7 +1191,6 @@ button:focus {
   height: 80vh; /* Adjust the height as needed */
   overflow: hidden;
   border: 1px solid #9a98985b;
-  border-radius: 10px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -1269,7 +1268,6 @@ button:focus {
   height: 400px; /* Set a fixed height for the chat window */
   background-color: var(--color-comment-background);
   border: 1px solid #9a98985b;
-  border-radius: 10px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   z-index: 9999;
   display: flex;
@@ -1284,7 +1282,6 @@ button:focus {
   background-color: var(--progress-bar-color);
   color: var(--color-primary);
   font-size: 14px;
-  border-radius: 10px;
 }
 
 .userChatHeader h3 {
@@ -1313,7 +1310,6 @@ button:focus {
   align-items: center;
   padding: 10px;
   background: var(--header-background);
-  border-radius: 10px;
 }
 
 .userChatInput textarea {
@@ -1323,7 +1319,6 @@ button:focus {
   resize: none;
   background-color: var(--color-comment-background);
   border: 1px solid #333;
-  border-radius: 10px;
   min-height: 36px;
   max-height: 72px;
   word-wrap: break-word;
@@ -1380,6 +1375,15 @@ input[type="username"]
   
 }
 
+.messageItem {
+  display: flex;
+  justify-content: flex-start; /* Align messages to the left by default */
+}
+
+.messageItem.ownMessage {
+  justify-content: flex-end; /* Align own messages to the right */
+  
+}
 .messageContent {
   position: relative;
   margin: 8px 0;
@@ -1394,16 +1398,11 @@ input[type="username"]
 
 .ownMessage li {
   display: flex;
-  /* justify-content: flex-end; 
-  justify-self: flex-end;
-  align-self: flex-end;
-  align-items: flex-end;
-  align-content: end; */
+  justify-content: flex-end; /* Align the whole message to the right */
 }
 
 .ownMessage .messageContent {
-  display: flex;
-  /* display: inline-block; */
+  align-self: flex-end; /* Align the content to the right */
   background-color: #007bff;
   /* display: inline-block; */
   align-self: flex-end;
@@ -1415,11 +1414,23 @@ input[type="username"]
   color: #fff;
 }
 
+/* Add margin for messages on the left side (other users' messages) */
+.messageItem:not(.ownMessage) .messageContent {
+  margin-right: 20px;
+}
+
+/* Add margin for messages on the right side (own messages) */
+.messageItem.ownMessage .messageContent {
+  margin-left: 20px;
+}
+
+
 
 .chatTime {
   position: absolute;
   top: 50%;
-  left: -10px; /* Adjust this value to control the distance from the left side of the message */
+  min-width: 100px;
+  left: -40px; /* Adjust this value to control the distance from the left side of the message */
   transform: translateY(-50%);
   background-color: var(--color-hover);
   padding: 2px 4px;
@@ -1428,6 +1439,7 @@ input[type="username"]
   color: var(--color-primary); /* Set the font color for the time text */
   display: none; /* Initially, the chat date and time are hidden */
   z-index: 1; /* Ensure the time appears above the message */
+  opacity: 0.8;
 }
 
 .messageContent:hover .chatTime {
