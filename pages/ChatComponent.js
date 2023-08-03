@@ -46,7 +46,13 @@ const ChatComponent = () => {
 
   useEffect(() => {
     fetchUserList();
-  }, []);
+    socket.on('display dm', displayDmListener);
+
+      // Return the cleanup function to remove the event listener when the component unmounts
+      return () => {
+        socket.off('display dm', displayDmListener);
+      };
+  }, [selectedUser]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -119,28 +125,9 @@ const ChatComponent = () => {
       clearNotif(selectedUser);
 
       // Listen for incoming chat messages for the selected user
-      const displayDmListener = (data) => {
-        // Check if the received data matches the selected user's data
-        if (data.sender_id !== selectedUser.id && data.recipient_id === user.id) {
-          setNotification((allNotification) => [...allNotification, data]);
-          console.log("chat added to notifications!!!");
-        }
-        if (
-          (data.sender_id === user.id && data.recipient_id === selectedUser.id) ||
-          (data.sender_id === selectedUser.id && data.recipient_id === user.id)
-        ) {
-          // Update the chatMessages state with the new message
-          setChatMessages((prevChatMessages) => [data, ...prevChatMessages]);
+      
 
-        }
-      };
-
-      socket.on('display dm', displayDmListener);
-
-      // Return the cleanup function to remove the event listener when the component unmounts
-      return () => {
-        socket.off('display dm', displayDmListener);
-      };
+      
 
 
     } else if (globalChatExpanded) {
@@ -166,6 +153,21 @@ const ChatComponent = () => {
     }
   }, [selectedUser, globalChatExpanded]);
 
+  const displayDmListener = (data) => {
+    // Check if the received data matches the selected user's data
+    if ((!selectedUser || selectedUser.id !== data.sender_id)&& data.recipient_id === user.id ) {
+      setNotification((allNotification) => [...allNotification, data]);
+      console.log("chat added to notifications!!!");
+    }
+    else if (
+      (data.sender_id === user.id && data.recipient_id === selectedUser.id) ||
+      (data.sender_id === selectedUser.id && data.recipient_id === user.id)
+    ) {
+      // Update the chatMessages state with the new message
+      setChatMessages((prevChatMessages) => [data, ...prevChatMessages]);
+
+    }
+  };
   const fetchUserList = async () => {
     try {
       const response = await axios.get('http://localhost:8001/auth/loggedUsers');
