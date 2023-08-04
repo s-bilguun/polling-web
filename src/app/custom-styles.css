@@ -1416,7 +1416,7 @@ input[type="username"]
 .chatTime {
   position: absolute;
   top: 50%;
-  min-width: 100px;
+  min-width: 50px;
   left: 0px; /* Adjust this value to control the distance from the left side of the message */
   transform: translateY(-50%);
   background-color: var(--color-hover);
@@ -1430,7 +1430,8 @@ input[type="username"]
 }
 
 .messageItem.ownMessage .chatTime {
-  left: -70px; /*Adjust this value to control the distance from the left side of the message */
+   /*Adjust this value to control the distance from the left side of the message */
+   left: -20px;
 }
 
 .userChatContent .messageContent:hover .chatTime {

@@ -41,14 +41,35 @@ const ChatComponent = () => {
 
   const formatDateTime = (dateTimeString) => {
     const dateObj = new Date(dateTimeString);
-    const year = dateObj.getFullYear().toString().slice(-2); // Get the last two digits of the year
-    const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
-    const day = dateObj.getDate().toString().padStart(2, '0');
-    const hours = dateObj.getHours().toString().padStart(2, '0');
-    const minutes = dateObj.getMinutes().toString().padStart(2, '0');
-
-    return `${year}-${month}-${day} ${hours}:${minutes}`;
+    const now = new Date();
+  
+    const isToday = dateObj.toDateString() === now.toDateString();
+    const isYesterday = new Date(dateObj.getTime() - 86400000).toDateString() === now.toDateString(); // 86400000 is the number of milliseconds in a day
+  
+    if (isToday) {
+      // Format for today
+      const hours = dateObj.getHours().toString().padStart(2, '0');
+      const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+      return `${hours}:${minutes}`;
+    } else if (isYesterday) {
+      // Format for yesterday
+      const hours = dateObj.getHours().toString().padStart(2, '0');
+      const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+      return `Өчигдөр ${hours}:${minutes}`;
+    } else if (dateObj.getFullYear() === now.getFullYear()) {
+      // Format for this year
+      const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+      const day = dateObj.getDate().toString().padStart(2, '0');
+      return `${month}-${day}`;
+    } else {
+      // Format for other years
+      const year = dateObj.getFullYear().toString().slice(-2);
+      const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+      const day = dateObj.getDate().toString().padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
   };
+  
 
 
   useEffect(() => {
