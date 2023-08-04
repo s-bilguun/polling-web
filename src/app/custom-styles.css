@@ -1430,18 +1430,24 @@ input[type="username"]
   position: absolute;
   top: 50%;
   min-width: 100px;
-  left: -40px; /* Adjust this value to control the distance from the left side of the message */
+  left: auto; /*Adjust this value to control the distance from the left side of the message */
   transform: translateY(-50%);
   background-color: var(--color-hover);
   padding: 2px 4px;
+  margin: auto;
   border-radius: 4px;
   font-size: 12px; /* Adjust the font size as needed */
   color: var(--color-primary); /* Set the font color for the time text */
-  display: none; /* Initially, the chat date and time are hidden */
+  display: none; /*Initially, the chat date and time are hidden */
   z-index: 1; /* Ensure the time appears above the message */
   opacity: 0.8;
 }
 
+.messageItem.ownMessage .chatTime {
+  left: -70px; /*Adjust this value to control the distance from the left side of the message */
+}
+
 .messageContent:hover .chatTime {
-  display: block; /* Show the chat date and time when hovering the message content */
+  display: block;
+   /* Show the chat date and time when hovering the message content */
 }
