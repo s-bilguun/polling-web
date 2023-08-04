@@ -273,6 +273,7 @@ const ChatComponent = () => {
     setChatExpanded(false);
     setChatMessages([]);
     setGlobalChatExpanded(false);
+    setSelectedUser(null)
     socket.emit("close", user);
   };
 
