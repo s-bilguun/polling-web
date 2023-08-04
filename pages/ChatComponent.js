@@ -151,17 +151,19 @@ const ChatComponent = () => {
   }, [selectedUser, globalChatExpanded]);
 
   const clearNotif = (data) => {
-    console.log("how this not working?");
     // Use the filter method to create a new array with elements that do not meet the condition
     const filteredArray = notif.filter(item => {
-      // Check if the item has a non-null sender_id and if data.id is equal to the item's sender_id
-     return item!== null && item === data.id
+      // Check if the item has a non-null sender_id and if data.id is not equal to the item's sender_id
+      return item !== null && item !== data.id;
     });
-
-    // Now you can update the notifArray with the filteredArray
-    setNotification([])
-    setNotification(filteredArray) // Add the filtered elements back to the array
+  
+    // Check if the selected user matches the condition before updating the notifArray
+    if (selectedUser && selectedUser.id === data.id) {
+      setNotification(filteredArray); // Update the notifArray with the filteredArray
+    }
   };
+  
+  
 
   const displayDmListener = (data) => {
     if ((!selectedUser || selectedUser.id !== data.sender_id) && data.recipient_id === user.id) {
