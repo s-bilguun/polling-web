@@ -3,7 +3,7 @@ import axios from 'axios';
 import { AuthContext } from './AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import NotificationBadge from './NotificationBadge'; ;
+import NotificationBadge from './NotificationBadge';;
 import { io } from 'socket.io-client';
 
 const socket = io("http://localhost:4242", {
@@ -32,10 +32,10 @@ const ChatComponent = () => {
     }
     socket.on('display dm', displayDmListener);
 
-      // Return the cleanup function to remove the event listener when the component unmounts
-      return () => {
-        socket.off('display dm', displayDmListener);
-      };
+    // Return the cleanup function to remove the event listener when the component unmounts
+    return () => {
+      socket.off('display dm', displayDmListener);
+    };
   }, [userChatContentRef, chatMessages, globalChatExpanded, notif]);
 
 
@@ -61,7 +61,7 @@ const ChatComponent = () => {
     //   };
   }, []);
 
-    
+
   useEffect(() => {
     if (textareaRef.current) {
       adjustTextareaHeight();
@@ -118,13 +118,13 @@ const ChatComponent = () => {
       // Fetch chat history for the selected user
 
       fetchChatHistory();
-      
+
       clearNotif(selectedUser);
 
       // Listen for incoming chat messages for the selected user
-      
 
-      
+
+
 
 
     } else if (globalChatExpanded) {
@@ -155,11 +155,10 @@ const ChatComponent = () => {
     // Use the filter method to create a new array with elements that do not meet the condition
     const filteredArray = notif.filter(item => {
       // Check if the item has a non-null sender_id and if data.id is equal to the item's sender_id
-     return item!== null && item === data.id
+      item !== null && item === data.id
     });
 
     // Now you can update the notifArray with the filteredArray
-    setNotification([])
     setNotification(filteredArray) // Add the filtered elements back to the array
   };
 
@@ -174,7 +173,7 @@ const ChatComponent = () => {
       setChatMessages((prevChatMessages) => [data, ...prevChatMessages]);
     }
 
-    console.log("notif list: "+notif);
+    console.log("notif list: " + notif);
   };
 
   const fetchUserList = async () => {
@@ -279,7 +278,7 @@ const ChatComponent = () => {
     socket.emit('Login', user);
     console.log("--------------------" + notif.length);
     setGlobalChatExpanded(false);
-    
+
   };
 
   const toggleSearch = () => {
@@ -395,29 +394,32 @@ const ChatComponent = () => {
                     </div>
                   </li>
                   {filteredUserList.length > 0 ? (
-                    filteredUserList.map((user) => (
-                      <li
-                        key={user.username}
-                        onClick={() => setSelectedUser(user)}
-                        className={selectedUser === user ? 'selectedUser' : ''}
-                      >
-                        {user.imageUrl && (
-                          <div className="userProfileImage">
-                            <img
-                              src={user.imageUrl}
-                              alt="Profile"
-                              className="chat-profile-image"
-                            />
+                    filteredUserList.map((user) => {
+                      const isUnreadMessage = notif.includes(user.id);
+
+                      return (
+                        <li
+                          key={user.username}
+                          onClick={() => setSelectedUser(user)}
+                          className={selectedUser === user ? 'selectedUser' : ''}
+                        >
+                          {user.imageUrl && (
+                            <div className="userProfileImage">
+                              <img src={user.imageUrl} alt="Profile" className="chat-profile-image" />
+                            </div>
+                          )}
+                          <div className="userInfo">
+                            <span className={`chat_username ${isUnreadMessage ? 'boldUsername' : ''}`}>
+                              {user.username}
+                            </span>
                           </div>
-                        )}
-                        <div className="userInfo">
-                          <span className="chat_username">{user.username}</span>
-                        </div>
-                      </li>
-                    ))
+                        </li>
+                      );
+                    })
                   ) : (
                     <li>Хэрэглэгч олдсонгүй.</li>
                   )}
+
                 </ul>
               </div>
             </div>
@@ -440,10 +442,10 @@ const ChatComponent = () => {
                         className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
                       >
                         <div className="messageContent">
-                          
+
                           <div>{message.content}</div>
-                        
-                        <div className="chatTime">{formatDateTime(message.createdAt)}</div>
+
+                          <div className="chatTime">{formatDateTime(message.createdAt)}</div>
                         </div>
                       </li>
                     ))}

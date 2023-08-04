@@ -1461,3 +1461,7 @@ input[type="username"]
   position: relative;
   top: 1px;
 }
+
+.boldUsername {
+  font-weight: bold;
+}
