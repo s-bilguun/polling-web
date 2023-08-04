@@ -1466,6 +1466,8 @@ input[type="username"]
   top: 1px;
 }
 
-.boldUsername {
-  font-weight: bold;
+li.boldUsername .userInfo .chat_username {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 700; /* Use the regular font weight */
+  
 }
