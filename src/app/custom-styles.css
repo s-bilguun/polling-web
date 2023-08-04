@@ -1432,3 +1432,32 @@ input[type="username"]
 .userChatContent .messageContent:hover .chatTime {
   display: block; /* Show the chat date and time when hovering the message content */
 }
+
+.notification-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 3px 6px;
+  font-size: 12px;
+  min-width: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Ensure the badge remains circular */
+.notification-badge::before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+
+/* To make the badge circular even for single digits */
+.notification-badge span {
+  position: relative;
+  top: 1px;
+}

@@ -2,7 +2,8 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import NotificationBadge from './NotificationBadge'; ;
 import { io } from 'socket.io-client';
 
 const socket = io("http://localhost:4242", {
@@ -270,6 +271,7 @@ const ChatComponent = () => {
     socket.emit('Login', user);
     console.log("--------------------" + notif.length);
     setGlobalChatExpanded(false);
+    
   };
 
   const toggleSearch = () => {
@@ -346,6 +348,7 @@ const ChatComponent = () => {
       {!chatExpanded && (
         <button className="chatToggleButton" onClick={toggleChat}>
           <img src="/chat.png" alt="Chat" />
+          <NotificationBadge count={notif.length} />
         </button>
       )}
       {chatExpanded && (
@@ -429,9 +432,11 @@ const ChatComponent = () => {
                         className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
                       >
                         <div className="messageContent">
+                          
                           <div>{message.content}</div>
-                        </div>
+                        
                         <div className="chatTime">{formatDateTime(message.createdAt)}</div>
+                        </div>
                       </li>
                     ))}
                   </ul>
