@@ -30,7 +30,13 @@ const ChatComponent = () => {
     if (userChatContentRef.current) {
       userChatContentRef.current.scrollTop = userChatContentRef.current.scrollHeight;
     }
-  }, [userChatContentRef, chatMessages, globalChatExpanded]);
+    socket.on('display dm', displayDmListener);
+
+      // Return the cleanup function to remove the event listener when the component unmounts
+      return () => {
+        socket.off('display dm', displayDmListener);
+      };
+  }, [userChatContentRef, chatMessages, globalChatExpanded, notif]);
 
 
   const formatDateTime = (dateTimeString) => {
@@ -47,14 +53,15 @@ const ChatComponent = () => {
 
   useEffect(() => {
     fetchUserList();
-    socket.on('display dm', displayDmListener);
+    // socket.on('display dm', displayDmListener);
 
-      // Return the cleanup function to remove the event listener when the component unmounts
-      return () => {
-        socket.off('display dm', displayDmListener);
-      };
-  }, [selectedUser]);
+    //   // Return the cleanup function to remove the event listener when the component unmounts
+    //   return () => {
+    //     socket.off('display dm', displayDmListener);
+    //   };
+  }, []);
 
+    
   useEffect(() => {
     if (textareaRef.current) {
       adjustTextareaHeight();
@@ -111,18 +118,7 @@ const ChatComponent = () => {
       // Fetch chat history for the selected user
 
       fetchChatHistory();
-      const clearNotif = (data) => {
-        console.log("how this not working?");
-        // Use the filter method to create a new array with elements that do not meet the condition
-        const filteredArray = notif.filter(item => {
-          // Check if the item has a non-null sender_id and if data.id is equal to the item's sender_id
-          item.sender_id !== null && item.sender_id === data.id;
-        });
-
-        // Now you can update the notifArray with the filteredArray
-        setNotification([])
-        setNotification(filteredArray) // Add the filtered elements back to the array
-      };
+      
       clearNotif(selectedUser);
 
       // Listen for incoming chat messages for the selected user
@@ -154,21 +150,33 @@ const ChatComponent = () => {
     }
   }, [selectedUser, globalChatExpanded]);
 
+  const clearNotif = (data) => {
+    console.log("how this not working?");
+    // Use the filter method to create a new array with elements that do not meet the condition
+    const filteredArray = notif.filter(item => {
+      // Check if the item has a non-null sender_id and if data.id is equal to the item's sender_id
+     return item!== null && item === data.id
+    });
+
+    // Now you can update the notifArray with the filteredArray
+    setNotification([])
+    setNotification(filteredArray) // Add the filtered elements back to the array
+  };
+
   const displayDmListener = (data) => {
-    // Check if the received data matches the selected user's data
-    if ((!selectedUser || selectedUser.id !== data.sender_id)&& data.recipient_id === user.id ) {
-      setNotification((allNotification) => [...allNotification, data]);
-      console.log("chat added to notifications!!!");
-    }
-    else if (
+    if ((!selectedUser || selectedUser.id !== data.sender_id) && data.recipient_id === user.id) {
+      setNotification((allNotification) => [...allNotification, data.sender_id]);
+      console.log("Chat added to notifications!!!");
+    } else if (
       (data.sender_id === user.id && data.recipient_id === selectedUser.id) ||
       (data.sender_id === selectedUser.id && data.recipient_id === user.id)
     ) {
-      // Update the chatMessages state with the new message
       setChatMessages((prevChatMessages) => [data, ...prevChatMessages]);
-
     }
+
+    console.log("notif list: "+notif);
   };
+
   const fetchUserList = async () => {
     try {
       const response = await axios.get('http://localhost:8001/auth/loggedUsers');
