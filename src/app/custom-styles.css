@@ -1429,6 +1429,10 @@ input[type="username"]
   opacity: 0.8;
 }
 
+.messageItem.ownMessage .chatTime {
+  left: -70px; /*Adjust this value to control the distance from the left side of the message */
+}
+
 .userChatContent .messageContent:hover .chatTime {
   display: block; /* Show the chat date and time when hovering the message content */
 }
