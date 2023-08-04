@@ -1392,25 +1392,12 @@ input[type="username"]
   background-color: var(--progress-bar-color);
   border: 1px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: inline-block;
-  word-break: break-word; /* Add this line to allow wrapping of long words */
-}
-
-.ownMessage li {
-  display: flex;
-  justify-content: flex-end; /* Align the whole message to the right */
+  word-break: break-word;
+  font-size: 14px;
 }
 
 .ownMessage .messageContent {
-  align-self: flex-end; /* Align the content to the right */
   background-color: #007bff;
-  /* display: inline-block; */
-  align-self: flex-end;
-  align-items: flex-end;
-  align-content: flex-end;
-  justify-content: flex-end;
-  justify-self: flex-end;
-  justify-items: flex-end;
   color: #fff;
 }
 
@@ -1430,15 +1417,14 @@ input[type="username"]
   position: absolute;
   top: 50%;
   min-width: 100px;
-  left: auto; /*Adjust this value to control the distance from the left side of the message */
+  left: -40px; /* Adjust this value to control the distance from the left side of the message */
   transform: translateY(-50%);
   background-color: var(--color-hover);
   padding: 2px 4px;
-  margin: auto;
   border-radius: 4px;
   font-size: 12px; /* Adjust the font size as needed */
   color: var(--color-primary); /* Set the font color for the time text */
-  display: none; /*Initially, the chat date and time are hidden */
+  display: none; /* Initially, the chat date and time are hidden */
   z-index: 1; /* Ensure the time appears above the message */
   opacity: 0.8;
 }
@@ -1447,7 +1433,35 @@ input[type="username"]
   left: -70px; /*Adjust this value to control the distance from the left side of the message */
 }
 
-.messageContent:hover .chatTime {
+.userChatContent .messageContent:hover .chatTime {
+  display: block; /* Show the chat date and time when hovering the message content */
+}
+
+.notification-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 3px 6px;
+  font-size: 12px;
+  min-width: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Ensure the badge remains circular */
+.notification-badge::before {
+  content: '';
   display: block;
-   /* Show the chat date and time when hovering the message content */
+  padding-top: 100%;
+}
+
+/* To make the badge circular even for single digits */
+.notification-badge span {
+  position: relative;
+  top: 1px;
 }

@@ -2,7 +2,8 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import NotificationBadge from './NotificationBadge'; ;
 import { io } from 'socket.io-client';
 
 const socket = io("http://localhost:4242", {
@@ -29,9 +30,15 @@ const ChatComponent = () => {
     if (userChatContentRef.current) {
       userChatContentRef.current.scrollTop = userChatContentRef.current.scrollHeight;
     }
-  }, [userChatContentRef, chatMessages, globalChatExpanded]);
+    socket.on('display dm', displayDmListener);
 
-  
+      // Return the cleanup function to remove the event listener when the component unmounts
+      return () => {
+        socket.off('display dm', displayDmListener);
+      };
+  }, [userChatContentRef, chatMessages, globalChatExpanded, notif]);
+
+
   const formatDateTime = (dateTimeString) => {
     const dateObj = new Date(dateTimeString);
     const year = dateObj.getFullYear().toString().slice(-2); // Get the last two digits of the year
@@ -46,8 +53,15 @@ const ChatComponent = () => {
 
   useEffect(() => {
     fetchUserList();
+    // socket.on('display dm', displayDmListener);
+
+    //   // Return the cleanup function to remove the event listener when the component unmounts
+    //   return () => {
+    //     socket.off('display dm', displayDmListener);
+    //   };
   }, []);
 
+    
   useEffect(() => {
     if (textareaRef.current) {
       adjustTextareaHeight();
@@ -95,49 +109,22 @@ const ChatComponent = () => {
           console.error('Error fetching chat history:', error);
         }
       };
-      
+      setGlobalChatSelected(false);
+
       // Clear chat messages when switching users
       setChatMessages([]);
 
+
       // Fetch chat history for the selected user
+
       fetchChatHistory();
-      const clearNotif = (data) => {
-        console.log("how this not working?");
-        // Use the filter method to create a new array with elements that do not meet the condition
-        const filteredArray = notif.filter(item => {
-          // Check if the item has a non-null sender_id and if data.id is equal to the item's sender_id
-           item.sender_id !== null && item.sender_id === data.id;
-        });
       
-        // Now you can update the notifArray with the filteredArray
-        setNotification([]) 
-        setNotification(filteredArray) // Add the filtered elements back to the array
-      };
       clearNotif(selectedUser);
- 
+
       // Listen for incoming chat messages for the selected user
-      const displayDmListener = (data) => {
-        // Check if the received data matches the selected user's data
-        if (data.sender_id !== selectedUser.id && data.recipient_id === user.id) {
-          setNotification((allNotification) => [...allNotification, data]);
-          console.log("chat added to notifications!!!");
-        }
-        if (
-          (data.sender_id === user.id && data.recipient_id === selectedUser.id) ||
-          (data.sender_id === selectedUser.id && data.recipient_id === user.id)
-        ) {
-          // Update the chatMessages state with the new message
-          setChatMessages((prevChatMessages) => [data, ...prevChatMessages]);
+      
 
-        }
-      };
-
-      socket.on('display dm', displayDmListener);
-
-      // Return the cleanup function to remove the event listener when the component unmounts
-      return () => {
-        socket.off('display dm', displayDmListener);
-      };
+      
 
 
     } else if (globalChatExpanded) {
@@ -162,6 +149,33 @@ const ChatComponent = () => {
       };
     }
   }, [selectedUser, globalChatExpanded]);
+
+  const clearNotif = (data) => {
+    console.log("how this not working?");
+    // Use the filter method to create a new array with elements that do not meet the condition
+    const filteredArray = notif.filter(item => {
+      // Check if the item has a non-null sender_id and if data.id is equal to the item's sender_id
+     return item!== null && item === data.id
+    });
+
+    // Now you can update the notifArray with the filteredArray
+    setNotification([])
+    setNotification(filteredArray) // Add the filtered elements back to the array
+  };
+
+  const displayDmListener = (data) => {
+    if ((!selectedUser || selectedUser.id !== data.sender_id) && data.recipient_id === user.id) {
+      setNotification((allNotification) => [...allNotification, data.sender_id]);
+      console.log("Chat added to notifications!!!");
+    } else if (
+      (data.sender_id === user.id && data.recipient_id === selectedUser.id) ||
+      (data.sender_id === selectedUser.id && data.recipient_id === user.id)
+    ) {
+      setChatMessages((prevChatMessages) => [data, ...prevChatMessages]);
+    }
+
+    console.log("notif list: "+notif);
+  };
 
   const fetchUserList = async () => {
     try {
@@ -218,6 +232,11 @@ const ChatComponent = () => {
   };
 
   const handleSendChat = () => {
+
+    if (!userInput.trim()) {
+      // If userInput is empty, return without sending the message
+      return;
+    }
     const usero = user.id;
     let branch;
     let reciept
@@ -258,8 +277,9 @@ const ChatComponent = () => {
   const toggleChat = () => {
     setChatExpanded(!chatExpanded);
     socket.emit('Login', user);
-    console.log("--------------------"+notif.length);
+    console.log("--------------------" + notif.length);
     setGlobalChatExpanded(false);
+    
   };
 
   const toggleSearch = () => {
@@ -270,7 +290,7 @@ const ChatComponent = () => {
   const toggleGlobalChat = () => {
     if (globalChatExpanded) {
       setGlobalChatExpanded(false);
-      setSelectedUser(null);
+      setSelectedUser();
       setGlobalChatSelected(false);
     } else {
       setGlobalChatExpanded(true);
@@ -326,11 +346,17 @@ const ChatComponent = () => {
   };
 
 
+
+  if (!user) { // Makes chat not show up if user is not logged and there is no token
+    return null; // Return null or any other component when user is not logged in 
+  }
+
   return (
     <div className="chatContainer">
       {!chatExpanded && (
         <button className="chatToggleButton" onClick={toggleChat}>
           <img src="/chat.png" alt="Chat" />
+          <NotificationBadge count={notif.length} />
         </button>
       )}
       {chatExpanded && (
@@ -414,9 +440,11 @@ const ChatComponent = () => {
                         className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
                       >
                         <div className="messageContent">
+                          
                           <div>{message.content}</div>
-                        </div>
+                        
                         <div className="chatTime">{formatDateTime(message.createdAt)}</div>
+                        </div>
                       </li>
                     ))}
                   </ul>
