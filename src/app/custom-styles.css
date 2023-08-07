@@ -1192,6 +1192,7 @@ button:focus {
   overflow: hidden;
   border: 1px solid #9a98985b;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 
 .chatHeader {
@@ -1259,6 +1260,7 @@ button:focus {
 
 .userList li:hover {
   background-color: var(--color-hover);
+  border-radius: 10px;
 }
 .userChatWindow {
   position: fixed;
@@ -1268,6 +1270,7 @@ button:focus {
   height: 400px; /* Set a fixed height for the chat window */
   background-color: var(--color-comment-background);
   border: 1px solid #9a98985b;
+  border-radius: 10px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   z-index: 9999;
   display: flex;
@@ -1282,6 +1285,7 @@ button:focus {
   background-color: var(--progress-bar-color);
   color: var(--color-primary);
   font-size: 14px;
+  border-radius: 10px 10px 0px 0px;
 }
 
 .userChatHeader h3 {
@@ -1310,6 +1314,7 @@ button:focus {
   align-items: center;
   padding: 10px;
   background: var(--header-background);
+  border-radius: 0px 0px 10px 10px;
 }
 
 .userChatInput textarea {
@@ -1319,6 +1324,7 @@ button:focus {
   resize: none;
   background-color: var(--color-comment-background);
   border: 1px solid #333;
+  border-radius: 10px;
   min-height: 36px;
   max-height: 72px;
   word-wrap: break-word;
@@ -1417,7 +1423,7 @@ input[type="username"]
   position: absolute;
   top: 50%;
   min-width: 100px;
-  left: -40px; /* Adjust this value to control the distance from the left side of the message */
+  left: auto; /* Adjust this value to control the distance from the left side of the message */
   transform: translateY(-50%);
   background-color: var(--color-hover);
   padding: 2px 4px;
@@ -1464,4 +1470,16 @@ input[type="username"]
 .notification-badge span {
   position: relative;
   top: 1px;
+}
+
+.online-users {
+  position: relative;
+  bottom: 10px;
+  left: 26px;
+  height: 10px;
+  width: 10px;
+  background-color: rgb(70, 171, 94);
+  border-radius: 50%;
+  padding: 3px;
+  display: flex;
 }

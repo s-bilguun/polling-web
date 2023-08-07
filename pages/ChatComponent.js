@@ -3,7 +3,8 @@ import axios from 'axios';
 import { AuthContext } from './AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import NotificationBadge from './NotificationBadge'; ;
+import NotificationBadge from './NotificationBadge';
+import OnlineUsers from './OnlineUsers';
 import { io } from 'socket.io-client';
 
 const socket = io("http://localhost:4242", {
@@ -24,6 +25,8 @@ const ChatComponent = () => {
   const [notif, setNotification] = useState([]);
   const textareaRef = useRef(null);
   const userChatContentRef = useRef(null);
+  const [onlineUser, setOnlineUser] = useState();
+  let i = 0;
 
   useEffect(() => {
     // Scroll to the bottom of the userChatContent when it is opened or chatMessages are updated
@@ -198,6 +201,7 @@ const ChatComponent = () => {
     }
     socket.on('onlineUsers', (users) => {
       console.log("online Users: " + users);
+      setOnlineUser(users);
     });
   };
 
@@ -403,11 +407,19 @@ const ChatComponent = () => {
                       >
                         {user.imageUrl && (
                           <div className="userProfileImage">
+                            {/* {onlineUser.map((x) => (x === i))} */}
                             <img
                               src={user.imageUrl}
                               alt="Profile"
-                              className="chat-profile-image"
+                              className={`chat-profile-image `} 
                             />
+                            {/* {onlineUser.includes(user.id) ? 'online-users' : ''} */}
+                            {/* <div className='online-users'></div> */}
+                            {/* <div className={`${onlineUser.map((x) => x === user.id ? 'online-users' : '')}`}></div> */}
+                            
+                            <div className={onlineUser && onlineUser.includes(user.id) ? 'online-users' : ''}></div>
+
+
                           </div>
                         )}
                         <div className="userInfo">
