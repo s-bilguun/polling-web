@@ -160,7 +160,7 @@ const ChatComponent = () => {
 
       // Listen for incoming chat messages for global chat
       const displayAllChatListener = (data) => {
-        console.log(data)
+        // console.log(data.username)
 
         setChatMessages((chatMessages) => [data, ...chatMessages]);
       };
@@ -299,7 +299,7 @@ const ChatComponent = () => {
     setChatMessages([]);
     setGlobalChatExpanded(false);
     setSelectedUser(null)
-    socket.emit("close", user);
+   // socket.emit("close", user);
   };
 
   const toggleChat = () => {
@@ -443,8 +443,8 @@ const ChatComponent = () => {
                      filteredUserList.map((user) => {
                       const isUnreadMessage = notif.includes(user.id); // Check if the user's id is in the notif array
 
-                      console.log("user.id", user.id);
-                      console.log("notif list 2: ", notif);
+                      // console.log("user.id", user.id);
+                      // console.log("notif list 2: ", notif);
                       return (
                         <li
                           key={user.username}
