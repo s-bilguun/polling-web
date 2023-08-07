@@ -1423,7 +1423,7 @@ input[type="username"]
   position: absolute;
   top: 50%;
   min-width: 100px;
-  left: auto; /* Adjust this value to control the distance from the left side of the message */
+  left: -40px; /* Adjust this value to control the distance from the left side of the message */
   transform: translateY(-50%);
   background-color: var(--color-hover);
   padding: 2px 4px;
@@ -1436,7 +1436,8 @@ input[type="username"]
 }
 
 .messageItem.ownMessage .chatTime {
-  left: -70px; /*Adjust this value to control the distance from the left side of the message */
+   /*Adjust this value to control the distance from the left side of the message */
+   left: -20px;
 }
 
 .userChatContent .messageContent:hover .chatTime {
@@ -1470,6 +1471,12 @@ input[type="username"]
 .notification-badge span {
   position: relative;
   top: 1px;
+}
+
+li.boldUsername .userInfo .chat_username {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 700; /* Use the regular font weight */
+  
 }
 
 .online-users {
