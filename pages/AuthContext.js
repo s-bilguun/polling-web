@@ -3,6 +3,11 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
+import { io } from 'socket.io-client';
+
+const socket = io("http://localhost:4242", {
+  withCredentials: true,
+});
 
 const AuthContext = createContext();
 
@@ -41,6 +46,7 @@ const AuthProvider = ({ children }) => {
     Cookies.remove('token');
     // Reset the user state
     setUser(null);
+    socket.emit('close',user.id);
     // Redirect to the login page
     router.push('/login');
   };
