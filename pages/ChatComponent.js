@@ -250,10 +250,11 @@ const ChatComponent = () => {
   };
 
   const handleTextareaChange = (e) => {
-    setUserInput(e.target.value);
+    // Truncate the text if it exceeds 255 characters
+    const truncatedText = e.target.value.slice(0, 255);
+    setUserInput(truncatedText);
     adjustTextareaHeight();
   };
-
   const handleSearchInputChange = (e) => {
     setSearchInput(e.target.value);
   };
@@ -504,6 +505,7 @@ const ChatComponent = () => {
                     onChange={handleTextareaChange}
                     onKeyPress={handleKeyPress}
                     placeholder="Мессежээ бичнэ үү..."
+                    maxLength={255}
                   />
                   <img
                     src="/send.png"
@@ -516,56 +518,58 @@ const ChatComponent = () => {
             </div>
           )}
 
-          {globalChatExpanded && globalChatSelected && (
-            <div className="userChatWindow">
-              <div className="userChatHeader">
-                <div className="userProfileImage">
-                  <img src="/global.png" alt="Global Chat" className="chat-profile-image" />
-                </div>
-                <h3>Нийтийн Чат</h3>
-                <button className="chat-close" onClick={toggleGlobalChat}>
-                  X
-                </button>
+{globalChatExpanded && globalChatSelected && (
+  <div className="userChatWindow">
+    <div className="userChatHeader">
+      <div className="userProfileImage">
+        <img src="/global.png" alt="Global Chat" className="chat-profile-image" />
+      </div>
+      <h3>Нийтийн Чат</h3>
+      <button className="chat-close" onClick={toggleGlobalChat}>
+        X
+      </button>
+    </div>
+    <div className="chatContent">
+      <div className="userChatContent" ref={userChatContentRef}>
+        <ul>
+          {chatMessages.slice().reverse().map((message, index) => (
+            <li
+              key={index}
+              className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
+            >
+              {/* Display the username directly above the message */}
+              <div className="messageUsername">
+                <span>{message.sender_id === 'GLOBAL' ? 'GLOBAL' : message.username}</span>
               </div>
-              <div className="chatContent">
-                <div className="userChatContent" ref={userChatContentRef}>
-                  <ul>
-                    {chatMessages.slice().reverse().map((message, index) => (
-                      <li
-                        key={index}
-                        className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
-                      >
-                        <div className="messageContent">
-                          <div>
-                            <span>{message.sender_id === 'GLOBAL' ? 'GLOBAL' : message.username}</span>
-                          </div>
-                          <div>{message.content}</div>
-                          <div className="chatTime">{formatDateTime(message.createdAt)}</div>
-                        </div>
-                      </li>
-                    ))}
-
-
-                  </ul>
-                </div>
-                <div className="userChatInput">
-                  <textarea
-                    ref={textareaRef}
-                    value={userInput}
-                    onChange={handleTextareaChange}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Мессежээ бичнэ үү..."
-                  />
-                  <img
-                    src="/send.png"
-                    alt="Send"
-                    className="sendChatIcon"
-                    onClick={handleSendChat}
-                  />
-                </div>
+              {/* Display the message content */}
+              <div className="messageContent">
+                <div>{message.content}</div>
+                <div className="chatTime">{formatDateTime(message.createdAt)}</div>
               </div>
-            </div>
-          )}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="userChatInput">
+        <textarea
+          ref={textareaRef}
+          value={userInput}
+          onChange={handleTextareaChange}
+          onKeyPress={handleKeyPress}
+          placeholder="Мессежээ бичнэ үү..."
+          maxLength={255}
+        />
+        <img
+          src="/send.png"
+          alt="Send"
+          className="sendChatIcon"
+          onClick={handleSendChat}
+        />
+      </div>
+    </div>
+  </div>
+)}
+
         </>
       )}
     </div>

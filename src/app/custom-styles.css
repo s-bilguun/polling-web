@@ -1489,3 +1489,33 @@ li.boldUsername .userInfo .chat_username {
   padding: 3px;
   display: flex;
 }
+/* Add styles for the message username */
+.messageUsername {
+  display: flex;
+  justify-content: center;
+  padding: 1px;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Remove the margin for messages on the left side (other users' messages) */
+.messageItem:not(.ownMessage) .messageContent {
+  margin-left: 0; /* Reset the left margin for other users' messages */
+}
+
+/* Add margin for messages on the right side (own messages) */
+.messageItem.ownMessage .messageContent {
+  margin-left: 20px;
+}
+
+/* Ensure the username is above the message content */
+.messageItem:not(.ownMessage) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Remove the username for own messages */
+.messageItem.ownMessage .messageUsername {
+  display: none;
+}
