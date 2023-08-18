@@ -3,8 +3,7 @@ import axios from 'axios';
 import { AuthContext } from './AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import NotificationBadge from './NotificationBadge';
-import OnlineUsers from './OnlineUsers';
+import NotificationBadge from './NotificationBadge';;
 import { io } from 'socket.io-client';
 
 const socket = io("http://localhost:4242", {
@@ -25,8 +24,6 @@ const ChatComponent = () => {
   const [notif, setNotification] = useState([]);
   const textareaRef = useRef(null);
   const userChatContentRef = useRef(null);
-  const [onlineUser, setOnlineUser] = useState();
-  let i = 0;
 
   useEffect(() => {
     // Scroll to the bottom of the userChatContent when it is opened or chatMessages are updated
@@ -160,7 +157,7 @@ const ChatComponent = () => {
 
       // Listen for incoming chat messages for global chat
       const displayAllChatListener = (data) => {
-        // console.log(data.username)
+        console.log(data)
 
         setChatMessages((chatMessages) => [data, ...chatMessages]);
       };
@@ -224,7 +221,6 @@ const ChatComponent = () => {
     }
     socket.on('onlineUsers', (users) => {
       console.log("online Users: " + users);
-      setOnlineUser(users);
     });
   };
 
@@ -250,11 +246,10 @@ const ChatComponent = () => {
   };
 
   const handleTextareaChange = (e) => {
-    // Truncate the text if it exceeds 255 characters
-    const truncatedText = e.target.value.slice(0, 255);
-    setUserInput(truncatedText);
+    setUserInput(e.target.value);
     adjustTextareaHeight();
   };
+
   const handleSearchInputChange = (e) => {
     setSearchInput(e.target.value);
   };
@@ -300,7 +295,7 @@ const ChatComponent = () => {
     setChatMessages([]);
     setGlobalChatExpanded(false);
     setSelectedUser(null)
-   // socket.emit("close", user);
+    socket.emit("close", user);
   };
 
   const toggleChat = () => {
@@ -441,11 +436,11 @@ const ChatComponent = () => {
                     </div>
                   </li>
                   {filteredUserList.length > 0 ? (
-                     filteredUserList.map((user) => {
+                    filteredUserList.map((user) => {
                       const isUnreadMessage = notif.includes(user.id); // Check if the user's id is in the notif array
 
-                      // console.log("user.id", user.id);
-                      // console.log("notif list 2: ", notif);
+                      console.log("user.id", user.id);
+                      console.log("notif list 2: ", notif);
                       return (
                         <li
                           key={user.username}
@@ -455,8 +450,7 @@ const ChatComponent = () => {
                           {user.imageUrl && (
                             <div className="userProfileImage">
                               <img src={user.imageUrl} alt="Profile" className="chat-profile-image" />
-                              <div className={onlineUser && onlineUser.includes(user.id) ? 'online-users' : ''}></div>
-                              </div>
+                            </div>
                           )}
                           <div className="userInfo">
                             <span className="chat_username">{user.username}</span>
@@ -505,7 +499,6 @@ const ChatComponent = () => {
                     onChange={handleTextareaChange}
                     onKeyPress={handleKeyPress}
                     placeholder="Мессежээ бичнэ үү..."
-                    maxLength={255}
                   />
                   <img
                     src="/send.png"
@@ -518,58 +511,56 @@ const ChatComponent = () => {
             </div>
           )}
 
-{globalChatExpanded && globalChatSelected && (
-  <div className="userChatWindow">
-    <div className="userChatHeader">
-      <div className="userProfileImage">
-        <img src="/global.png" alt="Global Chat" className="chat-profile-image" />
-      </div>
-      <h3>Нийтийн Чат</h3>
-      <button className="chat-close" onClick={toggleGlobalChat}>
-        X
-      </button>
-    </div>
-    <div className="chatContent">
-      <div className="userChatContent" ref={userChatContentRef}>
-        <ul>
-          {chatMessages.slice().reverse().map((message, index) => (
-            <li
-              key={index}
-              className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
-            >
-              {/* Display the username directly above the message */}
-              <div className="messageUsername">
-                <span>{message.sender_id === 'GLOBAL' ? 'GLOBAL' : message.username}</span>
+          {globalChatExpanded && globalChatSelected && (
+            <div className="userChatWindow">
+              <div className="userChatHeader">
+                <div className="userProfileImage">
+                  <img src="/global.png" alt="Global Chat" className="chat-profile-image" />
+                </div>
+                <h3>Нийтийн Чат</h3>
+                <button className="chat-close" onClick={toggleGlobalChat}>
+                  X
+                </button>
               </div>
-              {/* Display the message content */}
-              <div className="messageContent">
-                <div>{message.content}</div>
-                <div className="chatTime">{formatDateTime(message.createdAt)}</div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="userChatInput">
-        <textarea
-          ref={textareaRef}
-          value={userInput}
-          onChange={handleTextareaChange}
-          onKeyPress={handleKeyPress}
-          placeholder="Мессежээ бичнэ үү..."
-          maxLength={255}
-        />
-        <img
-          src="/send.png"
-          alt="Send"
-          className="sendChatIcon"
-          onClick={handleSendChat}
-        />
-      </div>
-    </div>
-  </div>
-)}
+              <div className="chatContent">
+                <div className="userChatContent" ref={userChatContentRef}>
+                  <ul>
+                    {chatMessages.slice().reverse().map((message, index) => (
+                      <li
+                        key={index}
+                        className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
+                      >
+                        <div className="messageContent">
+                          <div>
+                            <span>{message.sender_id === 'GLOBAL' ? 'GLOBAL' : message.username}</span>
+                          </div>
+                          <div>{message.content}</div>
+                          <div className="chatTime">{formatDateTime(message.createdAt)}</div>
+                        </div>
+                      </li>
+                    ))}
 
+
+                  </ul>
+                </div>
+                <div className="userChatInput">
+                  <textarea
+                    ref={textareaRef}
+                    value={userInput}
+                    onChange={handleTextareaChange}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Мессежээ бичнэ үү..."
+                  />
+                  <img
+                    src="/send.png"
+                    alt="Send"
+                    className="sendChatIcon"
+                    onClick={handleSendChat}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>

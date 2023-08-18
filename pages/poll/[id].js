@@ -437,7 +437,7 @@ const Poll = () => {
 
         responseType: 'blob',
       });
-      console.log('comment', comment.username);
+      // console.log('comment', comment.username);
       const imageUrl = URL.createObjectURL(response.data);
       console.log('Fetched profile image URL:', imageUrl);
       return imageUrl;
