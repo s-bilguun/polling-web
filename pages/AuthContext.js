@@ -46,7 +46,7 @@ const AuthProvider = ({ children }) => {
     Cookies.remove('token');
     // Reset the user state
     setUser(null);
-    socket.emit('close',user.id);
+    socket.emit('close',user);
     // Redirect to the login page
     router.push('/login');
   };

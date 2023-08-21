@@ -45,10 +45,10 @@ const ChatComponent = () => {
   const formatDateTime = (dateTimeString) => {
     const dateObj = new Date(dateTimeString);
     const now = new Date();
-  
+
     const isToday = dateObj.toDateString() === now.toDateString();
     const isYesterday = new Date(dateObj.getTime() - 86400000).toDateString() === now.toDateString(); // 86400000 is the number of milliseconds in a day
-  
+
     if (isToday) {
       // Format for today
       const hours = dateObj.getHours().toString().padStart(2, '0');
@@ -72,11 +72,40 @@ const ChatComponent = () => {
       return `${year}-${month}-${day}`;
     }
   };
-  
 
+
+
+  const fetchUnreadMessageCounts = () => {
+    if (!user || !user.id || !user.token) {
+      // User is not logged in, do not proceed with the API request
+      return;
+    }
+    axios.get(`http://localhost:8001/socket/getUnreadCount/${user.id}`, {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    }).then(response => {
+      if (response.status === 200) {
+        const unreadCounts = response.data.data;
+        const newNotifications = { ...notifications }; // Clone the notifications object
+
+        for (const countObj of unreadCounts) {
+          const userId = countObj.sender_id;
+          const count = countObj.unread_count;
+          // Update the notifications object with the new unread message counts
+          newNotifications[userId] = count;
+        }
+
+        setNotifications(newNotifications);
+      }
+    }).catch(error => {
+      console.error('Error fetching unread message counts:', error);
+    });
+  };
 
   useEffect(() => {
-    fetchUserList();
+    fetchUserList();  
+    fetchUnreadMessageCounts();
     // socket.on('display dm', displayDmListener);
 
     //   // Return the cleanup function to remove the event listener when the component unmounts
@@ -96,19 +125,6 @@ const ChatComponent = () => {
     setUserInput('');
   }, [selectedUser]);
 
-  useEffect(() => {
-    // Listen for incoming chat messages
-    const newMessageListener = (messageData) => {
-      setChatMessages((prevChatMessages) => [messageData, ...prevChatMessages]);
-    };
-
-    socket.on('newMessage', newMessageListener);
-
-    // Return the cleanup function to remove the event listener when the component unmounts
-    return () => {
-      socket.off('newMessage', newMessageListener);
-    };
-  }, []);
 
   useEffect(() => {
     if (selectedUser) {
@@ -119,13 +135,31 @@ const ChatComponent = () => {
               Authorization: `Bearer ${user.token}`,
             },
           });
-
+  
           if (response.status === 200) {
             const data = response.data.data;
             setChatMessages(data.map(message => ({
               ...message,
               sender: message.sender_id === user.id ? user.username : selectedUser.username,
             })));
+  
+            // Mark the chat as read when opening the user's chat
+            axios.post('http://localhost:8001/socket/setAllChatRead', {
+              senderId: selectedUser.id,
+              recipientId: user.id,
+            }, {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            }).then(response => {
+              if (response.status === 200) {
+                console.log('Chat messages marked as read.');
+              }
+            }).catch(error => {
+              console.error('Error marking chat messages as read:', error);
+            });
+  
+            clearNotif(selectedUser);
           } else {
             console.error('Failed to fetch chat history');
           }
@@ -133,15 +167,12 @@ const ChatComponent = () => {
           console.error('Error fetching chat history:', error);
         }
       };
+  
       setGlobalChatSelected(false);
-
-      // Clear chat messages when switching users
       setChatMessages([]);
-
-
-      // Fetch chat history for the selected user
-
+  
       fetchChatHistory();
+  
 
       clearNotif(selectedUser);
 
@@ -258,7 +289,7 @@ const ChatComponent = () => {
   const handleSearchInputChange = (e) => {
     setSearchInput(e.target.value);
   };
-
+  
   const handleSendChat = () => {
 
     if (!userInput.trim()) {
@@ -300,7 +331,7 @@ const ChatComponent = () => {
     setChatMessages([]);
     setGlobalChatExpanded(false);
     setSelectedUser(null)
-   // socket.emit("close", user);
+    // socket.emit("close", user);
   };
 
   const toggleChat = () => {
@@ -377,15 +408,36 @@ const ChatComponent = () => {
     // Listen for incoming chat messages
     const newMessageListener = (messageData) => {
       setChatMessages((prevChatMessages) => [messageData, ...prevChatMessages]);
-
+    
       // Update the notif array to include the sender_id of the new message
       if (selectedUser && selectedUser.id !== messageData.sender_id) {
         setNotification((prevNotif) => [...new Set([...prevNotif, messageData.sender_id])]);
       }
+      
+      // Fetch unread message counts for each user and update the notif array
+      axios.get(`http://localhost:8001/socket/getUnreadCount/${user.id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }).then(response => {
+        if (response.status === 200) {
+          const unreadCounts = response.data.data;
+          const newNotif = [...notif]; // Clone the notif array
+          for (const countObj of unreadCounts) {
+            const userId = countObj.sender_id;
+            const count = countObj.unread_count;
+            // Update the notif array with the new unread message counts
+            newNotif[userId] = count;
+          }
+          setNotification(newNotif);
+        }
+      }).catch(error => {
+        console.error('Error fetching unread message counts:', error);
+      });
     };
-
+    
     socket.on('newMessage', newMessageListener);
-
+    
     // Return the cleanup function to remove the event listener when the component unmounts
     return () => {
       socket.off('newMessage', newMessageListener);
@@ -397,12 +449,13 @@ const ChatComponent = () => {
     return null; // Return null or any other component when user is not logged in 
   }
 
+  const unreadMessageCount = notif.length;
   return (
     <div className="chatContainer">
       {!chatExpanded && (
         <button className="chatToggleButton" onClick={toggleChat}>
           <img src="/chat.png" alt="Chat" />
-          <NotificationBadge count={notif.length} />
+          <NotificationBadge count={unreadMessageCount} />
         </button>
       )}
       {chatExpanded && (
@@ -441,7 +494,7 @@ const ChatComponent = () => {
                     </div>
                   </li>
                   {filteredUserList.length > 0 ? (
-                     filteredUserList.map((user) => {
+                    filteredUserList.map((user) => {
                       const isUnreadMessage = notif.includes(user.id); // Check if the user's id is in the notif array
 
                       // console.log("user.id", user.id);
@@ -456,7 +509,7 @@ const ChatComponent = () => {
                             <div className="userProfileImage">
                               <img src={user.imageUrl} alt="Profile" className="chat-profile-image" />
                               <div className={onlineUser && onlineUser.includes(user.id) ? 'online-users' : ''}></div>
-                              </div>
+                            </div>
                           )}
                           <div className="userInfo">
                             <span className="chat_username">{user.username}</span>
@@ -518,57 +571,57 @@ const ChatComponent = () => {
             </div>
           )}
 
-{globalChatExpanded && globalChatSelected && (
-  <div className="userChatWindow">
-    <div className="userChatHeader">
-      <div className="userProfileImage">
-        <img src="/global.png" alt="Global Chat" className="chat-profile-image" />
-      </div>
-      <h3>Нийтийн Чат</h3>
-      <button className="chat-close" onClick={toggleGlobalChat}>
-        X
-      </button>
-    </div>
-    <div className="chatContent">
-      <div className="userChatContent" ref={userChatContentRef}>
-        <ul>
-          {chatMessages.slice().reverse().map((message, index) => (
-            <li
-              key={index}
-              className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
-            >
-              {/* Display the username directly above the message */}
-              <div className="messageUsername">
-                <span>{message.sender_id === 'GLOBAL' ? 'GLOBAL' : message.username}</span>
+          {globalChatExpanded && globalChatSelected && (
+            <div className="userChatWindow">
+              <div className="userChatHeader">
+                <div className="userProfileImage">
+                  <img src="/global.png" alt="Global Chat" className="chat-profile-image" />
+                </div>
+                <h3>Нийтийн Чат</h3>
+                <button className="chat-close" onClick={toggleGlobalChat}>
+                  X
+                </button>
               </div>
-              {/* Display the message content */}
-              <div className="messageContent">
-                <div>{message.content}</div>
-                <div className="chatTime">{formatDateTime(message.createdAt)}</div>
+              <div className="chatContent">
+                <div className="userChatContent" ref={userChatContentRef}>
+                  <ul>
+                    {chatMessages.slice().reverse().map((message, index) => (
+                      <li
+                        key={index}
+                        className={`messageItem ${message.sender_id === user.id ? 'ownMessage' : ''}`}
+                      >
+                        {/* Display the username directly above the message */}
+                        <div className="messageUsername">
+                          <span>{message.sender_id === 'GLOBAL' ? 'GLOBAL' : message.username}</span>
+                        </div>
+                        {/* Display the message content */}
+                        <div className="messageContent">
+                          <div>{message.content}</div>
+                          <div className="chatTime">{formatDateTime(message.createdAt)}</div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="userChatInput">
+                  <textarea
+                    ref={textareaRef}
+                    value={userInput}
+                    onChange={handleTextareaChange}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Мессежээ бичнэ үү..."
+                    maxLength={255}
+                  />
+                  <img
+                    src="/send.png"
+                    alt="Send"
+                    className="sendChatIcon"
+                    onClick={handleSendChat}
+                  />
+                </div>
               </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="userChatInput">
-        <textarea
-          ref={textareaRef}
-          value={userInput}
-          onChange={handleTextareaChange}
-          onKeyPress={handleKeyPress}
-          placeholder="Мессежээ бичнэ үү..."
-          maxLength={255}
-        />
-        <img
-          src="/send.png"
-          alt="Send"
-          className="sendChatIcon"
-          onClick={handleSendChat}
-        />
-      </div>
-    </div>
-  </div>
-)}
+            </div>
+          )}
 
         </>
       )}
