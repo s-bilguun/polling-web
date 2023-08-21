@@ -23,6 +23,8 @@ const ChatComponent = () => {
   const [globalChatExpanded, setGlobalChatExpanded] = useState(false);
   const [globalChatSelected, setGlobalChatSelected] = useState(false);
   const [notif, setNotification] = useState([]);
+  const [notifications, setNotifications] = useState({});
+
   const textareaRef = useRef(null);
   const userChatContentRef = useRef(null);
   const [onlineUser, setOnlineUser] = useState();
@@ -34,7 +36,7 @@ const ChatComponent = () => {
       userChatContentRef.current.scrollTop = userChatContentRef.current.scrollHeight;
     }
     socket.on('display dm', displayDmListener);
-
+    fetchUnreadMessageCounts();
     // Return the cleanup function to remove the event listener when the component unmounts
     return () => {
       socket.off('display dm', displayDmListener);
@@ -94,9 +96,12 @@ const ChatComponent = () => {
           const count = countObj.unread_count;
           // Update the notifications object with the new unread message counts
           newNotifications[userId] = count;
+          console.log("count", count);
+          console.log("new nofit",  newNotifications);
         }
-
+        
         setNotifications(newNotifications);
+       
       }
     }).catch(error => {
       console.error('Error fetching unread message counts:', error);
@@ -106,14 +111,26 @@ const ChatComponent = () => {
   useEffect(() => {
     fetchUserList();  
     fetchUnreadMessageCounts();
-    // socket.on('display dm', displayDmListener);
+ // Listen for incoming chat messages
+ const newMessageListener = (messageData) => {
+  setChatMessages((prevChatMessages) => [messageData, ...prevChatMessages]);
 
-    //   // Return the cleanup function to remove the event listener when the component unmounts
-    //   return () => {
-    //     socket.off('display dm', displayDmListener);
-    //   };
-  }, []);
+  // Update the notifications object to include the sender_id of the new message
+  if (selectedUser && selectedUser.id !== messageData.sender_id) {
+    setNotifications((prevNotifications) => ({
+      ...prevNotifications,
+      [messageData.sender_id]: (prevNotifications[messageData.sender_id] || 0) + 1,
+    }));
+  }
+};
 
+socket.on('newMessage', newMessageListener);
+
+// Return the cleanup function to remove the event listener when the component unmounts
+return () => {
+  socket.off('newMessage', newMessageListener);
+};
+}, [selectedUser]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -124,6 +141,8 @@ const ChatComponent = () => {
   useEffect(() => {
     setUserInput('');
   }, [selectedUser]);
+
+   
 
 
   useEffect(() => {
@@ -205,34 +224,29 @@ const ChatComponent = () => {
     }
   }, [selectedUser, globalChatExpanded]);
 
-  const clearNotif = (data) => {
-    // Use the filter method to create a new array with elements that do not meet the condition
-    const filteredArray = notif.filter(item => {
-      // Check if the item has a non-null sender_id and if data.id is not equal to the item's sender_id
-      return item !== null && item !== data.id;
-    });
-
-    // Check if the selected user matches the condition before updating the notifArray
-    if (selectedUser && selectedUser.id === data.id) {
-      setNotification(filteredArray); // Update the notifArray with the filteredArray
-    }
+  const clearNotif = (user) => {
+    // Clone the notifications object and remove the selected user's unread count
+    const updatedNotifications = { ...notifications };
+    delete updatedNotifications[user.id];
+    setNotifications(updatedNotifications);
   };
 
 
 
   const displayDmListener = (data) => {
     if ((!selectedUser || selectedUser.id !== data.sender_id) && data.recipient_id === user.id) {
-      setNotification((allNotification) => [...allNotification, data.sender_id]);
-      console.log("Chat added to notifications!!!");
+      setNotifications((prevNotifications) => ({
+        ...prevNotifications,
+        [data.sender_id]: (prevNotifications[data.sender_id] || 0) + 1,
+      }));
     } else if (
       (data.sender_id === user.id && data.recipient_id === selectedUser.id) ||
       (data.sender_id === selectedUser.id && data.recipient_id === user.id)
     ) {
       setChatMessages((prevChatMessages) => [data, ...prevChatMessages]);
     }
-
-    console.log("notif list: " + notif);
   };
+  
 
   const fetchUserList = async () => {
     try {
@@ -414,26 +428,6 @@ const ChatComponent = () => {
         setNotification((prevNotif) => [...new Set([...prevNotif, messageData.sender_id])]);
       }
       
-      // Fetch unread message counts for each user and update the notif array
-      axios.get(`http://localhost:8001/socket/getUnreadCount/${user.id}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      }).then(response => {
-        if (response.status === 200) {
-          const unreadCounts = response.data.data;
-          const newNotif = [...notif]; // Clone the notif array
-          for (const countObj of unreadCounts) {
-            const userId = countObj.sender_id;
-            const count = countObj.unread_count;
-            // Update the notif array with the new unread message counts
-            newNotif[userId] = count;
-          }
-          setNotification(newNotif);
-        }
-      }).catch(error => {
-        console.error('Error fetching unread message counts:', error);
-      });
     };
     
     socket.on('newMessage', newMessageListener);
@@ -449,7 +443,10 @@ const ChatComponent = () => {
     return null; // Return null or any other component when user is not logged in 
   }
 
-  const unreadMessageCount = notif.length;
+  const unreadMessageCount = Object.values(notifications).reduce((total, count) => total + parseInt(count, 10), 0);
+
+
+
   return (
     <div className="chatContainer">
       {!chatExpanded && (
@@ -480,31 +477,34 @@ const ChatComponent = () => {
                 onChange={handleSearchInputChange}
                 placeholder="Нэрээр хайх..."
               />
-            )}
+              )}
 
-            <div className="chatContent">
-              <div className="userList chatUserList">
-                <ul>
-                  <li onClick={toggleGlobalChat} className={!selectedUser && globalChatExpanded ? 'selectedUser' : ''}>
-                    <div className="userProfileImage">
-                      <img src="/global.png" alt="Global Chat" className="chat-profile-image" />
-                    </div>
-                    <div className="userInfo">
-                      <span className="chat_username">Нийтийн чат</span>
-                    </div>
-                  </li>
-                  {filteredUserList.length > 0 ? (
-                    filteredUserList.map((user) => {
-                      const isUnreadMessage = notif.includes(user.id); // Check if the user's id is in the notif array
+              <div className="chatContent">
+                <div className="userList chatUserList">
+                  <ul>
+                    <li onClick={toggleGlobalChat} className={!selectedUser && globalChatExpanded ? 'selectedUser' : ''}>
+                      <div className="userProfileImage">
+                        <img src="/global.png" alt="Global Chat" className="chat-profile-image" />
+                      </div>
+                      <div className="userInfo">
+                        <span className="chat_username">Нийтийн чат</span>
+                      </div>
+                    </li>
+                    {filteredUserList.length > 0 ? (
+                      filteredUserList.map((user) => {
+                        const isUnreadMessage = notifications[user.id] > 0;// Check if the user's id is in the notif array
 
                       // console.log("user.id", user.id);
                       // console.log("notif list 2: ", notif);
                       return (
                         <li
-                          key={user.username}
-                          onClick={() => setSelectedUser(user)}
-                          className={`${selectedUser === user ? 'selectedUser' : ''} ${isUnreadMessage ? 'boldUsername' : ''}`}
-                        >
+        key={user.username}
+        onClick={() => {
+          setSelectedUser(user);
+          clearNotif(user); // Clear unread count when a user is selected
+        }}
+        className={`${selectedUser === user ? 'selectedUser' : ''} ${isUnreadMessage ? 'boldUsername' : ''}`}
+      >
                           {user.imageUrl && (
                             <div className="userProfileImage">
                               <img src={user.imageUrl} alt="Profile" className="chat-profile-image" />
