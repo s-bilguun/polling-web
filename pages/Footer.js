@@ -12,7 +12,7 @@ const Footer = () => {
           <FontAwesomeIcon icon={faTwitter} />
         </a>
       </div> */}
-      <p>&copy; 2023 Poll Website. All rights reserved.</p>
+      <p>&copy; 2023 PRD-Generating Website. All rights reserved.</p>
     </footer>
   );
 };

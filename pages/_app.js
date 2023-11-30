@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import '../src/app/custom-styles.css';
 import './themescript.js';
 import { Inter } from 'next/font/google';
-import { AuthProvider } from './AuthContext';
 import LoadingScreen from './loadingScreen';
 import ChatComponent from './ChatComponent';
 import { useRouter } from "next/router";
@@ -25,11 +24,11 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   return (
-    <AuthProvider>
+    <>
       {isLoading ? <LoadingScreen /> : null}
       {isContentVisible ? <Component {...pageProps} /> : null}
-      <ChatComponent />
-    </AuthProvider>
+  
+      </>
     
   );
 }
