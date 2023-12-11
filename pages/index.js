@@ -11,15 +11,16 @@ import { faUser ,} from '@fortawesome/free-solid-svg-icons';
 import {  faHistory   } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import { ToastContainer, toast } from 'react-toastify';
+import respContent from './respContent';
 import 'react-toastify/dist/ReactToastify.css';
-import DropdownSort from './DropdownSort';
+
 
 
 const Page = () => {
   const [projectname, setProjectName] = useState([]);
   const [userRequirment, setUserRequirement] = useState([]);
   const [compInfo, setCompInfo] = useState([]);
-
+  const [output, setOutput] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
   
 
@@ -30,37 +31,21 @@ const Page = () => {
   const handleGenerate = async (e) => {
     e.preventDefault();
     // Format the date and time strings
-    const startDateTimeFormatted = `${startDateTime}:00`;
-    const endDateTimeFormatted = `${endDateTime}:00`;
-
     try {
       // Submit the poll data to the backend
-      const response = await axios.post(
-        'http://localhost:8001/poll/createPoll',
+      const response = await axios.get(
+        'http://localhost:8001/response/post/request/gobrrr',
         {
-          question: question,
-          startdate: startDateTimeFormatted,
-          expiredate: endDateTimeFormatted,
-          answer: pollType === 'opinion' ? null : choices,
-          type: pollType,
-          visibility: visible,
+          name:projectname,
+          requirement: userRequirment,
+          info: compInfo
         },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
       );
-      // Reset the form
-      setQuestion('');
-      setStartDateTime('');
-      setEndDateTime('');
-      setChoices(['', '']);
-      setPollType('original');
-      setVisible(false);
+      setOutput(response)
 
+      // Reset the form
+      
       // Go back to the index page or any other desired page
-      router.push('/');
       toast.success('Санал асуулга амжилттай үүслээ 😎', {
         position: "top-center",
         autoClose: 5000,
@@ -113,7 +98,9 @@ const Page = () => {
         </button>
         {showHistory && <HistoryComponent />}
       </div>
-
+        <respContent>
+          output
+        </respContent>
       </motion.div>
       <ToastContainer />
       <Footer />
