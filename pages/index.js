@@ -7,11 +7,11 @@ import Footer from './Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import HistoryComponent from './dropdownContent';
+import respContent from './respContent';
 import { faUser ,} from '@fortawesome/free-solid-svg-icons';
 import {  faHistory   } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import { ToastContainer, toast } from 'react-toastify';
-import respContent from './respContent';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -20,7 +20,8 @@ const Page = () => {
   const [projectname, setProjectName] = useState([]);
   const [userRequirment, setUserRequirement] = useState([]);
   const [compInfo, setCompInfo] = useState([]);
-  const [output, setOutput] = useState([]);
+  const [showResponse, setShowResponse] = useState(false);
+  const [output, setOutput] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   
 
@@ -30,10 +31,11 @@ const Page = () => {
 
   const handleGenerate = async (e) => {
     e.preventDefault();
+    console.log("starting")
     // Format the date and time strings
     try {
       // Submit the poll data to the backend
-      const response = await axios.get(
+      const response = await axios.post(
         'http://localhost:8001/response/post/request/gobrrr',
         {
           name:projectname,
@@ -41,10 +43,11 @@ const Page = () => {
           info: compInfo
         },
       );
-      setOutput(response)
-
+      console.log(response)
+      setOutput(response.data.data)
+      setShowResponse(true);
       // Reset the form
-      
+      console.log("wtf is wrong with this shiet")
       // Go back to the index page or any other desired page
       toast.success('Санал асуулга амжилттай үүслээ 😎', {
         position: "top-center",
@@ -52,8 +55,8 @@ const Page = () => {
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
-        draggable: true,
         progress: undefined,
+        draggable: true,
         theme: "light",
         });
     } catch (error) {
@@ -70,7 +73,7 @@ const Page = () => {
           duration: 0.75,
         }}
       >
-       <form 
+       <form onSubmit={handleGenerate}
       //  onSubmit={handleGenerate}
        >
                 <label>
@@ -98,9 +101,8 @@ const Page = () => {
         </button>
         {showHistory && <HistoryComponent />}
       </div>
-        <respContent>
-          output
-        </respContent>
+      {showResponse && <respContent response={output} />}
+     
       </motion.div>
       <ToastContainer />
       <Footer />

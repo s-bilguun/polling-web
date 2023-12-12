@@ -1,18 +1,14 @@
 
-
-const respContent = () => {
-
-  
-
+const respContent = ({ response }) => {
+  // Display the response here
+  // You can customize this to suit your needs
   return (
-    <div className="container">
-      <Header/>
-      <h1 className="text-3xl font-bold mb-4">Generating...</h1>
-      <h1>imported this comp</h1>
-
-
+    <div>
+      <h2>API Response:</h2>
+      <pre>{JSON.stringify(response, null, 2)}</pre>
     </div>
   );
 };
+
 
 export default respContent;
